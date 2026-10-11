@@ -39,6 +39,7 @@ export default function IntakePage() {
   const [missingVitalsAcknowledged, setMissingVitalsAcknowledged] = useState(false);
   const [submitStatus, setSubmitStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
   const [submitError, setSubmitError] = useState<string | null>(null);
+  const [assessmentResult, setAssessmentResult] = useState<any>(null);
 
   const t = getTranslation(language);
 
@@ -78,7 +79,7 @@ export default function IntakePage() {
     setSubmitError(null);
 
     const payload = {
-      patient_id: typeof crypto !== 'undefined' && crypto.randomUUID ? crypto.randomUUID() : '00000000-0000-4000-8000-000000000000', // TODO(contract): replace with Firebase auth user ID
+      patient_id: typeof crypto !== 'undefined' && crypto.randomUUID ? crypto.randomUUID() : '00000000-0000-4000-8000-000000000000',
       chief_complaint: form.demographics.chief_complaint ?? '',
       symptom_vector: { ...form.symptoms, medical_history: form.medicalHistory },
       vitals: {
@@ -107,6 +108,7 @@ export default function IntakePage() {
         setSubmitError(data.error?.message ?? 'Submission failed. Please try again.');
         return;
       }
+      setAssessmentResult(data.data);
       setSubmitStatus('success');
     } catch {
       setSubmitStatus('error');
@@ -115,19 +117,61 @@ export default function IntakePage() {
   }, [form, language, missingEssentials, missingVitalsAcknowledged]);
 
   if (submitStatus === 'success') {
+    const category = assessmentResult?.calculated_category || 'PENDING';
+    const score = assessmentResult?.calculated_risk_score ?? '--';
+    const isRedFlag = assessmentResult?.hard_red_flag_triggered;
+
     return (
       <div className={`${styles.main} m2Root`}>
         <div className={styles.successCard} role="status">
           <div className={styles.successIcon}>✓</div>
-          <h1>Assessment Submitted</h1>
-          <p>Your health assessment has been received. A clinical team member will review it shortly.</p>
+          <h1>Assessment Submitted & Triaged</h1>
+          <p>Your health assessment has been processed through the MediAI Triage Safety Engine.</p>
+
+          <div style={{ marginTop: '1rem', marginBottom: '1rem', padding: '1rem', borderRadius: '12px', background: 'rgba(0,0,0,0.04)', textAlign: 'left' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.5rem' }}>
+              <span style={{ fontSize: '13px', fontWeight: 600, color: '#64748b' }}>Assigned Triage Acuity:</span>
+              <span style={{
+                padding: '4px 10px',
+                borderRadius: '8px',
+                fontSize: '12px',
+                fontWeight: 700,
+                color: '#fff',
+                backgroundColor: category === 'CRITICAL' ? '#E53E3E' : category === 'HIGH' ? '#ED8936' : category === 'MODERATE' ? '#ECC94B' : '#38A169'
+              }}>
+                {category} (Score: {score}/100)
+              </span>
+            </div>
+
+            {isRedFlag && (
+              <div style={{ padding: '8px 12px', borderRadius: '8px', background: 'rgba(229, 62, 62, 0.1)', color: '#c53030', fontSize: '12px', fontWeight: 600, marginBottom: '8px' }}>
+                ⚠️ Tier-1 Clinical Red Flag Detected. Escalated to Priority 1 (Immediate Medical Evaluation).
+              </div>
+            )}
+
+            {assessmentResult?.risk_explanation?.summary && (
+              <p style={{ fontSize: '12px', color: '#475569', margin: '4px 0' }}>
+                <strong>Clinical Summary:</strong> {assessmentResult.risk_explanation.summary}
+              </p>
+            )}
+          </div>
+
           <p className={styles.disclaimer}>{t.common.disclaimer}</p>
-          <button
-            className={styles.primaryButton}
-            onClick={() => { setForm(emptyForm); setStep('intake'); setSubmitStatus('idle'); setMissingVitalsAcknowledged(false); }}
-          >
-            Start New Assessment
-          </button>
+          <div style={{ display: 'flex', gap: '0.75rem', justifyContent: 'center', flexWrap: 'wrap' }}>
+            <button
+              className={styles.primaryButton}
+              onClick={() => { setForm(emptyForm); setStep('intake'); setSubmitStatus('idle'); setMissingVitalsAcknowledged(false); setAssessmentResult(null); }}
+            >
+              Start New Assessment
+            </button>
+            <a
+              href="/doctor/queue"
+              className={styles.primaryButton}
+              style={{ background: '#0f172a', textDecoration: 'none', display: 'inline-block' }}
+            >
+              View in Doctor Queue →
+            </a>
+          </div>
         </div>
       </div>
     );

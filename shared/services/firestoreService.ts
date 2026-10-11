@@ -289,10 +289,17 @@ export async function saveAuditLogToFirestore(logEntry: {
 }): Promise<void> {
   try {
     const entryId = 'log_' + Date.now() + '_' + Math.random().toString(36).substring(2, 7);
-    await setDoc(doc(firestoreDb, 'audit_logs', entryId), {
-      ...logEntry,
+    const cleanEntry: Record<string, unknown> = {
+      eventType: logEntry.eventType,
+      ipAddress: logEntry.ipAddress,
       timestamp: new Date().toISOString(),
-    });
+    };
+    if (logEntry.userId !== undefined) cleanEntry.userId = logEntry.userId;
+    if (logEntry.patientId !== undefined) cleanEntry.patientId = logEntry.patientId;
+    if (logEntry.userAgent !== undefined) cleanEntry.userAgent = logEntry.userAgent;
+    if (logEntry.payload !== undefined) cleanEntry.payload = logEntry.payload;
+
+    await setDoc(doc(firestoreDb, 'audit_logs', entryId), cleanEntry);
   } catch (err) {
     console.warn('Firestore audit log warning:', err);
   }

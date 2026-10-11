@@ -39,15 +39,25 @@ export default function WelcomePage() {
 
         {/* Primary CTAs */}
         <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-4">
-          <Link href="/patient/intake" className="w-full sm:w-auto">
+          <Link href="/intake" className="w-full sm:w-auto">
             <Button
               size="lg"
               variant="primary"
               className="w-full sm:w-auto shadow-lg shadow-brand-500/25"
-              leftIcon={<UserPlus className="w-5 h-5" />}
+              leftIcon={<Activity className="w-5 h-5" />}
               rightIcon={<ArrowRight className="w-5 h-5" />}
             >
-              {t.welcome.beginIntake}
+              Begin Triage Assessment
+            </Button>
+          </Link>
+          <Link href="/doctor/queue" className="w-full sm:w-auto">
+            <Button
+              size="lg"
+              variant="secondary"
+              className="w-full sm:w-auto border-brand-500/30"
+              leftIcon={<HeartPulse className="w-5 h-5 text-brand-600 dark:text-brand-400" />}
+            >
+              Doctor Workstation
             </Button>
           </Link>
           <Link href="/signin" className="w-full sm:w-auto">
