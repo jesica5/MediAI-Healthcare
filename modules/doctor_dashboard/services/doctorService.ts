@@ -219,4 +219,8 @@ export class DoctorService {
   }
 }
 
-export const doctorService = new DoctorService();
+const globalForDoctor = globalThis as unknown as { doctorServiceInstance?: DoctorService };
+export const doctorService = globalForDoctor.doctorServiceInstance || new DoctorService();
+if (process.env.NODE_ENV !== 'production') {
+  globalForDoctor.doctorServiceInstance = doctorService;
+}
