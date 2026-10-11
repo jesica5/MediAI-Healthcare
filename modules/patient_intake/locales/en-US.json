@@ -1,0 +1,316 @@
+{
+  "common": {
+    "appName": "MediAI Triage Assistant",
+    "disclaimer": "Decision-support prototype. Not a diagnosis. Clinical judgment required.",
+    "next": "Next Step",
+    "previous": "Previous Step",
+    "submit": "Submit Health Assessment",
+    "submitting": "Submitting...",
+    "edit": "Edit",
+    "save": "Save",
+    "cancel": "Cancel",
+    "yes": "Yes",
+    "no": "No",
+    "optional": "Optional",
+    "required": "Required",
+    "units": "Units",
+    "permittedRange": "Permitted range",
+    "language": "Language",
+    "switchLanguage": "Switch Language"
+  },
+  "steps": {
+    "demographics": "Intake & Demographics",
+    "symptoms": "Clinical Symptoms",
+    "medicalHistory": "Medical History",
+    "vitals": "Vital Signs",
+    "review": "Review & Submit"
+  },
+  "demographics": {
+    "title": "Patient Demographics & Chief Complaint",
+    "subtitle": "Record the primary reason for visit and basic demographic details.",
+    "chiefComplaintLabel": "Chief Complaint",
+    "chiefComplaintPlaceholder": "Describe the main symptom or reason for visit...",
+    "chiefComplaintHelper": "Maximum 500 characters. Voice input available below.",
+    "dobLabel": "Date of Birth (YYYY-MM-DD)",
+    "ageLabel": "Age (Years)",
+    "genderLabel": "Gender",
+    "genderOptions": {
+      "female": "Female",
+      "male": "Male",
+      "other": "Other",
+      "prefer_not_to_say": "Prefer not to say"
+    },
+    "languageLabel": "Primary Language",
+    "languageOptions": {
+      "en": "English",
+      "ta": "Tamil"
+    }
+  },
+  "voice": {
+    "startListening": "Voice Input",
+    "stopListening": "Stop Voice Input",
+    "stateIdle": "Voice input ready",
+    "stateListening": "Listening... Speak your symptoms clearly",
+    "stateProcessing": "Processing audio...",
+    "stateTranscriptReady": "Transcript ready for review",
+    "stateError": "Voice recognition error",
+    "editableNotice": "Voice transcript must be reviewed and edited if necessary. Voice text is never auto-submitted.",
+    "errors": {
+      "notAllowed": "Microphone permission was denied. Please allow microphone access or type manually.",
+      "notSupported": "Voice recognition is not supported in this browser. Please type manually.",
+      "noSpeech": "No speech was detected. Please try again or type manually.",
+      "network": "Network error during speech recognition. Falling back to typing.",
+      "fallbackFailed": "Voice service unavailable. Please enter symptoms manually using the keyboard."
+    }
+  },
+  "symptoms": {
+    "title": "Clinical Symptoms Checklist",
+    "subtitle": "Check all symptoms observed or reported across 12 clinical domains.",
+    "domains": {
+      "infection_sepsis": {
+        "title": "1. Infection & Sepsis",
+        "altered_mentation": "Altered Mental State / Confusion",
+        "rigors": "Rigors / Severe Chills",
+        "diaphoresis": "Diaphoresis / Heavy Sweating"
+      },
+      "respiratory": {
+        "title": "2. Respiratory",
+        "shortnessOfBreath": "Shortness of Breath",
+        "cough_character": "Cough Character",
+        "cough_options": {
+          "none": "No cough",
+          "dry": "Dry cough",
+          "productive": "Productive (phlegm)",
+          "hemoptysis": "Coughing up blood (hemoptysis)"
+        },
+        "accessory_muscle_use": "Accessory Muscle Use",
+        "stridor": "Stridor (high-pitched inspiratory sound)"
+      },
+      "cardiac": {
+        "title": "3. Cardiac",
+        "chestPain": "Chest Pain",
+        "chest_pain_character": "Chest Pain Character",
+        "chest_pain_options": {
+          "none": "No chest pain",
+          "pressure": "Pressure / Heaviness",
+          "sharp": "Sharp / Stabbing",
+          "tearing": "Tearing / Ripping",
+          "burning": "Burning",
+          "other": "Other"
+        },
+        "radiation": "Pain Radiation",
+        "radiation_options": {
+          "none": "No radiation",
+          "left_arm": "Left arm",
+          "jaw": "Jaw or neck",
+          "back": "Back / interscapular",
+          "both_arms": "Both arms",
+          "other": "Other location"
+        },
+        "diaphoresis": "Diaphoresis / Cold Sweats",
+        "palpitations": "Palpitations / Rapid Heartbeat"
+      },
+      "neurological": {
+        "title": "4. Neurological",
+        "dizzinessFainting": "Dizziness / Fainting",
+        "fast_facial_droop": "FAST: Facial Droop",
+        "fast_arm_drift": "FAST: Arm Drift / Weakness",
+        "fast_speech_difficulty": "FAST: Speech Difficulty",
+        "gcs_score": "Glasgow Coma Scale (GCS 3-15)",
+        "pupil_response": "Pupillary Light Reflex",
+        "pupil_options": {
+          "normal": "Normal / Reactive",
+          "sluggish": "Sluggish",
+          "unresponsive": "Fixed / Unresponsive",
+          "asymmetric": "Asymmetric (unequal)"
+        },
+        "seizures": "Seizure Activity / Convulsions"
+      },
+      "blood_pressure": {
+        "title": "5. Blood Pressure Associated Symptoms",
+        "severe_headache": "Severe Occipital Headache",
+        "chest_pain": "Concurrent Chest Discomfort"
+      },
+      "diabetes": {
+        "title": "6. Diabetes & Metabolic",
+        "kussmaul_breathing": "Deep Rapid Breathing (Kussmaul)",
+        "fruity_breath": "Fruity / Acetone Breath Odor"
+      },
+      "gastrointestinal": {
+        "title": "7. Gastrointestinal",
+        "severeAbdominalPain": "Severe Abdominal Pain",
+        "pain_quadrant": "Abdominal Pain Location",
+        "quadrant_options": {
+          "none": "No pain",
+          "RUQ": "Right Upper Quadrant (RUQ)",
+          "LUQ": "Left Upper Quadrant (LUQ)",
+          "RLQ": "Right Lower Quadrant (RLQ)",
+          "LLQ": "Left Lower Quadrant (LLQ)",
+          "epigastric": "Epigastric",
+          "periumbilical": "Periumbilical",
+          "diffuse": "Diffuse (generalized)"
+        },
+        "rebound_tenderness": "Rebound Tenderness / Guarding",
+        "emesis": "Vomiting Character",
+        "emesis_options": {
+          "none": "None",
+          "clear": "Clear / Non-bilious",
+          "bilious": "Bilious (green/yellow)",
+          "coffee_ground": "Coffee-ground emesis",
+          "hematemesis": "Fresh Blood (hematemesis)"
+        },
+        "stool_color": "Stool Character",
+        "stool_options": {
+          "normal": "Normal",
+          "melena": "Black / Tarry (Melena)",
+          "hematochezia": "Red Blood (Hematochezia)",
+          "clay_colored": "Clay-colored / Pale"
+        }
+      },
+      "injury_trauma": {
+        "title": "8. Injury & Trauma",
+        "mechanism": "Injury Mechanism",
+        "mechanism_options": {
+          "none": "None",
+          "blunt": "Blunt impact",
+          "penetrating": "Penetrating trauma",
+          "fall": "Fall",
+          "mva": "Motor vehicle collision",
+          "burn": "Thermal / Chemical burn",
+          "other": "Other trauma"
+        },
+        "bleeding_rate": "Active Bleeding Rate",
+        "bleeding_options": {
+          "none": "None",
+          "controlled": "Controlled / Minor",
+          "rapid": "Rapid bleeding",
+          "pulsatile": "Pulsatile / Arterial"
+        },
+        "deformity": "Visible Bone / Joint Deformity",
+        "airway_patency": "Airway Patency",
+        "airway_options": {
+          "patent": "Patent / Clear",
+          "threatened": "Threatened",
+          "obstructed": "Obstructed"
+        }
+      },
+      "pregnancy": {
+        "title": "9. Pregnancy & Obstetric",
+        "gestational_age_weeks": "Gestational Age (weeks 1-45)",
+        "pelvic_pain": "Severe Pelvic Pain",
+        "vaginal_bleeding": "Vaginal Bleeding",
+        "severe_headache": "Severe Headache / Visual Disturbances"
+      },
+      "allergic": {
+        "title": "10. Allergic & Anaphylaxis",
+        "urticaria": "Urticaria / Hives",
+        "mucosal_swelling": "Lip / Tongue / Mucosal Swelling",
+        "voice_change": "Hoarseness / Voice Change",
+        "wheeze": "Audible Wheezing"
+      },
+      "dehydration": {
+        "title": "11. Hydration Status",
+        "skin_turgor": "Skin Turgor",
+        "skin_turgor_options": {
+          "normal": "Normal / Elastic",
+          "reduced": "Reduced recoil",
+          "tented": "Tented / Poor"
+        },
+        "mucous_membranes": "Mucous Membranes",
+        "mucous_options": {
+          "moist": "Moist",
+          "dry": "Dry",
+          "very_dry": "Cracked / Very dry"
+        },
+        "urine_output": "Reported Urine Output",
+        "urine_options": {
+          "normal": "Normal",
+          "reduced": "Decreased / Dark",
+          "none": "None in last 8+ hours"
+        },
+        "capillary_refill_seconds": "Capillary Refill Time (seconds)"
+      },
+      "toxic_exposure": {
+        "title": "12. Multi-system & Toxic Exposure",
+        "substance_ingested": "Suspected Substance / Toxin Ingested",
+        "puncture_marks": "Bite / Sting / Puncture Marks",
+        "salivation": "Salivation Character",
+        "salivation_options": {
+          "normal": "Normal",
+          "excessive": "Excessive (hypersalivation)",
+          "dry": "Dry mouth"
+        },
+        "pupil_size": "Pupil Size",
+        "pupil_size_options": {
+          "normal": "Normal (3-5mm)",
+          "pinpoint": "Pinpoint (<2mm)",
+          "dilated": "Dilated (>6mm)"
+        }
+      }
+    }
+  },
+  "medicalHistory": {
+    "title": "Medical History",
+    "subtitle": "Record existing medical conditions that impact clinical presentation.",
+    "immunosuppressionLabel": "Known Immunosuppression (chemotherapy, organ transplant, active biologics, advanced HIV)",
+    "chronicComorbidityLabel": "Severe Chronic Comorbidities (heart failure, COPD, renal failure, cirrhosis)",
+    "comorbidityNoteLabel": "Comorbidity Details (Optional, max 200 characters)",
+    "comorbidityNotePlaceholder": "Brief note on chronic illnesses...",
+    "pregnancyStatusLabel": "Pregnancy Status (if applicable)",
+    "pregnancyOptions": {
+      "not_applicable": "Not Applicable",
+      "pregnant": "Currently Pregnant",
+      "not_pregnant": "Not Pregnant",
+      "unknown": "Unknown"
+    }
+  },
+  "vitals": {
+    "title": "Vital Signs Measurement",
+    "subtitle": "Enter measured objective parameters. Leave empty if unmeasured.",
+    "heartRate": "Heart Rate",
+    "respiratoryRate": "Respiratory Rate",
+    "systolicBp": "Systolic Blood Pressure (SBP)",
+    "diastolicBp": "Diastolic Blood Pressure (DBP)",
+    "oxygenSaturation": "Oxygen Saturation (SpO2)",
+    "temperature": "Body Temperature",
+    "bloodGlucose": "Capillary Blood Glucose",
+    "recordedAt": "Measurement Timestamp",
+    "units": {
+      "bpm": "bpm",
+      "breathsPerMin": "breaths/min",
+      "mmHg": "mmHg",
+      "percent": "%",
+      "celsius": "°C",
+      "mgDl": "mg/dL"
+    },
+    "ranges": {
+      "heartRate": "20 - 300 bpm",
+      "respiratoryRate": "4 - 80 breaths/min",
+      "systolicBp": "40 - 300 mmHg",
+      "diastolicBp": "20 - 200 mmHg",
+      "oxygenSaturation": "40.0 - 100.0 %",
+      "temperature": "30.00 - 45.00 °C",
+      "bloodGlucose": "20.0 - 800.0 mg/dL"
+    },
+    "warningMissingEssential": "Essential vitals are missing (SpO2 / Systolic BP / Heart rate). The assessment will be marked LOW confidence. Please measure them if possible."
+  },
+  "missingVitalsDialog": {
+    "title": "Warning: Essential Vitals Missing",
+    "message": "Essential vitals are missing (SpO2 / Systolic BP / Heart rate). The assessment will be marked LOW confidence. Please measure them if possible.",
+    "missingListLabel": "The following essential parameters were not recorded:",
+    "confirmButton": "Acknowledge & Proceed",
+    "cancelButton": "Go Back to Measure Vitals"
+  },
+  "review": {
+    "title": "Review Health Assessment",
+    "subtitle": "Review all entered information before final submission.",
+    "demographicsSummary": "Demographics & Chief Complaint",
+    "symptomsSummary": "Reported Clinical Symptoms",
+    "medicalHistorySummary": "Medical History",
+    "vitalsSummary": "Vital Signs",
+    "noSymptomsReported": "No specific symptoms flagged in checklist",
+    "vitalsNotMeasured": "Not measured",
+    "essentialVitalsWarning": "Low Confidence Notice: Essential vitals are incomplete.",
+    "confirmDisclaimer": "I confirm that the above values accurately reflect the patient intake information."
+  }
+}

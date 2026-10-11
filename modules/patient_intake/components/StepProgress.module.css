@@ -1,0 +1,86 @@
+.progress {
+  width: 100%;
+}
+
+.list {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  list-style: none;
+  margin: 0 0 var(--spacing-2);
+  padding: 0;
+  gap: 0;
+  flex-wrap: nowrap;
+  overflow-x: auto;
+}
+
+.step {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--spacing-1);
+  flex: 1;
+  position: relative;
+  font-size: var(--font-size-xs);
+  color: var(--color-text-muted);
+  min-width: 60px;
+  text-align: center;
+}
+
+.step.done .indicator {
+  background-color: var(--color-success);
+  color: white;
+  border-color: var(--color-success);
+}
+
+.step.done {
+  color: var(--color-success);
+}
+
+.step.current .indicator {
+  background-color: var(--color-primary);
+  color: white;
+  border-color: var(--color-primary);
+}
+
+.step.current {
+  color: var(--color-primary);
+  font-weight: 600;
+}
+
+.indicator {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  border: 2px solid var(--color-surface-border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: var(--font-size-xs);
+  font-weight: 600;
+  background: var(--color-surface-card);
+  transition: background-color var(--transition-normal), border-color var(--transition-normal);
+}
+
+.label {
+  font-size: 0.65rem;
+  line-height: 1.2;
+  max-width: 64px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.barContainer {
+  height: 4px;
+  background: var(--color-surface-border);
+  border-radius: var(--radius-full);
+  overflow: hidden;
+}
+
+.barFill {
+  height: 100%;
+  background: var(--color-primary);
+  border-radius: var(--radius-full);
+  transition: width var(--transition-normal);
+}
