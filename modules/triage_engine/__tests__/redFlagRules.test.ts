@@ -379,4 +379,95 @@ describe('Deterministic 12-Domain Red-Flag Safety Engine', () => {
       expect(result.triggeredFlags.some(f => f.includes('Neurotoxic envenomation'))).toBe(true);
     });
   });
+
+  // Strict vs Inclusive Mathematical Operator Boundary Tests (Specification Section 5 & 10)
+  describe('Mathematical Boundary Operators & Resilience', () => {
+    it('HR boundaries (< 40 and > 150): HR 40 does NOT trigger; HR 39 DOES trigger; HR 150 does NOT trigger; HR 151 DOES trigger', () => {
+      expect(evaluateClinicalRedFlags({ ...normalVitals, heart_rate: 40 }, emptySymptoms).hasRedFlag).toBe(false);
+      const res39 = evaluateClinicalRedFlags({ ...normalVitals, heart_rate: 39 }, emptySymptoms);
+      expect(res39.hasRedFlag).toBe(true);
+      expect(res39.flags.some(f => f.ruleCode === 'CARD_HR_EXTREME_LOW' || f.ruleCode === 'VITAL_HR_CRITICAL_LOW')).toBe(true);
+
+      expect(evaluateClinicalRedFlags({ ...normalVitals, heart_rate: 150 }, emptySymptoms).hasRedFlag).toBe(false);
+      const res151 = evaluateClinicalRedFlags({ ...normalVitals, heart_rate: 151 }, emptySymptoms);
+      expect(res151.hasRedFlag).toBe(true);
+      expect(res151.flags.some(f => f.ruleCode === 'CARD_HR_EXTREME_HIGH' || f.ruleCode === 'VITAL_HR_CRITICAL_HIGH')).toBe(true);
+    });
+
+    it('RR boundaries (< 8 and > 32): RR 8 does NOT trigger; RR 7 DOES trigger; RR 32 does NOT trigger; RR 33 DOES trigger', () => {
+      expect(evaluateClinicalRedFlags({ ...normalVitals, respiratory_rate: 8 }, emptySymptoms).hasRedFlag).toBe(false);
+      expect(evaluateClinicalRedFlags({ ...normalVitals, respiratory_rate: 7 }, emptySymptoms).hasRedFlag).toBe(true);
+
+      expect(evaluateClinicalRedFlags({ ...normalVitals, respiratory_rate: 32 }, emptySymptoms).hasRedFlag).toBe(false);
+      expect(evaluateClinicalRedFlags({ ...normalVitals, respiratory_rate: 33 }, emptySymptoms).hasRedFlag).toBe(true);
+    });
+
+    it('qSOFA inclusive operators (RR >= 22, SBP <= 100): RR 22 counts; SBP 100 counts', () => {
+      const result = evaluateClinicalRedFlags(
+        { ...normalVitals, respiratory_rate: 22, systolic_bp: 100 },
+        emptySymptoms
+      );
+      // RR 22 (1 point) + SBP 100 (1 point) = 2 points -> qSOFA >= 2 trigger
+      expect(result.hasRedFlag).toBe(true);
+      expect(result.flags.some(f => f.ruleCode === 'SEPSIS_QSOFA_GE_2')).toBe(true);
+    });
+
+    it('SpO2 boundary (< 90%): 90% is warning only (does NOT trigger red flag); 89.9% DOES trigger', () => {
+      expect(evaluateClinicalRedFlags({ ...normalVitals, oxygen_saturation: 90.0 }, emptySymptoms).hasRedFlag).toBe(false);
+      expect(evaluateClinicalRedFlags({ ...normalVitals, oxygen_saturation: 89.9 }, emptySymptoms).hasRedFlag).toBe(true);
+    });
+
+    it('Temperature boundaries (< 35.0 C or > 40.0 C): 35.0 C does NOT trigger; 34.9 C DOES trigger; 40.0 C does NOT trigger; 40.1 C DOES trigger', () => {
+      expect(evaluateClinicalRedFlags({ ...normalVitals, temperature_celsius: 35.0 }, emptySymptoms).hasRedFlag).toBe(false);
+      expect(evaluateClinicalRedFlags({ ...normalVitals, temperature_celsius: 34.9 }, emptySymptoms).hasRedFlag).toBe(true);
+
+      expect(evaluateClinicalRedFlags({ ...normalVitals, temperature_celsius: 40.0 }, emptySymptoms).hasRedFlag).toBe(false);
+      expect(evaluateClinicalRedFlags({ ...normalVitals, temperature_celsius: 40.1 }, emptySymptoms).hasRedFlag).toBe(true);
+    });
+
+    it('CBG boundaries (< 60 with altered mentation; > 400 with ketotic breathing): 60 does NOT trigger; 59 DOES trigger', () => {
+      const alteredSymptoms: SymptomVector = { infection_sepsis: { altered_mentation: true } };
+      expect(evaluateClinicalRedFlags({ ...normalVitals, capillary_blood_glucose: 60.0 }, alteredSymptoms).hasRedFlag).toBe(false);
+      expect(evaluateClinicalRedFlags({ ...normalVitals, capillary_blood_glucose: 59.9 }, alteredSymptoms).hasRedFlag).toBe(true);
+    });
+
+    it('Pregnancy gestational age gate (> 20 wks): 20 weeks does NOT trigger; 21 weeks DOES trigger with vaginal bleeding', () => {
+      const preg20: SymptomVector = { pregnancy: { gestational_age_weeks: 20, vaginal_bleeding: true } };
+      expect(evaluateClinicalRedFlags(normalVitals, preg20, { pregnancy_status: 'pregnant' }).hasRedFlag).toBe(false);
+
+      const preg21: SymptomVector = { pregnancy: { gestational_age_weeks: 21, vaginal_bleeding: true } };
+      const res21 = evaluateClinicalRedFlags(normalVitals, preg21, { pregnancy_status: 'pregnant' });
+      expect(res21.hasRedFlag).toBe(true);
+      expect(res21.flags.some(f => f.ruleCode === 'PREG_HEMORRHAGE_THIRD_TRIMESTER')).toBe(true);
+    });
+
+    it('Capillary refill (> 4 s): 4.0 s does NOT trigger; 4.1 s with reduced turgor / cold extremities DOES trigger', () => {
+      const dehy40: SymptomVector = { dehydration: { capillary_refill_seconds: 4.0, skin_turgor: 'reduced' } };
+      expect(evaluateClinicalRedFlags(normalVitals, dehy40).hasRedFlag).toBe(false);
+
+      const dehy41: SymptomVector = { dehydration: { capillary_refill_seconds: 4.1, skin_turgor: 'reduced' } };
+      expect(evaluateClinicalRedFlags(normalVitals, dehy41).hasRedFlag).toBe(true);
+    });
+
+    it('Missing/null inputs resilience: completely empty vitals and symptoms NEVER throw and return hasRedFlag: false', () => {
+      expect(() => evaluateClinicalRedFlags({}, {})).not.toThrow();
+      const emptyResult = evaluateClinicalRedFlags({}, {});
+      expect(emptyResult.hasRedFlag).toBe(false);
+      expect(emptyResult.hardRedFlagTriggered).toBe(false);
+      expect(emptyResult.flags).toEqual([]);
+    });
+
+    it('Emits structured RedFlagEngineOutput with stable ruleCode and threshold metadata', () => {
+      const vitals: Partial<VitalsInput> = { ...normalVitals, oxygen_saturation: 85.0 };
+      const output = evaluateClinicalRedFlags(vitals, emptySymptoms);
+
+      expect(output.hardRedFlagTriggered).toBe(true);
+      expect(output.flags.length).toBeGreaterThan(0);
+      const flag = output.flags[0];
+      expect(flag.domain).toBe(2);
+      expect(flag.ruleCode).toBe('RESP_SPO2_LT_90');
+      expect(flag.threshold).toBeDefined();
+      expect(flag.observed).toBe(85.0);
+    });
+  });
 });

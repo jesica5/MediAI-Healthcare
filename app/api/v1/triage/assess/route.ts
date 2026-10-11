@@ -3,6 +3,7 @@ import crypto from 'crypto';
 import { assessPayloadSchema } from '@/modules/patient_intake/schemas/assessPayload.schema';
 import { generateGeminiRiskExplanation } from '@/modules/patient_intake/services/geminiService';
 import { TriageEngine } from '@/modules/triage_engine/services/triageEngine';
+import { AlertDispatcherService } from '@/modules/triage_engine/services/alertDispatcher';
 import { doctorService } from '@/modules/doctor_dashboard/services/doctorService';
 import { AuditJournalService } from '@/modules/audit_compliance/services/auditJournalService';
 import { TriageAssessment, VitalSigns } from '@/shared/types/triage';
@@ -146,9 +147,26 @@ export async function POST(req: NextRequest) {
     // 3. Immediately Dispatch to Doctor Emergency Workstation Queue
     doctorService.addAssessment(assessmentRecord);
 
-    // 4. Record Audit Event in Immutable Append-Only Journal
+    // 4. If Hard Red Flag Triggered -> Dispatch Emergency Alert (isolated, does not block persistence)
+    if (triageResult.hard_red_flag_triggered) {
+      await AlertDispatcherService.dispatchEmergencyAlert({
+        assessmentId,
+        patientId: validated.patient_id,
+        flags: triageResult.red_flag_details.map((msg, idx) => ({
+          domain: idx + 1,
+          domainName: 'Clinical Safety Red Flag',
+          ruleCode: 'TIER_1_CRITICAL',
+          observed: null,
+          threshold: 'Deterministic Red Flag Boundary',
+          clinicalFocus: 'Immediate Resuscitation',
+          message: msg,
+        })),
+      });
+    }
+
+    // 5. Record Audit Event in Immutable Append-Only Journal
     await AuditJournalService.recordEvent({
-      event_type: 'TRIAGE_ASSESSMENT_EXECUTED',
+      event_type: triageResult.hard_red_flag_triggered ? 'TIER_1_RED_FLAG_TRIGGERED' : 'TRIAGE_ASSESSMENT_COMPLETED',
       patient_id: validated.patient_id,
       ip_address: req.headers.get('x-forwarded-for') || '127.0.0.1',
       user_agent: req.headers.get('user-agent') || 'MediAI-Intake',

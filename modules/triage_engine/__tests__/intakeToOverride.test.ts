@@ -2,6 +2,7 @@ import { describe, it, expect } from 'vitest';
 import { TriageEngine } from '../services/triageEngine';
 import { doctorService } from '@/modules/doctor_dashboard/services/doctorService';
 import { AuditJournalService } from '@/modules/audit_compliance/services/auditJournalService';
+import { AlertDispatcherService } from '../services/alertDispatcher';
 import { TriageAssessment } from '@/shared/types/triage';
 
 describe('End-to-End Clinical Intake-to-Doctor-Override Workflow Simulation', () => {
@@ -112,7 +113,25 @@ describe('End-to-End Clinical Intake-to-Doctor-Override Workflow Simulation', ()
     expect(successfulOverride.error).toBeNull();
     expect(successfulOverride.data?.status).toBe('CONFIRMED');
 
-    // Step 7: Verify tamper-evident audit journal recorded the event
+    // Step 7: Verify Alert Dispatcher sent alert
+    const alertResult = await AlertDispatcherService.dispatchEmergencyAlert({
+      assessmentId,
+      patientId,
+      flags: [
+        {
+          domain: 3,
+          domainName: 'Cardiac Warning Signs',
+          ruleCode: 'CARD_ACS_RADIATING',
+          observed: 'pressure',
+          threshold: 'Crushing chest pain radiating to jaw',
+          clinicalFocus: 'ACS',
+          message: 'ACS chest pain radiating to left jaw',
+        },
+      ],
+    });
+    expect(alertResult.success).toBe(true);
+
+    // Step 8: Verify tamper-evident audit journal recorded the event
     expect(AuditJournalService.verifyIntegrity()).toBe(true);
   });
 });

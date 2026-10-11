@@ -4,6 +4,16 @@
 import { AcuityCategory, VitalSigns, ExplainabilityPayload } from '@/shared/types/triage';
 import { VitalsInput, SymptomVector, Demographics, MedicalHistory } from '@/modules/patient_intake/types';
 
+export interface RedFlagItem {
+  domain: number;
+  domainName: string;
+  ruleCode: string;
+  observed: string | number | boolean | Record<string, unknown> | null;
+  threshold: string;
+  clinicalFocus: string;
+  message: string;
+}
+
 export interface RedFlagEvaluationResult {
   hasRedFlag: boolean;
   domainNumber: number | null;
@@ -12,6 +22,28 @@ export interface RedFlagEvaluationResult {
   reason: string | null;
   triggeredFlags: string[];
   triggeredDomains: number[];
+  flags: RedFlagItem[];
+  hardRedFlagTriggered: boolean;
+}
+
+export type RedFlagEngineOutput = RedFlagEvaluationResult;
+
+export interface TriageAlert {
+  id: string;
+  assessmentId: string;
+  patientId: string;
+  priority: 'CRITICAL';
+  flags: RedFlagItem[];
+  timestamp: string;
+}
+
+export interface AlertDispatchResult {
+  success: boolean;
+  alertId: string;
+  provider: string;
+  timestamp: string;
+  error?: string;
+  retryCount?: number;
 }
 
 export interface VitalScoreResult {

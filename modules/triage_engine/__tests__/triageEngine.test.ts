@@ -45,7 +45,7 @@ describe('TriageEngine Master Mathematical Formulation & Orchestration', () => {
 
     expect(output.hard_red_flag_triggered).toBe(true);
     expect(output.calculated_category).toBe('CRITICAL');
-    expect(output.calculated_risk_score).toBeGreaterThanOrEqual(85);
+    expect(output.calculated_risk_score).toBe(100);
     expect(output.red_flag_details.length).toBeGreaterThan(0);
     expect(output.red_flag_details[0]).toContain('hypoxemia');
   });

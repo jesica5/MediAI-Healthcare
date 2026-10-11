@@ -4,16 +4,50 @@ import { DoctorOverridePayload } from '@/shared/types/doctor';
 
 export async function POST(request: NextRequest) {
   try {
-    const body: DoctorOverridePayload = await request.json();
+    // Enforce Attending Doctor ONLY guard
+    const userRole = request.headers.get('x-user-role') || 'Doctor';
+    if (userRole !== 'Doctor') {
+      return NextResponse.json(
+        {
+          data: null,
+          meta: {},
+          error: {
+            code: 'FORBIDDEN',
+            message: 'Attending Doctor credentials required to execute clinical triage review or override.',
+            details: [],
+          },
+        },
+        { status: 403 }
+      );
+    }
 
-    if (!body.assessment_id || !body.final_category) {
+    let body: DoctorOverridePayload;
+    try {
+      body = await request.json();
+    } catch {
+      return NextResponse.json(
+        {
+          data: null,
+          meta: {},
+          error: {
+            code: 'INVALID_JSON',
+            message: 'Request body must be valid JSON.',
+            details: [],
+          },
+        },
+        { status: 400 }
+      );
+    }
+
+    const validCategories = ['CRITICAL', 'HIGH', 'MODERATE', 'LOW'];
+    if (!body || !body.assessment_id || !body.final_category || !validCategories.includes(body.final_category)) {
       return NextResponse.json(
         {
           data: null,
           meta: {},
           error: {
             code: 'INVALID_PAYLOAD',
-            message: 'Both assessment_id and final_category are required fields.',
+            message: 'assessment_id and valid final_category (CRITICAL | HIGH | MODERATE | LOW) are required.',
             details: [],
           },
         },

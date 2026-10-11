@@ -77,19 +77,19 @@ export class TriageEngine {
     let acuityCategory = this.mapScoreToAcuityCategory(finalScore);
 
     // 4. HARD RED FLAG OVERRIDE:
-    // If a Tier-1 red flag was detected, instantly escalate to CRITICAL (P1, score >= 85).
+    // If a Tier-1 red flag was detected, instantly escalate to CRITICAL (P1, score = 100).
     // ML and heuristic scores CAN NEVER downgrade a critical red flag.
     if (redFlagResult.hasRedFlag) {
       acuityCategory = 'CRITICAL';
-      finalScore = Math.max(88, finalScore); // Hard override to Critical score band (85-100)
+      finalScore = 100; // Forced to 100 per M4 specification
     }
 
     // 5. Confidence Score Calculation
-    // If essential vitals are unrecorded, confidence is flagged as "LOW"
-    const confidenceScore = hasMissingEssentials
-      ? 0.60
-      : (vitalsResult.severelyAbnormalCount > 0 || redFlagResult.hasRedFlag ? 0.98 : 0.92);
-    const confidenceLevel: 'HIGH' | 'LOW' = hasMissingEssentials ? 'LOW' : 'HIGH';
+    // Red flags have absolute certainty (1.00). If essential vitals are unrecorded without red flag, confidence is flagged as "LOW"
+    const confidenceScore = redFlagResult.hasRedFlag
+      ? 1.00
+      : (hasMissingEssentials ? 0.60 : (vitalsResult.severelyAbnormalCount > 0 ? 0.98 : 0.92));
+    const confidenceLevel: 'HIGH' | 'LOW' = (hasMissingEssentials && !redFlagResult.hasRedFlag) ? 'LOW' : 'HIGH';
 
     // 6. Explainable AI Feature Attribution (TreeSHAP < 100ms)
     const explainabilityPayload = generateTreeShapAttribution({
