@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import Link from 'next/link';
 import { doctorService } from '@/shared/services/doctorService';
 import { TriageAssessment, AcuityCategory, TriageStatus } from '@/shared/types/triage';
@@ -26,7 +26,7 @@ export default function EmergencyQueuePage() {
   const [statusFilter, setStatusFilter] = useState<TriageStatus | 'ALL'>('PENDING_REVIEW');
   const [categoryFilter, setCategoryFilter] = useState<AcuityCategory | 'ALL'>('ALL');
 
-  const fetchQueue = async () => {
+  const fetchQueue = useCallback(async () => {
     setLoading(true);
     setError(null);
     try {
@@ -43,11 +43,11 @@ export default function EmergencyQueuePage() {
     } finally {
       setLoading(false);
     }
-  };
+  }, [statusFilter, categoryFilter, searchQuery]);
 
   useEffect(() => {
     fetchQueue();
-  }, [statusFilter, categoryFilter]);
+  }, [fetchQueue]);
 
   const handleSearchSubmit = (e: React.FormEvent) => {
     e.preventDefault();

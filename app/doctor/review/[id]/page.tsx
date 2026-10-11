@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import Link from 'next/link';
 import { doctorService } from '@/shared/services/doctorService';
 import { TriageAssessment, AcuityCategory } from '@/shared/types/triage';
@@ -53,7 +53,7 @@ export default function PatientReviewPage({ params }: { params: { id: string } }
   const [submissionSuccess, setSubmissionSuccess] = useState<boolean>(false);
   const [confirmedResult, setConfirmedResult] = useState<any>(null);
 
-  const fetchAssessment = async () => {
+  const fetchAssessment = useCallback(async () => {
     setLoading(true);
     setError(null);
     try {
@@ -68,11 +68,11 @@ export default function PatientReviewPage({ params }: { params: { id: string } }
     } finally {
       setLoading(false);
     }
-  };
+  }, [id]);
 
   useEffect(() => {
     fetchAssessment();
-  }, [id]);
+  }, [fetchAssessment]);
 
   const handleOpenConfirmModal = () => {
     setValidationError(null);

@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import { doctorService } from '@/shared/services/doctorService';
 import { MedicationRecord } from '@/shared/types/triage';
 import { useDoctorTranslation } from '@/shared/hooks/useDoctorTranslation';
@@ -20,7 +20,7 @@ export default function DoctorMedicationsPage() {
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
 
-  const fetchMedications = async () => {
+  const fetchMedications = useCallback(async () => {
     setLoading(true);
     setError(null);
     try {
@@ -32,11 +32,11 @@ export default function DoctorMedicationsPage() {
     } finally {
       setLoading(false);
     }
-  };
+  }, [selectedPatientId]);
 
   useEffect(() => {
     fetchMedications();
-  }, [selectedPatientId]);
+  }, [fetchMedications]);
 
   return (
     <div className="space-y-6">

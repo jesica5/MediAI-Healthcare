@@ -49,7 +49,7 @@ export interface TriageAssessment {
   patient_id: string;
   vital_id: string;
   chief_complaint: string;
-  symptom_vector: Record<string, boolean | string | number>;
+  symptom_vector: Record<string, any>;
   calculated_risk_score: number; // 0 - 100
   calculated_category: AcuityCategory;
   hard_red_flag_triggered: boolean;

@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import Link from 'next/link';
 import { useLanguage } from '@/shared/context/LanguageContext';
 import { useAuth } from '@/shared/context/AuthContext';
@@ -63,7 +63,7 @@ export default function PatientProfilePage() {
   const [predictionResult, setPredictionResult] = useState<any>(null);
   const [aiError, setAiError] = useState<string | null>(null);
 
-  const fetchProfile = async () => {
+  const fetchProfile = useCallback(async () => {
     setIsLoading(true);
     setError(null);
 
@@ -89,11 +89,11 @@ export default function PatientProfilePage() {
     } finally {
       setIsLoading(false);
     }
-  };
+  }, [patientSessionToken]);
 
   useEffect(() => {
     fetchProfile();
-  }, [patientSessionToken]);
+  }, [fetchProfile]);
 
   const handlePredictRisk = async (e: React.FormEvent) => {
     e.preventDefault();

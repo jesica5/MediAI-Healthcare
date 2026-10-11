@@ -95,6 +95,7 @@ describe('End-to-End Clinical Intake-to-Doctor-Override Workflow Simulation', ()
     // Step 5: Doctor attempts downgrade without rationale -> MUST BE REJECTED
     const failedOverride = await doctorService.submitDoctorOverride({
       assessment_id: assessmentId,
+      doctor_id: 'doc-er-attending',
       final_category: 'HIGH',
       override_reason: 'Too brief', // Less than 15 chars
     });

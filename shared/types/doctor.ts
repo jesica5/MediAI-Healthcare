@@ -19,7 +19,7 @@ export interface DoctorDashboardMetrics {
 
 export interface DoctorOverridePayload {
   assessment_id: string;
-  doctor_id: string;
+  doctor_id?: string;
   final_category: AcuityCategory;
   override_reason?: string;
   clinical_notes?: string;
