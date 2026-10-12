@@ -1,0 +1,2445 @@
+{
+  "total_records": 50,
+  "acuity_breakdown": {
+    "CRITICAL": 10,
+    "HIGH": 15,
+    "MODERATE": 13,
+    "LOW": 12
+  },
+  "patients": [
+    {
+      "id": "a1000001-0000-4000-8000-000000000001",
+      "mrn_hash": "MRN-849201",
+      "name": "Ramasamy K.",
+      "date_of_birth": "1958-04-12",
+      "gender": "MALE",
+      "primary_language": "en",
+      "chief_complaint": "Crushing retrosternal chest pain radiating to left jaw, diaphoresis, dyspnea",
+      "symptom_vector": {
+        "cardiac": {
+          "chest_pain_character": "crushing",
+          "radiation": "left_arm_jaw",
+          "diaphoresis": true
+        },
+        "duration_hours": 2
+      },
+      "vitals": {
+        "heart_rate": 135,
+        "respiratory_rate": 26,
+        "systolic_bp": 82,
+        "diastolic_bp": 52,
+        "oxygen_saturation": 88,
+        "temperature_celsius": 39.4,
+        "capillary_blood_glucose": 245
+      },
+      "calculated_risk_score": 96,
+      "calculated_category": "CRITICAL",
+      "hard_red_flag_triggered": true,
+      "red_flag_details": [
+        "Domain 3 Cardiac: Crushing retrosternal pain radiating to jaw/left arm",
+        "Domain 5 BP: Profound shock (SBP 82 mmHg < 85)"
+      ],
+      "confidence_score": 0.98,
+      "explainability_payload": {
+        "model_version": "v2.1",
+        "latency_ms": 38,
+        "top_risk_drivers": [
+          {
+            "feature": "Chest Pain Radiation",
+            "contribution_percent": 42,
+            "direction": "positive",
+            "description": "Crushing chest pain radiating to left arm/jaw"
+          },
+          {
+            "feature": "Hypotensive Shock (SBP 82)",
+            "contribution_percent": 35,
+            "direction": "positive",
+            "description": "Systolic blood pressure below 85 mmHg shock threshold"
+          }
+        ]
+      },
+      "status": "PENDING_REVIEW"
+    },
+    {
+      "id": "a1000002-0000-4000-8000-000000000002",
+      "mrn_hash": "MRN-739104",
+      "name": "Lakshmi Narayanan",
+      "date_of_birth": "1952-11-03",
+      "gender": "FEMALE",
+      "primary_language": "ta",
+      "chief_complaint": "High fever, rigors, altered mental status, productive purulent cough",
+      "symptom_vector": {
+        "sepsis": {
+          "altered_mentation": true,
+          "rigors": true
+        },
+        "qsofa_score": 3
+      },
+      "vitals": {
+        "heart_rate": 128,
+        "respiratory_rate": 28,
+        "systolic_bp": 84,
+        "diastolic_bp": 50,
+        "oxygen_saturation": 91,
+        "temperature_celsius": 39.8,
+        "capillary_blood_glucose": 180
+      },
+      "calculated_risk_score": 94,
+      "calculated_category": "CRITICAL",
+      "hard_red_flag_triggered": true,
+      "red_flag_details": [
+        "Domain 1 Sepsis: qSOFA >= 2 (RR 28 >= 22, SBP 84 <= 100, altered mentation)"
+      ],
+      "confidence_score": 0.96,
+      "explainability_payload": {
+        "model_version": "v2.1",
+        "latency_ms": 42,
+        "top_risk_drivers": [
+          {
+            "feature": "qSOFA Sepsis Triad",
+            "contribution_percent": 48,
+            "direction": "positive",
+            "description": "Severe septic presentation meeting 3 qSOFA points"
+          },
+          {
+            "feature": "Core Temperature (39.8°C)",
+            "contribution_percent": 28,
+            "direction": "positive",
+            "description": "Extreme hyperthermia indicating acute systemic infection"
+          }
+        ]
+      },
+      "status": "PENDING_REVIEW"
+    },
+    {
+      "id": "a1000003-0000-4000-8000-000000000003",
+      "mrn_hash": "MRN-610283",
+      "name": "Murugan P.",
+      "date_of_birth": "1965-02-18",
+      "gender": "MALE",
+      "primary_language": "en",
+      "chief_complaint": "Acute severe dyspnea, central cyanosis, audible expiratory wheeze, unable to speak full sentences",
+      "symptom_vector": {
+        "respiratory": {
+          "accessory_muscle_use": true,
+          "cyanosis": true,
+          "stridor": false
+        }
+      },
+      "vitals": {
+        "heart_rate": 142,
+        "respiratory_rate": 36,
+        "systolic_bp": 168,
+        "diastolic_bp": 98,
+        "oxygen_saturation": 84,
+        "temperature_celsius": 37.4,
+        "capillary_blood_glucose": 130
+      },
+      "calculated_risk_score": 98,
+      "calculated_category": "CRITICAL",
+      "hard_red_flag_triggered": true,
+      "red_flag_details": [
+        "Domain 2 Respiratory: SpO2 84% < 90% on room air",
+        "Domain 2 Respiratory: Respiratory rate 36 bpm > 32"
+      ],
+      "confidence_score": 0.99,
+      "explainability_payload": {
+        "model_version": "v2.1",
+        "latency_ms": 36,
+        "top_risk_drivers": [
+          {
+            "feature": "Severe Hypoxemia (SpO2 84%)",
+            "contribution_percent": 55,
+            "direction": "positive",
+            "description": "SpO2 severely compromised below 90% threshold"
+          },
+          {
+            "feature": "Extreme Tachypnea (RR 36)",
+            "contribution_percent": 30,
+            "direction": "positive",
+            "description": "Severe respiratory exhaustion rate"
+          }
+        ]
+      },
+      "status": "PENDING_REVIEW"
+    },
+    {
+      "id": "a1000004-0000-4000-8000-000000000004",
+      "mrn_hash": "MRN-920415",
+      "name": "Anitha Sundaram",
+      "date_of_birth": "1961-08-14",
+      "gender": "FEMALE",
+      "primary_language": "ta",
+      "chief_complaint": "Sudden onset right-sided hemiplegia, facial droop, slurred speech, onset 45 min ago",
+      "symptom_vector": {
+        "neurological": {
+          "facial_droop": true,
+          "arm_drift": true,
+          "slurred_speech": true,
+          "gcs": 11
+        }
+      },
+      "vitals": {
+        "heart_rate": 96,
+        "respiratory_rate": 18,
+        "systolic_bp": 194,
+        "diastolic_bp": 112,
+        "oxygen_saturation": 96,
+        "temperature_celsius": 36.9,
+        "capillary_blood_glucose": 115
+      },
+      "calculated_risk_score": 92,
+      "calculated_category": "CRITICAL",
+      "hard_red_flag_triggered": true,
+      "red_flag_details": [
+        "Domain 4 Neurological: Acute focal deficit (FAST positive, GCS 11 < 12)"
+      ],
+      "confidence_score": 0.97,
+      "explainability_payload": {
+        "model_version": "v2.1",
+        "latency_ms": 40,
+        "top_risk_drivers": [
+          {
+            "feature": "Acute Focal Deficit (FAST+)",
+            "contribution_percent": 50,
+            "direction": "positive",
+            "description": "Acute ischemic stroke symptoms within thrombolytic window"
+          },
+          {
+            "feature": "Severe Hypertension (SBP 194)",
+            "contribution_percent": 25,
+            "direction": "positive",
+            "description": "Hypertensive urgency accompanying acute stroke"
+          }
+        ]
+      },
+      "status": "CONFIRMED"
+    },
+    {
+      "id": "a1000005-0000-4000-8000-000000000005",
+      "mrn_hash": "MRN-551982",
+      "name": "Vijay Kumar",
+      "date_of_birth": "1998-09-22",
+      "gender": "MALE",
+      "primary_language": "en",
+      "chief_complaint": "Persistent vomiting, deep rapid Kussmaul breathing, fruity breath odor, lethargy",
+      "symptom_vector": {
+        "diabetes": {
+          "cbg": 485,
+          "kussmaul": true,
+          "fruity_breath": true
+        }
+      },
+      "vitals": {
+        "heart_rate": 126,
+        "respiratory_rate": 30,
+        "systolic_bp": 96,
+        "diastolic_bp": 62,
+        "oxygen_saturation": 97,
+        "temperature_celsius": 37.2,
+        "capillary_blood_glucose": 485
+      },
+      "calculated_risk_score": 90,
+      "calculated_category": "CRITICAL",
+      "hard_red_flag_triggered": true,
+      "red_flag_details": [
+        "Domain 6 Diabetes: Capillary Blood Glucose 485 mg/dL > 400 with ketotic Kussmaul breathing"
+      ],
+      "confidence_score": 0.98,
+      "explainability_payload": {
+        "model_version": "v2.1",
+        "latency_ms": 35,
+        "top_risk_drivers": [
+          {
+            "feature": "Severe Hyperglycemia (CBG 485)",
+            "contribution_percent": 52,
+            "direction": "positive",
+            "description": "Blood glucose > 400 with diabetic ketoacidosis"
+          },
+          {
+            "feature": "Tachypnea Acidosis (RR 30)",
+            "contribution_percent": 30,
+            "direction": "positive",
+            "description": "Compensatory Kussmaul hyperventilation"
+          }
+        ]
+      },
+      "status": "PENDING_REVIEW"
+    },
+    {
+      "id": "a1000006-0000-4000-8000-000000000006",
+      "mrn_hash": "MRN-782190",
+      "name": "Karpagam V.",
+      "date_of_birth": "1955-03-30",
+      "gender": "FEMALE",
+      "primary_language": "ta",
+      "chief_complaint": "Massive coffee-ground hematemesis, black tarry melena, dizziness and presyncope",
+      "symptom_vector": {
+        "gi": {
+          "hematemesis": true,
+          "melena": true,
+          "guarding": false
+        }
+      },
+      "vitals": {
+        "heart_rate": 138,
+        "respiratory_rate": 24,
+        "systolic_bp": 78,
+        "diastolic_bp": 48,
+        "oxygen_saturation": 93,
+        "temperature_celsius": 36.4,
+        "capillary_blood_glucose": 108
+      },
+      "calculated_risk_score": 95,
+      "calculated_category": "CRITICAL",
+      "hard_red_flag_triggered": true,
+      "red_flag_details": [
+        "Domain 7 GI: Massive hematemesis with hemodynamic collapse (SBP 78 mmHg < 85)"
+      ],
+      "confidence_score": 0.99,
+      "explainability_payload": {
+        "model_version": "v2.1",
+        "latency_ms": 37,
+        "top_risk_drivers": [
+          {
+            "feature": "Active Hemorrhagic Shock",
+            "contribution_percent": 55,
+            "direction": "positive",
+            "description": "Profound hypotension secondary to upper GI bleed"
+          },
+          {
+            "feature": "Tachycardia Response (HR 138)",
+            "contribution_percent": 25,
+            "direction": "positive",
+            "description": "Reflex cardiac acceleration from blood loss"
+          }
+        ]
+      },
+      "status": "PENDING_REVIEW"
+    },
+    {
+      "id": "a1000007-0000-4000-8000-000000000007",
+      "mrn_hash": "MRN-330914",
+      "name": "Senthil Nathan",
+      "date_of_birth": "1989-12-11",
+      "gender": "MALE",
+      "primary_language": "en",
+      "chief_complaint": "High-velocity motorcycle collision, paradoxical chest wall movement, flail chest",
+      "symptom_vector": {
+        "trauma": {
+          "flail_chest": true,
+          "pulsatile_bleed": false,
+          "spinal_injury": true
+        }
+      },
+      "vitals": {
+        "heart_rate": 146,
+        "respiratory_rate": 34,
+        "systolic_bp": 86,
+        "diastolic_bp": 54,
+        "oxygen_saturation": 87,
+        "temperature_celsius": 36.1,
+        "capillary_blood_glucose": 140
+      },
+      "calculated_risk_score": 99,
+      "calculated_category": "CRITICAL",
+      "hard_red_flag_triggered": true,
+      "red_flag_details": [
+        "Domain 8 Trauma: Flail chest, suspected acute spinal injury, SpO2 87% < 90%"
+      ],
+      "confidence_score": 0.99,
+      "explainability_payload": {
+        "model_version": "v2.1",
+        "latency_ms": 34,
+        "top_risk_drivers": [
+          {
+            "feature": "Flail Chest Respiratory Failure",
+            "contribution_percent": 50,
+            "direction": "positive",
+            "description": "Loss of chest wall structural integrity with hypoxia"
+          },
+          {
+            "feature": "Polytrauma Hemorrhagic Shock",
+            "contribution_percent": 40,
+            "direction": "positive",
+            "description": "Hypotension following severe blunt mechanism"
+          }
+        ]
+      },
+      "status": "PENDING_REVIEW"
+    },
+    {
+      "id": "a1000008-0000-4000-8000-000000000008",
+      "mrn_hash": "MRN-448291",
+      "name": "Priya Dharshini",
+      "date_of_birth": "2001-09-30",
+      "gender": "FEMALE",
+      "primary_language": "ta",
+      "chief_complaint": "Generalized urticaria, severe angioedema of lips and tongue, inspiratory stridor",
+      "symptom_vector": {
+        "allergy": {
+          "anaphylaxis": true,
+          "stridor": true,
+          "angioedema": true
+        }
+      },
+      "vitals": {
+        "heart_rate": 140,
+        "respiratory_rate": 32,
+        "systolic_bp": 80,
+        "diastolic_bp": 48,
+        "oxygen_saturation": 88,
+        "temperature_celsius": 37,
+        "capillary_blood_glucose": 110
+      },
+      "calculated_risk_score": 97,
+      "calculated_category": "CRITICAL",
+      "hard_red_flag_triggered": true,
+      "red_flag_details": [
+        "Domain 10 Toxicology/Allergy: Severe anaphylaxis with impending airway compromise & shock"
+      ],
+      "confidence_score": 0.98,
+      "explainability_payload": {
+        "model_version": "v2.1",
+        "latency_ms": 36,
+        "top_risk_drivers": [
+          {
+            "feature": "Impending Airway Obstruction",
+            "contribution_percent": 55,
+            "direction": "positive",
+            "description": "Inspiratory stridor and massive angioedema"
+          },
+          {
+            "feature": "Distributive Anaphylactic Shock",
+            "contribution_percent": 35,
+            "direction": "positive",
+            "description": "Profound vasodilation with SBP 80 mmHg"
+          }
+        ]
+      },
+      "status": "CONFIRMED"
+    },
+    {
+      "id": "a1000009-0000-4000-8000-000000000009",
+      "mrn_hash": "MRN-192837",
+      "name": "Balakrishnan G.",
+      "date_of_birth": "1948-06-19",
+      "gender": "MALE",
+      "primary_language": "en",
+      "chief_complaint": "Sudden loss of consciousness, wide-complex extreme tachycardia, pale cold extremities",
+      "symptom_vector": {
+        "cardiac": {
+          "syncope": true,
+          "vtach_suspected": true
+        }
+      },
+      "vitals": {
+        "heart_rate": 185,
+        "respiratory_rate": 28,
+        "systolic_bp": 76,
+        "diastolic_bp": 46,
+        "oxygen_saturation": 89,
+        "temperature_celsius": 35.8,
+        "capillary_blood_glucose": 165
+      },
+      "calculated_risk_score": 96,
+      "calculated_category": "CRITICAL",
+      "hard_red_flag_triggered": true,
+      "red_flag_details": [
+        "Domain 3 Cardiac: Extreme unstable tachycardia (HR 185 bpm > 150) with hemodynamic collapse"
+      ],
+      "confidence_score": 0.99,
+      "explainability_payload": {
+        "model_version": "v2.1",
+        "latency_ms": 38,
+        "top_risk_drivers": [
+          {
+            "feature": "Malignant Tachyarrhythmia",
+            "contribution_percent": 52,
+            "direction": "positive",
+            "description": "SVT / Ventricular tachycardia > 180 bpm"
+          },
+          {
+            "feature": "Cardiogenic Collapse (SBP 76)",
+            "contribution_percent": 38,
+            "direction": "positive",
+            "description": "Severe drop in cardiac output and systemic perfusion"
+          }
+        ]
+      },
+      "status": "PENDING_REVIEW"
+    },
+    {
+      "id": "a1000010-0000-4000-8000-000000000010",
+      "mrn_hash": "MRN-604728",
+      "name": "Kavitha Mohan",
+      "date_of_birth": "1994-04-05",
+      "gender": "FEMALE",
+      "primary_language": "ta",
+      "chief_complaint": "Acute agonizing lower abdominal tearing pain, positive urine hCG, shoulder tip pain, pale",
+      "symptom_vector": {
+        "obgyn": {
+          "ectopic_rupture_suspected": true,
+          "peritonitis": true
+        }
+      },
+      "vitals": {
+        "heart_rate": 134,
+        "respiratory_rate": 26,
+        "systolic_bp": 82,
+        "diastolic_bp": 50,
+        "oxygen_saturation": 94,
+        "temperature_celsius": 36.3,
+        "capillary_blood_glucose": 102
+      },
+      "calculated_risk_score": 93,
+      "calculated_category": "CRITICAL",
+      "hard_red_flag_triggered": true,
+      "red_flag_details": [
+        "Domain 9 OBGYN: Suspected ruptured ectopic pregnancy with acute hemoperitoneum"
+      ],
+      "confidence_score": 0.97,
+      "explainability_payload": {
+        "model_version": "v2.1",
+        "latency_ms": 39,
+        "top_risk_drivers": [
+          {
+            "feature": "Acute Hemoperitoneum (Tear Pain)",
+            "contribution_percent": 48,
+            "direction": "positive",
+            "description": "Shoulder tip sign and rebound tenderness"
+          },
+          {
+            "feature": "Hypovolemic Shock (SBP 82)",
+            "contribution_percent": 40,
+            "direction": "positive",
+            "description": "Internal blood loss with tachycardia"
+          }
+        ]
+      },
+      "status": "CONFIRMED"
+    },
+    {
+      "id": "a1000011-0000-4000-8000-000000000011",
+      "mrn_hash": "MRN-581921",
+      "name": "Karthik S.",
+      "date_of_birth": "1981-11-20",
+      "gender": "MALE",
+      "primary_language": "en",
+      "chief_complaint": "Acute asthma exacerbation with moderate shortness of breath and wheezing",
+      "symptom_vector": {
+        "respiratory": {
+          "wheezing": true,
+          "dyspnea": true
+        }
+      },
+      "vitals": {
+        "heart_rate": 118,
+        "respiratory_rate": 28,
+        "systolic_bp": 145,
+        "diastolic_bp": 92,
+        "oxygen_saturation": 91,
+        "temperature_celsius": 37.1,
+        "capillary_blood_glucose": 110
+      },
+      "calculated_risk_score": 72,
+      "calculated_category": "HIGH",
+      "hard_red_flag_triggered": false,
+      "red_flag_details": [],
+      "confidence_score": 0.91,
+      "explainability_payload": {
+        "model_version": "v2.1",
+        "latency_ms": 45,
+        "top_risk_drivers": [
+          {
+            "feature": "Tachypnea (RR 28 bpm)",
+            "contribution_percent": 45,
+            "direction": "positive",
+            "description": "Elevated respiratory rate above 22 warning boundary"
+          },
+          {
+            "feature": "Borderline Oxygen Saturation (SpO2 91%)",
+            "contribution_percent": 35,
+            "direction": "positive",
+            "description": "Mild hypoxemia in 90-93% warning zone"
+          },
+          {
+            "feature": "Sinus Tachycardia (HR 118 bpm)",
+            "contribution_percent": 20,
+            "direction": "positive",
+            "description": "Secondary tachycardia due to respiratory effort"
+          }
+        ]
+      },
+      "status": "PENDING_REVIEW"
+    },
+    {
+      "id": "a1000012-0000-4000-8000-000000000012",
+      "mrn_hash": "MRN-692032",
+      "name": "Meenakshi Sundaram",
+      "date_of_birth": "1967-08-15",
+      "gender": "FEMALE",
+      "primary_language": "ta",
+      "chief_complaint": "Subacute retrosternal tightness on minimal exertion, relieved by rest, known diabetic",
+      "symptom_vector": {
+        "cardiac": {
+          "chest_tightness": true,
+          "exertional": true
+        }
+      },
+      "vitals": {
+        "heart_rate": 105,
+        "respiratory_rate": 22,
+        "systolic_bp": 158,
+        "diastolic_bp": 96,
+        "oxygen_saturation": 95,
+        "temperature_celsius": 36.8,
+        "capillary_blood_glucose": 210
+      },
+      "calculated_risk_score": 82,
+      "calculated_category": "HIGH",
+      "hard_red_flag_triggered": false,
+      "red_flag_details": [],
+      "confidence_score": 0.93,
+      "explainability_payload": {
+        "model_version": "v2.1",
+        "latency_ms": 32,
+        "top_risk_drivers": [
+          {
+            "feature": "Unstable Angina Pattern",
+            "contribution_percent": 44,
+            "direction": "positive",
+            "description": "Accelerating angina on minimal exertion"
+          },
+          {
+            "feature": "Diabetic Comorbidity (CBG 210)",
+            "contribution_percent": 28,
+            "direction": "positive",
+            "description": "Heightened risk of silent myocardial infarction"
+          }
+        ]
+      },
+      "status": "PENDING_REVIEW"
+    },
+    {
+      "id": "a1000013-0000-4000-8000-000000000013",
+      "mrn_hash": "MRN-703143",
+      "name": "Rajesh Kannan",
+      "date_of_birth": "1974-03-28",
+      "gender": "MALE",
+      "primary_language": "en",
+      "chief_complaint": "Severe pounding occipital headache, blurred vision, epistaxis, missed BP medications",
+      "symptom_vector": {
+        "neuro_cv": {
+          "headache": true,
+          "vision_changes": true,
+          "epistaxis": true
+        }
+      },
+      "vitals": {
+        "heart_rate": 102,
+        "respiratory_rate": 20,
+        "systolic_bp": 210,
+        "diastolic_bp": 120,
+        "oxygen_saturation": 97,
+        "temperature_celsius": 37,
+        "capillary_blood_glucose": 145
+      },
+      "calculated_risk_score": 84,
+      "calculated_category": "HIGH",
+      "hard_red_flag_triggered": false,
+      "red_flag_details": [],
+      "confidence_score": 0.94,
+      "explainability_payload": {
+        "model_version": "v2.1",
+        "latency_ms": 28,
+        "top_risk_drivers": [
+          {
+            "feature": "Severe Hypertensive Urgency (210/120)",
+            "contribution_percent": 58,
+            "direction": "positive",
+            "description": "SBP > 200 mmHg with end-organ headache"
+          },
+          {
+            "feature": "Visual Symptoms & Epistaxis",
+            "contribution_percent": 26,
+            "direction": "positive",
+            "description": "Signs of vascular end-organ strain"
+          }
+        ]
+      },
+      "status": "CONFIRMED"
+    },
+    {
+      "id": "a1000014-0000-4000-8000-000000000014",
+      "mrn_hash": "MRN-814254",
+      "name": "Devi Thangavel",
+      "date_of_birth": "1959-10-10",
+      "gender": "FEMALE",
+      "primary_language": "ta",
+      "chief_complaint": "Cough with rust-colored sputum, right pleuritic chest pain, chills x 4 days",
+      "symptom_vector": {
+        "respiratory": {
+          "productive_cough": true,
+          "pleurisy": true
+        }
+      },
+      "vitals": {
+        "heart_rate": 114,
+        "respiratory_rate": 25,
+        "systolic_bp": 124,
+        "diastolic_bp": 78,
+        "oxygen_saturation": 91,
+        "temperature_celsius": 38.9,
+        "capillary_blood_glucose": 135
+      },
+      "calculated_risk_score": 78,
+      "calculated_category": "HIGH",
+      "hard_red_flag_triggered": false,
+      "red_flag_details": [],
+      "confidence_score": 0.92,
+      "explainability_payload": {
+        "model_version": "v2.1",
+        "latency_ms": 31,
+        "top_risk_drivers": [
+          {
+            "feature": "Moderate Hypoxemia (SpO2 91%)",
+            "contribution_percent": 42,
+            "direction": "positive",
+            "description": "Alveolar consolidation causing V/Q mismatch"
+          },
+          {
+            "feature": "High Grade Pyrexia (38.9°C)",
+            "contribution_percent": 30,
+            "direction": "positive",
+            "description": "Systemic inflammatory response to pneumonia"
+          }
+        ]
+      },
+      "status": "PENDING_REVIEW"
+    },
+    {
+      "id": "a1000015-0000-4000-8000-000000000015",
+      "mrn_hash": "MRN-925365",
+      "name": "Gopalakrishnan N.",
+      "date_of_birth": "1963-05-04",
+      "gender": "MALE",
+      "primary_language": "en",
+      "chief_complaint": "Progressive orthopnea, waking gasping for air (PND), bilateral ankle pitting edema",
+      "symptom_vector": {
+        "cardiac": {
+          "orthopnea": true,
+          "pnd": true,
+          "edema": true
+        }
+      },
+      "vitals": {
+        "heart_rate": 112,
+        "respiratory_rate": 26,
+        "systolic_bp": 165,
+        "diastolic_bp": 95,
+        "oxygen_saturation": 90,
+        "temperature_celsius": 36.7,
+        "capillary_blood_glucose": 150
+      },
+      "calculated_risk_score": 85,
+      "calculated_category": "HIGH",
+      "hard_red_flag_triggered": false,
+      "red_flag_details": [],
+      "confidence_score": 0.95,
+      "explainability_payload": {
+        "model_version": "v2.1",
+        "latency_ms": 35,
+        "top_risk_drivers": [
+          {
+            "feature": "Acute Decompensated Heart Failure",
+            "contribution_percent": 46,
+            "direction": "positive",
+            "description": "Pulmonary vascular congestion with orthopnea"
+          },
+          {
+            "feature": "SpO2 Desaturation (90.0%)",
+            "contribution_percent": 36,
+            "direction": "positive",
+            "description": "Alveolar edema impairing gas exchange"
+          }
+        ]
+      },
+      "status": "PENDING_REVIEW"
+    },
+    {
+      "id": "a1000016-0000-4000-8000-000000000016",
+      "mrn_hash": "MRN-036476",
+      "name": "Deepa Ravichandran",
+      "date_of_birth": "1997-01-19",
+      "gender": "FEMALE",
+      "primary_language": "ta",
+      "chief_complaint": "Severe right flank pain, burning micturition, shaking chills, nausea, vomiting",
+      "symptom_vector": {
+        "renal": {
+          "flank_pain": true,
+          "dysuria": true,
+          "rigors": true
+        }
+      },
+      "vitals": {
+        "heart_rate": 115,
+        "respiratory_rate": 22,
+        "systolic_bp": 104,
+        "diastolic_bp": 64,
+        "oxygen_saturation": 98,
+        "temperature_celsius": 39.2,
+        "capillary_blood_glucose": 105
+      },
+      "calculated_risk_score": 75,
+      "calculated_category": "HIGH",
+      "hard_red_flag_triggered": false,
+      "red_flag_details": [],
+      "confidence_score": 0.92,
+      "explainability_payload": {
+        "model_version": "v2.1",
+        "latency_ms": 27,
+        "top_risk_drivers": [
+          {
+            "feature": "Acute Pyelonephritis Sepsis Risk",
+            "contribution_percent": 48,
+            "direction": "positive",
+            "description": "Upper urinary tract infection with high pyrexia"
+          },
+          {
+            "feature": "Tachycardia (HR 115 bpm)",
+            "contribution_percent": 28,
+            "direction": "positive",
+            "description": "Systemic bacteremia hemodynamic response"
+          }
+        ]
+      },
+      "status": "CONFIRMED"
+    },
+    {
+      "id": "a1000017-0000-4000-8000-000000000017",
+      "mrn_hash": "MRN-147587",
+      "name": "Manikandan K.",
+      "date_of_birth": "1985-07-22",
+      "gender": "MALE",
+      "primary_language": "en",
+      "chief_complaint": "Constant severe boring epigastric pain radiating to middle back, repeated dry retching",
+      "symptom_vector": {
+        "gi": {
+          "epigastric_pain": true,
+          "vomiting": true
+        }
+      },
+      "vitals": {
+        "heart_rate": 110,
+        "respiratory_rate": 24,
+        "systolic_bp": 102,
+        "diastolic_bp": 68,
+        "oxygen_saturation": 96,
+        "temperature_celsius": 37.8,
+        "capillary_blood_glucose": 175
+      },
+      "calculated_risk_score": 76,
+      "calculated_category": "HIGH",
+      "hard_red_flag_triggered": false,
+      "red_flag_details": [],
+      "confidence_score": 0.93,
+      "explainability_payload": {
+        "model_version": "v2.1",
+        "latency_ms": 30,
+        "top_risk_drivers": [
+          {
+            "feature": "Acute Pancreatitis Presentation",
+            "contribution_percent": 45,
+            "direction": "positive",
+            "description": "Boring retroperitoneal epigastric pain"
+          },
+          {
+            "feature": "Volume Depletion Tachycardia",
+            "contribution_percent": 30,
+            "direction": "positive",
+            "description": "Third space fluid sequestration"
+          }
+        ]
+      },
+      "status": "PENDING_REVIEW"
+    },
+    {
+      "id": "a1000018-0000-4000-8000-000000000018",
+      "mrn_hash": "MRN-258698",
+      "name": "Shanthi Venkatesh",
+      "date_of_birth": "1968-12-05",
+      "gender": "FEMALE",
+      "primary_language": "ta",
+      "chief_complaint": "Right upper quadrant colicky pain after fatty meal, mild jaundice, low grade fever",
+      "symptom_vector": {
+        "gi": {
+          "ruq_pain": true,
+          "jaundice": true
+        }
+      },
+      "vitals": {
+        "heart_rate": 104,
+        "respiratory_rate": 20,
+        "systolic_bp": 132,
+        "diastolic_bp": 82,
+        "oxygen_saturation": 97,
+        "temperature_celsius": 38.6,
+        "capillary_blood_glucose": 120
+      },
+      "calculated_risk_score": 70,
+      "calculated_category": "HIGH",
+      "hard_red_flag_triggered": false,
+      "red_flag_details": [],
+      "confidence_score": 0.91,
+      "explainability_payload": {
+        "model_version": "v2.1",
+        "latency_ms": 29,
+        "top_risk_drivers": [
+          {
+            "feature": "Acute Cholangitis / Cholecystitis",
+            "contribution_percent": 44,
+            "direction": "positive",
+            "description": "Charcot triad elements (RUQ pain, jaundice, fever)"
+          },
+          {
+            "feature": "Febrile Sepsis Evolution Risk",
+            "contribution_percent": 32,
+            "direction": "positive",
+            "description": "Biliary stasis infection"
+          }
+        ]
+      },
+      "status": "PENDING_REVIEW"
+    },
+    {
+      "id": "a1000019-0000-4000-8000-000000000019",
+      "mrn_hash": "MRN-369709",
+      "name": "Suresh Babu",
+      "date_of_birth": "1978-04-14",
+      "gender": "MALE",
+      "primary_language": "en",
+      "chief_complaint": "Sudden onset rapid irregular heart fluttering, lightheadedness, fatigue x 6 hours",
+      "symptom_vector": {
+        "cardiac": {
+          "palpitations": true,
+          "presyncope": true
+        }
+      },
+      "vitals": {
+        "heart_rate": 148,
+        "respiratory_rate": 22,
+        "systolic_bp": 126,
+        "diastolic_bp": 80,
+        "oxygen_saturation": 96,
+        "temperature_celsius": 36.8,
+        "capillary_blood_glucose": 118
+      },
+      "calculated_risk_score": 80,
+      "calculated_category": "HIGH",
+      "hard_red_flag_triggered": false,
+      "red_flag_details": [],
+      "confidence_score": 0.94,
+      "explainability_payload": {
+        "model_version": "v2.1",
+        "latency_ms": 31,
+        "top_risk_drivers": [
+          {
+            "feature": "Rapid Ventricular Response (AFib)",
+            "contribution_percent": 54,
+            "direction": "positive",
+            "description": "Ventricular rate 148 bpm with embolic risk"
+          },
+          {
+            "feature": "Presyncope / Cerebral Hypoperfusion",
+            "contribution_percent": 24,
+            "direction": "positive",
+            "description": "Loss of atrial kick in rapid arrhythmia"
+          }
+        ]
+      },
+      "status": "CONFIRMED"
+    },
+    {
+      "id": "a1000020-0000-4000-8000-000000000020",
+      "mrn_hash": "MRN-470820",
+      "name": "Nandhini Prakash",
+      "date_of_birth": "2004-09-17",
+      "gender": "FEMALE",
+      "primary_language": "ta",
+      "chief_complaint": "Status migrainosus x 72 hours, intractable vomiting, dry mucous membranes, photophobia",
+      "symptom_vector": {
+        "neuro": {
+          "severe_migraine": true,
+          "intractable_vomiting": true
+        }
+      },
+      "vitals": {
+        "heart_rate": 108,
+        "respiratory_rate": 20,
+        "systolic_bp": 100,
+        "diastolic_bp": 62,
+        "oxygen_saturation": 98,
+        "temperature_celsius": 37.1,
+        "capillary_blood_glucose": 90
+      },
+      "calculated_risk_score": 68,
+      "calculated_category": "HIGH",
+      "hard_red_flag_triggered": false,
+      "red_flag_details": [],
+      "confidence_score": 0.89,
+      "explainability_payload": {
+        "model_version": "v2.1",
+        "latency_ms": 25,
+        "top_risk_drivers": [
+          {
+            "feature": "Dehydration Secondary to Emesis",
+            "contribution_percent": 42,
+            "direction": "positive",
+            "description": "Prerenal azotemia risk from prolonged fluid deficit"
+          },
+          {
+            "feature": "Intractable Migraine Refractory Pain",
+            "contribution_percent": 36,
+            "direction": "positive",
+            "description": "Pain severity > 8/10 failing oral triptans"
+          }
+        ]
+      },
+      "status": "PENDING_REVIEW"
+    },
+    {
+      "id": "a1000021-0000-4000-8000-000000000021",
+      "mrn_hash": "MRN-581922",
+      "name": "Arumugam C.",
+      "date_of_birth": "1956-02-11",
+      "gender": "MALE",
+      "primary_language": "en",
+      "chief_complaint": "Recurring heavy substernal chest ache radiating to left shoulder, prior CABG 8 years ago",
+      "symptom_vector": {
+        "cardiac": {
+          "prior_cabg": true,
+          "anginal_ache": true
+        }
+      },
+      "vitals": {
+        "heart_rate": 104,
+        "respiratory_rate": 22,
+        "systolic_bp": 164,
+        "diastolic_bp": 98,
+        "oxygen_saturation": 94,
+        "temperature_celsius": 36.9,
+        "capillary_blood_glucose": 190
+      },
+      "calculated_risk_score": 83,
+      "calculated_category": "HIGH",
+      "hard_red_flag_triggered": false,
+      "red_flag_details": [],
+      "confidence_score": 0.94,
+      "explainability_payload": {
+        "model_version": "v2.1",
+        "latency_ms": 33,
+        "top_risk_drivers": [
+          {
+            "feature": "Prior Coronary Revascularization",
+            "contribution_percent": 46,
+            "direction": "positive",
+            "description": "Graft failure risk in post-CABG patient"
+          },
+          {
+            "feature": "Hypertension Strain (SBP 164)",
+            "contribution_percent": 28,
+            "direction": "positive",
+            "description": "Elevated myocardial afterload demand"
+          }
+        ]
+      },
+      "status": "PENDING_REVIEW"
+    },
+    {
+      "id": "a1000022-0000-4000-8000-000000000022",
+      "mrn_hash": "MRN-692033",
+      "name": "Bhavani Shankar",
+      "date_of_birth": "1992-06-30",
+      "gender": "FEMALE",
+      "primary_language": "ta",
+      "chief_complaint": "Unilateral painful left calf swelling and warmth, calf circumference +4cm, oral contraceptive user",
+      "symptom_vector": {
+        "vascular": {
+          "dvt_suspected": true,
+          "calf_asymmetry": true
+        }
+      },
+      "vitals": {
+        "heart_rate": 98,
+        "respiratory_rate": 18,
+        "systolic_bp": 118,
+        "diastolic_bp": 74,
+        "oxygen_saturation": 98,
+        "temperature_celsius": 37.3,
+        "capillary_blood_glucose": 98
+      },
+      "calculated_risk_score": 74,
+      "calculated_category": "HIGH",
+      "hard_red_flag_triggered": false,
+      "red_flag_details": [],
+      "confidence_score": 0.9,
+      "explainability_payload": {
+        "model_version": "v2.1",
+        "latency_ms": 26,
+        "top_risk_drivers": [
+          {
+            "feature": "High Wells Score DVT Risk",
+            "contribution_percent": 52,
+            "direction": "positive",
+            "description": "Calf asymmetry > 3cm with OCP thrombophilia"
+          },
+          {
+            "feature": "Pulmonary Embolism Vigilance",
+            "contribution_percent": 28,
+            "direction": "positive",
+            "description": "Thrombus migration monitoring priority"
+          }
+        ]
+      },
+      "status": "CONFIRMED"
+    },
+    {
+      "id": "a1000023-0000-4000-8000-000000000023",
+      "mrn_hash": "MRN-703144",
+      "name": "Palanisamy T.",
+      "date_of_birth": "1954-10-18",
+      "gender": "MALE",
+      "primary_language": "en",
+      "chief_complaint": "Acute agonizing inability to pass urine x 18 hours, tense palpable supra-pubic mass",
+      "symptom_vector": {
+        "urology": {
+          "acute_retention": true,
+          "suprapubic_pain": true
+        }
+      },
+      "vitals": {
+        "heart_rate": 106,
+        "respiratory_rate": 22,
+        "systolic_bp": 168,
+        "diastolic_bp": 94,
+        "oxygen_saturation": 96,
+        "temperature_celsius": 36.9,
+        "capillary_blood_glucose": 140
+      },
+      "calculated_risk_score": 77,
+      "calculated_category": "HIGH",
+      "hard_red_flag_triggered": false,
+      "red_flag_details": [],
+      "confidence_score": 0.93,
+      "explainability_payload": {
+        "model_version": "v2.1",
+        "latency_ms": 27,
+        "top_risk_drivers": [
+          {
+            "feature": "Acute Bladder Distension",
+            "contribution_percent": 48,
+            "direction": "positive",
+            "description": "Extreme post-renal obstructive stretch pain"
+          },
+          {
+            "feature": "Autonomic Stress Response (168/94)",
+            "contribution_percent": 32,
+            "direction": "positive",
+            "description": "Severe sympathetic activation from retention"
+          }
+        ]
+      },
+      "status": "PENDING_REVIEW"
+    },
+    {
+      "id": "a1000024-0000-4000-8000-000000000024",
+      "mrn_hash": "MRN-814255",
+      "name": "Revathi Mani",
+      "date_of_birth": "1966-03-24",
+      "gender": "FEMALE",
+      "primary_language": "ta",
+      "chief_complaint": "Severe polyuria, polydipsia, profound muscular weakness, dry skin, glucometer reading HI",
+      "symptom_vector": {
+        "endocrine": {
+          "hyperosmolar_suspected": true,
+          "dehydration": true
+        }
+      },
+      "vitals": {
+        "heart_rate": 114,
+        "respiratory_rate": 22,
+        "systolic_bp": 110,
+        "diastolic_bp": 66,
+        "oxygen_saturation": 96,
+        "temperature_celsius": 37,
+        "capillary_blood_glucose": 380
+      },
+      "calculated_risk_score": 86,
+      "calculated_category": "HIGH",
+      "hard_red_flag_triggered": false,
+      "red_flag_details": [],
+      "confidence_score": 0.95,
+      "explainability_payload": {
+        "model_version": "v2.1",
+        "latency_ms": 34,
+        "top_risk_drivers": [
+          {
+            "feature": "Hyperosmolar Hyperglycemia (CBG 380)",
+            "contribution_percent": 54,
+            "direction": "positive",
+            "description": "Severe osmotic diuresis with intracellular volume loss"
+          },
+          {
+            "feature": "Electrolyte Depletion Tachycardia",
+            "contribution_percent": 28,
+            "direction": "positive",
+            "description": "Hypokalemia / hyponatremia risk"
+          }
+        ]
+      },
+      "status": "PENDING_REVIEW"
+    },
+    {
+      "id": "a1000025-0000-4000-8000-000000000025",
+      "mrn_hash": "MRN-925366",
+      "name": "Jeyanthi Rajendran",
+      "date_of_birth": "1980-08-09",
+      "gender": "FEMALE",
+      "primary_language": "en",
+      "chief_complaint": "Left lower quadrant sharp localized abdominal pain, fever, constipation x 3 days",
+      "symptom_vector": {
+        "gi": {
+          "llq_pain": true,
+          "fever": true
+        }
+      },
+      "vitals": {
+        "heart_rate": 102,
+        "respiratory_rate": 20,
+        "systolic_bp": 128,
+        "diastolic_bp": 80,
+        "oxygen_saturation": 97,
+        "temperature_celsius": 38.5,
+        "capillary_blood_glucose": 112
+      },
+      "calculated_risk_score": 73,
+      "calculated_category": "HIGH",
+      "hard_red_flag_triggered": false,
+      "red_flag_details": [],
+      "confidence_score": 0.91,
+      "explainability_payload": {
+        "model_version": "v2.1",
+        "latency_ms": 28,
+        "top_risk_drivers": [
+          {
+            "feature": "Acute Sigmoid Diverticulitis",
+            "contribution_percent": 46,
+            "direction": "positive",
+            "description": "Peritoneal signs in left lower quadrant"
+          },
+          {
+            "feature": "Infectious Pyrexia (38.5°C)",
+            "contribution_percent": 32,
+            "direction": "positive",
+            "description": "Colonic microperforation / abscess risk"
+          }
+        ]
+      },
+      "status": "CONFIRMED"
+    },
+    {
+      "id": "a1000026-0000-4000-8000-000000000026",
+      "mrn_hash": "MRN-036477",
+      "name": "Subramaniam V.",
+      "date_of_birth": "1992-07-05",
+      "gender": "MALE",
+      "primary_language": "en",
+      "chief_complaint": "Moderate right lower quadrant abdominal pain with mild nausea",
+      "symptom_vector": {
+        "abdominal_pain": true,
+        "nausea": true
+      },
+      "vitals": {
+        "heart_rate": 88,
+        "respiratory_rate": 18,
+        "systolic_bp": 122,
+        "diastolic_bp": 78,
+        "oxygen_saturation": 98,
+        "temperature_celsius": 37.8,
+        "capillary_blood_glucose": 104
+      },
+      "calculated_risk_score": 48,
+      "calculated_category": "MODERATE",
+      "hard_red_flag_triggered": false,
+      "red_flag_details": [],
+      "confidence_score": 0.65,
+      "explainability_payload": {
+        "model_version": "v2.1",
+        "latency_ms": 50,
+        "missing_vitals_warning": true,
+        "missing_vitals_list": [
+          "Oxygen Saturation (SpO2)"
+        ],
+        "top_risk_drivers": [
+          {
+            "feature": "Localized Abdominal Pain (RLQ)",
+            "contribution_percent": 60,
+            "direction": "positive",
+            "description": "Symptomatic indication of acute appendicitis risk"
+          },
+          {
+            "feature": "Imputed Vital Features",
+            "contribution_percent": 40,
+            "direction": "positive",
+            "description": "Missing SpO2 input expanded model prediction uncertainty"
+          }
+        ]
+      },
+      "status": "PENDING_REVIEW"
+    },
+    {
+      "id": "a1000027-0000-4000-8000-000000000027",
+      "mrn_hash": "MRN-147588",
+      "name": "Usha Rani",
+      "date_of_birth": "1973-11-14",
+      "gender": "FEMALE",
+      "primary_language": "ta",
+      "chief_complaint": "Fall onto outstretched hand (FOOSH), painful swollen right wrist, dinner fork deformity",
+      "symptom_vector": {
+        "ortho": {
+          "wrist_fracture_suspected": true,
+          "neurovascular_intact": true
+        }
+      },
+      "vitals": {
+        "heart_rate": 86,
+        "respiratory_rate": 16,
+        "systolic_bp": 130,
+        "diastolic_bp": 82,
+        "oxygen_saturation": 98,
+        "temperature_celsius": 36.7,
+        "capillary_blood_glucose": 106
+      },
+      "calculated_risk_score": 52,
+      "calculated_category": "MODERATE",
+      "hard_red_flag_triggered": false,
+      "red_flag_details": [],
+      "confidence_score": 0.94,
+      "explainability_payload": {
+        "model_version": "v2.1",
+        "latency_ms": 22,
+        "top_risk_drivers": [
+          {
+            "feature": "Closed Colles Fracture Deformity",
+            "contribution_percent": 48,
+            "direction": "positive",
+            "description": "Distal radius displacement requiring closed reduction"
+          },
+          {
+            "feature": "Radial Pulse & Sensation Intact",
+            "contribution_percent": -25,
+            "direction": "negative",
+            "description": "Absence of limb-threatening ischemia"
+          }
+        ]
+      },
+      "status": "CONFIRMED"
+    },
+    {
+      "id": "a1000028-0000-4000-8000-000000000028",
+      "mrn_hash": "MRN-258699",
+      "name": "Dhanapal M.",
+      "date_of_birth": "1964-01-30",
+      "gender": "MALE",
+      "primary_language": "en",
+      "chief_complaint": "Spreading warm red painful rash on right shin x 2 days, sharp margin demarcated",
+      "symptom_vector": {
+        "derm": {
+          "cellulitis": true,
+          "warm_erythema": true
+        }
+      },
+      "vitals": {
+        "heart_rate": 92,
+        "respiratory_rate": 18,
+        "systolic_bp": 136,
+        "diastolic_bp": 84,
+        "oxygen_saturation": 97,
+        "temperature_celsius": 38.1,
+        "capillary_blood_glucose": 155
+      },
+      "calculated_risk_score": 50,
+      "calculated_category": "MODERATE",
+      "hard_red_flag_triggered": false,
+      "red_flag_details": [],
+      "confidence_score": 0.92,
+      "explainability_payload": {
+        "model_version": "v2.1",
+        "latency_ms": 24,
+        "top_risk_drivers": [
+          {
+            "feature": "Lower Limb Cellulitis Spread",
+            "contribution_percent": 42,
+            "direction": "positive",
+            "description": "Dermal streptococcal/staphylococcal infection"
+          },
+          {
+            "feature": "Low-Grade Febrile Elevation (38.1°C)",
+            "contribution_percent": 28,
+            "direction": "positive",
+            "description": "Early systemic tracking requiring antibiotics"
+          }
+        ]
+      },
+      "status": "PENDING_REVIEW"
+    },
+    {
+      "id": "a1000029-0000-4000-8000-000000000029",
+      "mrn_hash": "MRN-369710",
+      "name": "Kaviarasu B.",
+      "date_of_birth": "1999-05-16",
+      "gender": "MALE",
+      "primary_language": "ta",
+      "chief_complaint": "Sudden agonizing left flank-to-groin spasmodic pain, microscopic hematuria, pacing",
+      "symptom_vector": {
+        "renal": {
+          "colic_pain": true,
+          "hematuria": true
+        }
+      },
+      "vitals": {
+        "heart_rate": 98,
+        "respiratory_rate": 20,
+        "systolic_bp": 142,
+        "diastolic_bp": 88,
+        "oxygen_saturation": 99,
+        "temperature_celsius": 36.8,
+        "capillary_blood_glucose": 98
+      },
+      "calculated_risk_score": 62,
+      "calculated_category": "MODERATE",
+      "hard_red_flag_triggered": false,
+      "red_flag_details": [],
+      "confidence_score": 0.93,
+      "explainability_payload": {
+        "model_version": "v2.1",
+        "latency_ms": 25,
+        "top_risk_drivers": [
+          {
+            "feature": "Severe Ureteric Colic (Pain 9/10)",
+            "contribution_percent": 52,
+            "direction": "positive",
+            "description": "Peristaltic spasm from calculus migration"
+          },
+          {
+            "feature": "Hemodynamic Stability Preserved",
+            "contribution_percent": -20,
+            "direction": "negative",
+            "description": "Normal oxygenation and absence of septic signs"
+          }
+        ]
+      },
+      "status": "CONFIRMED"
+    },
+    {
+      "id": "a1000030-0000-4000-8000-000000000030",
+      "mrn_hash": "MRN-470821",
+      "name": "Selvaraj K.",
+      "date_of_birth": "1970-09-02",
+      "gender": "MALE",
+      "primary_language": "en",
+      "chief_complaint": "Excruciating pain, redness, and marked swelling over right first metatarsophalangeal (podagra)",
+      "symptom_vector": {
+        "rheumatology": {
+          "podagra": true,
+          "acute_gout": true
+        }
+      },
+      "vitals": {
+        "heart_rate": 84,
+        "respiratory_rate": 16,
+        "systolic_bp": 138,
+        "diastolic_bp": 86,
+        "oxygen_saturation": 98,
+        "temperature_celsius": 37.4,
+        "capillary_blood_glucose": 125
+      },
+      "calculated_risk_score": 42,
+      "calculated_category": "MODERATE",
+      "hard_red_flag_triggered": false,
+      "red_flag_details": [],
+      "confidence_score": 0.95,
+      "explainability_payload": {
+        "model_version": "v2.1",
+        "latency_ms": 20,
+        "top_risk_drivers": [
+          {
+            "feature": "Acute Monarthritis (Podagra)",
+            "contribution_percent": 44,
+            "direction": "positive",
+            "description": "Urate crystal induced intense synovitis"
+          },
+          {
+            "feature": "No Septic Joint Red Flags",
+            "contribution_percent": -30,
+            "direction": "negative",
+            "description": "Normal systemic core temperature"
+          }
+        ]
+      },
+      "status": "PENDING_REVIEW"
+    },
+    {
+      "id": "a1000031-0000-4000-8000-000000000031",
+      "mrn_hash": "MRN-581923",
+      "name": "Gayathri S.",
+      "date_of_birth": "1988-12-23",
+      "gender": "FEMALE",
+      "primary_language": "ta",
+      "chief_complaint": "Watery diarrhea x 6 episodes today, moderate lower abdominal cramping, mild dizziness on standing",
+      "symptom_vector": {
+        "gi": {
+          "gastroenteritis": true,
+          "diarrhea": true
+        }
+      },
+      "vitals": {
+        "heart_rate": 96,
+        "respiratory_rate": 18,
+        "systolic_bp": 114,
+        "diastolic_bp": 72,
+        "oxygen_saturation": 98,
+        "temperature_celsius": 37.6,
+        "capillary_blood_glucose": 100
+      },
+      "calculated_risk_score": 46,
+      "calculated_category": "MODERATE",
+      "hard_red_flag_triggered": false,
+      "red_flag_details": [],
+      "confidence_score": 0.91,
+      "explainability_payload": {
+        "model_version": "v2.1",
+        "latency_ms": 22,
+        "top_risk_drivers": [
+          {
+            "feature": "Moderate Volume Dehydration",
+            "contribution_percent": 38,
+            "direction": "positive",
+            "description": "Fluid loss needing oral rehydration solution"
+          },
+          {
+            "feature": "Afebrile Normotensive Stability",
+            "contribution_percent": -22,
+            "direction": "negative",
+            "description": "No toxic megacolon or severe electrolyte collapse"
+          }
+        ]
+      },
+      "status": "PENDING_REVIEW"
+    },
+    {
+      "id": "a1000032-0000-4000-8000-000000000032",
+      "mrn_hash": "MRN-692034",
+      "name": "Govindasamy N.",
+      "date_of_birth": "1951-04-17",
+      "gender": "MALE",
+      "primary_language": "en",
+      "chief_complaint": "Brief wooziness and near-fainting when standing quickly from bed, caught himself, no trauma",
+      "symptom_vector": {
+        "neuro": {
+          "orthostatic_presyncope": true
+        }
+      },
+      "vitals": {
+        "heart_rate": 78,
+        "respiratory_rate": 16,
+        "systolic_bp": 108,
+        "diastolic_bp": 68,
+        "oxygen_saturation": 97,
+        "temperature_celsius": 36.6,
+        "capillary_blood_glucose": 112
+      },
+      "calculated_risk_score": 44,
+      "calculated_category": "MODERATE",
+      "hard_red_flag_triggered": false,
+      "red_flag_details": [],
+      "confidence_score": 0.9,
+      "explainability_payload": {
+        "model_version": "v2.1",
+        "latency_ms": 23,
+        "top_risk_drivers": [
+          {
+            "feature": "Geriatric Fall & Syncopal Risk",
+            "contribution_percent": 40,
+            "direction": "positive",
+            "description": "Age-related baroreflex impairment"
+          },
+          {
+            "feature": "Normal Baseline Vitals",
+            "contribution_percent": -25,
+            "direction": "negative",
+            "description": "Normal resting heart rate and blood pressure"
+          }
+        ]
+      },
+      "status": "CONFIRMED"
+    },
+    {
+      "id": "a1000033-0000-4000-8000-000000000033",
+      "mrn_hash": "MRN-703145",
+      "name": "Sudha Chandran",
+      "date_of_birth": "1984-06-08",
+      "gender": "FEMALE",
+      "primary_language": "ta",
+      "chief_complaint": "Severe throbbing right ear pain, muffled hearing, low grade fever following common cold",
+      "symptom_vector": {
+        "ent": {
+          "otitis_media": true,
+          "ear_pain": true
+        }
+      },
+      "vitals": {
+        "heart_rate": 82,
+        "respiratory_rate": 16,
+        "systolic_bp": 120,
+        "diastolic_bp": 76,
+        "oxygen_saturation": 99,
+        "temperature_celsius": 37.9,
+        "capillary_blood_glucose": 94
+      },
+      "calculated_risk_score": 38,
+      "calculated_category": "MODERATE",
+      "hard_red_flag_triggered": false,
+      "red_flag_details": [],
+      "confidence_score": 0.94,
+      "explainability_payload": {
+        "model_version": "v2.1",
+        "latency_ms": 21,
+        "top_risk_drivers": [
+          {
+            "feature": "Acute Otitis Media Erythema",
+            "contribution_percent": 36,
+            "direction": "positive",
+            "description": "Middle ear effusion and tympanic membrane inflammation"
+          },
+          {
+            "feature": "No Mastoiditis Swelling",
+            "contribution_percent": -32,
+            "direction": "negative",
+            "description": "Post-auricular area soft without bony tenderness"
+          }
+        ]
+      },
+      "status": "PENDING_REVIEW"
+    },
+    {
+      "id": "a1000034-0000-4000-8000-000000000034",
+      "mrn_hash": "MRN-814256",
+      "name": "Prakash Raj",
+      "date_of_birth": "1995-10-12",
+      "gender": "MALE",
+      "primary_language": "en",
+      "chief_complaint": "Tender bulge in right groin after lifting boxes, easily pushed back in (reducible), no emesis",
+      "symptom_vector": {
+        "surgery": {
+          "inguinal_hernia": true,
+          "reducible": true
+        }
+      },
+      "vitals": {
+        "heart_rate": 80,
+        "respiratory_rate": 16,
+        "systolic_bp": 126,
+        "diastolic_bp": 80,
+        "oxygen_saturation": 98,
+        "temperature_celsius": 36.7,
+        "capillary_blood_glucose": 102
+      },
+      "calculated_risk_score": 40,
+      "calculated_category": "MODERATE",
+      "hard_red_flag_triggered": false,
+      "red_flag_details": [],
+      "confidence_score": 0.93,
+      "explainability_payload": {
+        "model_version": "v2.1",
+        "latency_ms": 22,
+        "top_risk_drivers": [
+          {
+            "feature": "Inguinal Herniation Strain",
+            "contribution_percent": 38,
+            "direction": "positive",
+            "description": "Fascial defect with intermittent protrusion"
+          },
+          {
+            "feature": "Reducible (No Strangulation)",
+            "contribution_percent": -30,
+            "direction": "negative",
+            "description": "Absence of bowel incarceration or ischemia"
+          }
+        ]
+      },
+      "status": "PENDING_REVIEW"
+    },
+    {
+      "id": "a1000035-0000-4000-8000-000000000035",
+      "mrn_hash": "MRN-925367",
+      "name": "Malathi Sridhar",
+      "date_of_birth": "1977-03-01",
+      "gender": "FEMALE",
+      "primary_language": "ta",
+      "chief_complaint": "Mild flare of known ulcerative colitis, 4 loose bloody stools over 24h, no fever or orthostasis",
+      "symptom_vector": {
+        "gi": {
+          "uc_flare": true,
+          "mild_bloody_stools": true
+        }
+      },
+      "vitals": {
+        "heart_rate": 86,
+        "respiratory_rate": 16,
+        "systolic_bp": 118,
+        "diastolic_bp": 74,
+        "oxygen_saturation": 98,
+        "temperature_celsius": 37.2,
+        "capillary_blood_glucose": 108
+      },
+      "calculated_risk_score": 54,
+      "calculated_category": "MODERATE",
+      "hard_red_flag_triggered": false,
+      "red_flag_details": [],
+      "confidence_score": 0.92,
+      "explainability_payload": {
+        "model_version": "v2.1",
+        "latency_ms": 24,
+        "top_risk_drivers": [
+          {
+            "feature": "Inflammatory Bowel Disease Flare",
+            "contribution_percent": 42,
+            "direction": "positive",
+            "description": "Mucosal ulceration with mild blood loss"
+          },
+          {
+            "feature": "Hemodynamically Stable",
+            "contribution_percent": -24,
+            "direction": "negative",
+            "description": "Blood pressure and heart rate within safe physiological limits"
+          }
+        ]
+      },
+      "status": "CONFIRMED"
+    },
+    {
+      "id": "a1000036-0000-4000-8000-000000000036",
+      "mrn_hash": "MRN-036478",
+      "name": "Naveen Kumar",
+      "date_of_birth": "2002-08-19",
+      "gender": "MALE",
+      "primary_language": "en",
+      "chief_complaint": "Twisted right ankle playing badminton 3 hours ago, lateral malleolus swelling, limping",
+      "symptom_vector": {
+        "ortho": {
+          "ankle_sprain": true,
+          "weight_bearing": true
+        }
+      },
+      "vitals": {
+        "heart_rate": 76,
+        "respiratory_rate": 14,
+        "systolic_bp": 122,
+        "diastolic_bp": 78,
+        "oxygen_saturation": 99,
+        "temperature_celsius": 36.6,
+        "capillary_blood_glucose": 92
+      },
+      "calculated_risk_score": 36,
+      "calculated_category": "MODERATE",
+      "hard_red_flag_triggered": false,
+      "red_flag_details": [],
+      "confidence_score": 0.95,
+      "explainability_payload": {
+        "model_version": "v2.1",
+        "latency_ms": 19,
+        "top_risk_drivers": [
+          {
+            "feature": "Acute ATFL Ligament Strain",
+            "contribution_percent": 34,
+            "direction": "positive",
+            "description": "Inversion mechanism with localized edema"
+          },
+          {
+            "feature": "Ottawa Ankle Rules Negative",
+            "contribution_percent": -35,
+            "direction": "negative",
+            "description": "Able to take 4 steps immediately; no bone tenderness"
+          }
+        ]
+      },
+      "status": "PENDING_REVIEW"
+    },
+    {
+      "id": "a1000037-0000-4000-8000-000000000037",
+      "mrn_hash": "MRN-147589",
+      "name": "Chitra Mohan",
+      "date_of_birth": "1962-05-27",
+      "gender": "FEMALE",
+      "primary_language": "ta",
+      "chief_complaint": "Burning lancinating pain and grouped vesicular rash in band around right T5 rib area",
+      "symptom_vector": {
+        "derm": {
+          "herpes_zoster": true,
+          "neuropathic_pain": true
+        }
+      },
+      "vitals": {
+        "heart_rate": 80,
+        "respiratory_rate": 16,
+        "systolic_bp": 134,
+        "diastolic_bp": 82,
+        "oxygen_saturation": 98,
+        "temperature_celsius": 37.1,
+        "capillary_blood_glucose": 130
+      },
+      "calculated_risk_score": 45,
+      "calculated_category": "MODERATE",
+      "hard_red_flag_triggered": false,
+      "red_flag_details": [],
+      "confidence_score": 0.94,
+      "explainability_payload": {
+        "model_version": "v2.1",
+        "latency_ms": 21,
+        "top_risk_drivers": [
+          {
+            "feature": "Thoracic Herpes Zoster",
+            "contribution_percent": 40,
+            "direction": "positive",
+            "description": "Unilateral dermatomal vesicular reactivation"
+          },
+          {
+            "feature": "No Ophthalmic Involvement",
+            "contribution_percent": -28,
+            "direction": "negative",
+            "description": "Trigeminal nerve spared; no cornea risk"
+          }
+        ]
+      },
+      "status": "PENDING_REVIEW"
+    },
+    {
+      "id": "a1000038-0000-4000-8000-000000000038",
+      "mrn_hash": "MRN-258690",
+      "name": "Vasanth Kumar",
+      "date_of_birth": "1987-10-04",
+      "gender": "MALE",
+      "primary_language": "en",
+      "chief_complaint": "Severe foreign body sensation, lacrimation, and photophobia in left eye after metal filing",
+      "symptom_vector": {
+        "ophthalmology": {
+          "corneal_foreign_body": true
+        }
+      },
+      "vitals": {
+        "heart_rate": 82,
+        "respiratory_rate": 16,
+        "systolic_bp": 128,
+        "diastolic_bp": 80,
+        "oxygen_saturation": 98,
+        "temperature_celsius": 36.8,
+        "capillary_blood_glucose": 96
+      },
+      "calculated_risk_score": 42,
+      "calculated_category": "MODERATE",
+      "hard_red_flag_triggered": false,
+      "red_flag_details": [],
+      "confidence_score": 0.93,
+      "explainability_payload": {
+        "model_version": "v2.1",
+        "latency_ms": 22,
+        "top_risk_drivers": [
+          {
+            "feature": "Corneal Epithelial Defect Risk",
+            "contribution_percent": 42,
+            "direction": "positive",
+            "description": "Risk of bacterial keratitis / rust ring"
+          },
+          {
+            "feature": "Pupils Equal & Reactive",
+            "contribution_percent": -26,
+            "direction": "negative",
+            "description": "No anterior chamber penetration or globe rupture"
+          }
+        ]
+      },
+      "status": "PENDING_REVIEW"
+    },
+    {
+      "id": "a1000039-0000-4000-8000-000000000039",
+      "mrn_hash": "MRN-851708",
+      "name": "Hariharan V.",
+      "date_of_birth": "1997-04-12",
+      "gender": "MALE",
+      "primary_language": "en",
+      "chief_complaint": "1.5 cm superficial kitchen knife cut on left index finger, bleeding controlled with pressure",
+      "symptom_vector": {
+        "trauma": {
+          "superficial_cut": true,
+          "hemostasis_intact": true
+        }
+      },
+      "vitals": {
+        "heart_rate": 72,
+        "respiratory_rate": 14,
+        "systolic_bp": 118,
+        "diastolic_bp": 76,
+        "oxygen_saturation": 99,
+        "temperature_celsius": 36.6,
+        "capillary_blood_glucose": 95
+      },
+      "calculated_risk_score": 18,
+      "calculated_category": "LOW",
+      "hard_red_flag_triggered": false,
+      "red_flag_details": [],
+      "confidence_score": 0.98,
+      "explainability_payload": {
+        "model_version": "v2.1",
+        "latency_ms": 20,
+        "top_risk_drivers": [
+          {
+            "feature": "Minor Superficial Laceration",
+            "contribution_percent": 12,
+            "direction": "positive",
+            "description": "Linear epidermal-dermal wound"
+          },
+          {
+            "feature": "Normal Physiological Vitals",
+            "contribution_percent": -50,
+            "direction": "negative",
+            "description": "All vitals completely stable"
+          }
+        ]
+      },
+      "status": "CONFIRMED"
+    },
+    {
+      "id": "a1000040-0000-4000-8000-000000000040",
+      "mrn_hash": "MRN-962819",
+      "name": "Nalini Krishnan",
+      "date_of_birth": "1985-05-23",
+      "gender": "FEMALE",
+      "primary_language": "ta",
+      "chief_complaint": "Clear rhinorrhea, nasal congestion, mild dry tickly cough x 3 days, no breathing difficulty",
+      "symptom_vector": {
+        "ent": {
+          "rhinorrhea": true,
+          "congestion": true
+        }
+      },
+      "vitals": {
+        "heart_rate": 74,
+        "respiratory_rate": 14,
+        "systolic_bp": 112,
+        "diastolic_bp": 70,
+        "oxygen_saturation": 99,
+        "temperature_celsius": 37.1,
+        "capillary_blood_glucose": 92
+      },
+      "calculated_risk_score": 14,
+      "calculated_category": "LOW",
+      "hard_red_flag_triggered": false,
+      "red_flag_details": [],
+      "confidence_score": 0.99,
+      "explainability_payload": {
+        "model_version": "v2.1",
+        "latency_ms": 19,
+        "top_risk_drivers": [
+          {
+            "feature": "Mild Viral Coryza",
+            "contribution_percent": 10,
+            "direction": "positive",
+            "description": "Uncomplicated upper respiratory infection"
+          },
+          {
+            "feature": "Optimal Oxygenation (SpO2 99%)",
+            "contribution_percent": -45,
+            "direction": "negative",
+            "description": "Clear lung fields, normal respiratory rate"
+          }
+        ]
+      },
+      "status": "CONFIRMED"
+    },
+    {
+      "id": "a1000041-0000-4000-8000-000000000041",
+      "mrn_hash": "MRN-173920",
+      "name": "Shanmugam P.",
+      "date_of_birth": "1966-02-14",
+      "gender": "MALE",
+      "primary_language": "en",
+      "chief_complaint": "Dull lumbar ache after lifting furniture, no radicular symptoms, no bowel/bladder changes",
+      "symptom_vector": {
+        "msk": {
+          "back_pain": true,
+          "red_flags": false
+        }
+      },
+      "vitals": {
+        "heart_rate": 76,
+        "respiratory_rate": 14,
+        "systolic_bp": 126,
+        "diastolic_bp": 80,
+        "oxygen_saturation": 98,
+        "temperature_celsius": 36.7,
+        "capillary_blood_glucose": 108
+      },
+      "calculated_risk_score": 22,
+      "calculated_category": "LOW",
+      "hard_red_flag_triggered": false,
+      "red_flag_details": [],
+      "confidence_score": 0.97,
+      "explainability_payload": {
+        "model_version": "v2.1",
+        "latency_ms": 21,
+        "top_risk_drivers": [
+          {
+            "feature": "Mechanical Muscular Strain",
+            "contribution_percent": 14,
+            "direction": "positive",
+            "description": "Paraspinal muscle soreness without neurological deficit"
+          },
+          {
+            "feature": "Cauda Equina Red Flags Absent",
+            "contribution_percent": -48,
+            "direction": "negative",
+            "description": "Normal sphincter tone and sensation"
+          }
+        ]
+      },
+      "status": "PENDING_REVIEW"
+    },
+    {
+      "id": "a1000042-0000-4000-8000-000000000042",
+      "mrn_hash": "MRN-284031",
+      "name": "Preethi Varadhan",
+      "date_of_birth": "2001-11-03",
+      "gender": "FEMALE",
+      "primary_language": "ta",
+      "chief_complaint": "Routine removal of 4 non-absorbable scalp sutures placed 10 days ago, wound clean and dry",
+      "symptom_vector": {
+        "procedure": {
+          "suture_removal": true
+        }
+      },
+      "vitals": {
+        "heart_rate": 68,
+        "respiratory_rate": 14,
+        "systolic_bp": 110,
+        "diastolic_bp": 70,
+        "oxygen_saturation": 100,
+        "temperature_celsius": 36.5,
+        "capillary_blood_glucose": 88
+      },
+      "calculated_risk_score": 5,
+      "calculated_category": "LOW",
+      "hard_red_flag_triggered": false,
+      "red_flag_details": [],
+      "confidence_score": 0.99,
+      "explainability_payload": {
+        "model_version": "v2.1",
+        "latency_ms": 18,
+        "top_risk_drivers": [
+          {
+            "feature": "Elective Minor Procedure",
+            "contribution_percent": 4,
+            "direction": "positive",
+            "description": "Clean healed incision removal"
+          },
+          {
+            "feature": "Absence of Wound Erythema",
+            "contribution_percent": -50,
+            "direction": "negative",
+            "description": "Zero signs of infection or dehiscence"
+          }
+        ]
+      },
+      "status": "CONFIRMED"
+    },
+    {
+      "id": "a1000043-0000-4000-8000-000000000043",
+      "mrn_hash": "MRN-395142",
+      "name": "Venkatesan R.",
+      "date_of_birth": "1980-07-29",
+      "gender": "MALE",
+      "primary_language": "en",
+      "chief_complaint": "Itchy rash under metal wrist watch strap, mild localized redness, no blistering",
+      "symptom_vector": {
+        "dermatology": {
+          "contact_dermatitis": true
+        }
+      },
+      "vitals": {
+        "heart_rate": 74,
+        "respiratory_rate": 14,
+        "systolic_bp": 122,
+        "diastolic_bp": 76,
+        "oxygen_saturation": 98,
+        "temperature_celsius": 36.6,
+        "capillary_blood_glucose": 94
+      },
+      "calculated_risk_score": 16,
+      "calculated_category": "LOW",
+      "hard_red_flag_triggered": false,
+      "red_flag_details": [],
+      "confidence_score": 0.98,
+      "explainability_payload": {
+        "model_version": "v2.1",
+        "latency_ms": 19,
+        "top_risk_drivers": [
+          {
+            "feature": "Localized Nickel Dermatitis",
+            "contribution_percent": 11,
+            "direction": "positive",
+            "description": "Type IV hypersensitivity contact rash"
+          },
+          {
+            "feature": "Non-Anaphylactic Presentation",
+            "contribution_percent": -45,
+            "direction": "negative",
+            "description": "No respiratory or systemic involvement"
+          }
+        ]
+      },
+      "status": "PENDING_REVIEW"
+    },
+    {
+      "id": "a1000044-0000-4000-8000-000000000044",
+      "mrn_hash": "MRN-406253",
+      "name": "Kamala Kannan",
+      "date_of_birth": "1954-12-16",
+      "gender": "FEMALE",
+      "primary_language": "ta",
+      "chief_complaint": "Ran out of regular Amlodipine pills over weekend, requesting medication reconciliation check",
+      "symptom_vector": {
+        "administrative": {
+          "rx_refill": true
+        }
+      },
+      "vitals": {
+        "heart_rate": 72,
+        "respiratory_rate": 14,
+        "systolic_bp": 128,
+        "diastolic_bp": 80,
+        "oxygen_saturation": 98,
+        "temperature_celsius": 36.7,
+        "capillary_blood_glucose": 114
+      },
+      "calculated_risk_score": 8,
+      "calculated_category": "LOW",
+      "hard_red_flag_triggered": false,
+      "red_flag_details": [],
+      "confidence_score": 0.99,
+      "explainability_payload": {
+        "model_version": "v2.1",
+        "latency_ms": 17,
+        "top_risk_drivers": [
+          {
+            "feature": "Medication Reconciliation Inquiry",
+            "contribution_percent": 5,
+            "direction": "positive",
+            "description": "Outpatient continuity review request"
+          },
+          {
+            "feature": "Normotensive Reading",
+            "contribution_percent": -40,
+            "direction": "negative",
+            "description": "Patient asymptomatic with normal vitals"
+          }
+        ]
+      },
+      "status": "CONFIRMED"
+    },
+    {
+      "id": "a1000045-0000-4000-8000-000000000045",
+      "mrn_hash": "MRN-517364",
+      "name": "Ashwin Raj",
+      "date_of_birth": "2005-09-01",
+      "gender": "MALE",
+      "primary_language": "en",
+      "chief_complaint": "Stubbed right 3rd toe against chair leg, minor bruising, can wiggle toe and walk normally",
+      "symptom_vector": {
+        "ortho": {
+          "toe_contusion": true,
+          "no_deformity": true
+        }
+      },
+      "vitals": {
+        "heart_rate": 70,
+        "respiratory_rate": 12,
+        "systolic_bp": 114,
+        "diastolic_bp": 72,
+        "oxygen_saturation": 100,
+        "temperature_celsius": 36.6,
+        "capillary_blood_glucose": 86
+      },
+      "calculated_risk_score": 12,
+      "calculated_category": "LOW",
+      "hard_red_flag_triggered": false,
+      "red_flag_details": [],
+      "confidence_score": 0.98,
+      "explainability_payload": {
+        "model_version": "v2.1",
+        "latency_ms": 18,
+        "top_risk_drivers": [
+          {
+            "feature": "Minor Digit Contusion",
+            "contribution_percent": 8,
+            "direction": "positive",
+            "description": "Soft tissue impact bruising without fracture"
+          },
+          {
+            "feature": "Active Mobility Preserved",
+            "contribution_percent": -48,
+            "direction": "negative",
+            "description": "Intact weight-bearing and full capillary refill"
+          }
+        ]
+      },
+      "status": "PENDING_REVIEW"
+    },
+    {
+      "id": "a1000046-0000-4000-8000-000000000046",
+      "mrn_hash": "MRN-628475",
+      "name": "Swathi Ramesh",
+      "date_of_birth": "1998-06-12",
+      "gender": "FEMALE",
+      "primary_language": "ta",
+      "chief_complaint": "Painful small canker sore on inside of lower lip, stinging when eating spicy food",
+      "symptom_vector": {
+        "oral": {
+          "aphthous_ulcer": true
+        }
+      },
+      "vitals": {
+        "heart_rate": 68,
+        "respiratory_rate": 12,
+        "systolic_bp": 108,
+        "diastolic_bp": 68,
+        "oxygen_saturation": 99,
+        "temperature_celsius": 36.5,
+        "capillary_blood_glucose": 90
+      },
+      "calculated_risk_score": 10,
+      "calculated_category": "LOW",
+      "hard_red_flag_triggered": false,
+      "red_flag_details": [],
+      "confidence_score": 0.99,
+      "explainability_payload": {
+        "model_version": "v2.1",
+        "latency_ms": 17,
+        "top_risk_drivers": [
+          {
+            "feature": "Benign Aphthous Ulcer",
+            "contribution_percent": 6,
+            "direction": "positive",
+            "description": "Localized non-contagious mucosal lesion"
+          },
+          {
+            "feature": "No Systemic Fever or Dehydration",
+            "contribution_percent": -46,
+            "direction": "negative",
+            "description": "Normal mucosal hydration and vital signs"
+          }
+        ]
+      },
+      "status": "CONFIRMED"
+    },
+    {
+      "id": "a1000047-0000-4000-8000-000000000047",
+      "mrn_hash": "MRN-739586",
+      "name": "Madan Lal",
+      "date_of_birth": "2003-01-25",
+      "gender": "MALE",
+      "primary_language": "en",
+      "chief_complaint": "Sunburn redness over shoulders after beach outing, mild peeling, no systemic chills or blisters",
+      "symptom_vector": {
+        "dermatology": {
+          "first_degree_sunburn": true
+        }
+      },
+      "vitals": {
+        "heart_rate": 74,
+        "respiratory_rate": 14,
+        "systolic_bp": 116,
+        "diastolic_bp": 74,
+        "oxygen_saturation": 99,
+        "temperature_celsius": 37,
+        "capillary_blood_glucose": 96
+      },
+      "calculated_risk_score": 15,
+      "calculated_category": "LOW",
+      "hard_red_flag_triggered": false,
+      "red_flag_details": [],
+      "confidence_score": 0.98,
+      "explainability_payload": {
+        "model_version": "v2.1",
+        "latency_ms": 19,
+        "top_risk_drivers": [
+          {
+            "feature": "Superficial Sunburn Erythema",
+            "contribution_percent": 9,
+            "direction": "positive",
+            "description": "First degree actinic erythema"
+          },
+          {
+            "feature": "Absence of Heat Exhaustion",
+            "contribution_percent": -42,
+            "direction": "negative",
+            "description": "Normal temperature and full alertness"
+          }
+        ]
+      },
+      "status": "PENDING_REVIEW"
+    },
+    {
+      "id": "a1000048-0000-4000-8000-000000000048",
+      "mrn_hash": "MRN-840697",
+      "name": "Selvi Marimuthu",
+      "date_of_birth": "1973-04-14",
+      "gender": "FEMALE",
+      "primary_language": "ta",
+      "chief_complaint": "Small wooden splinter under distal right thumb nail, localized tenderness, request removal",
+      "symptom_vector": {
+        "foreign_body": {
+          "subungual_splinter": true
+        }
+      },
+      "vitals": {
+        "heart_rate": 70,
+        "respiratory_rate": 14,
+        "systolic_bp": 120,
+        "diastolic_bp": 76,
+        "oxygen_saturation": 99,
+        "temperature_celsius": 36.6,
+        "capillary_blood_glucose": 92
+      },
+      "calculated_risk_score": 7,
+      "calculated_category": "LOW",
+      "hard_red_flag_triggered": false,
+      "red_flag_details": [],
+      "confidence_score": 0.99,
+      "explainability_payload": {
+        "model_version": "v2.1",
+        "latency_ms": 18,
+        "top_risk_drivers": [
+          {
+            "feature": "Subungual Foreign Body",
+            "contribution_percent": 5,
+            "direction": "positive",
+            "description": "Superficial nail bed splinter without paronychia"
+          },
+          {
+            "feature": "Distal Perfusion Preserved",
+            "contribution_percent": -49,
+            "direction": "negative",
+            "description": "Full digital sensation and pulse"
+          }
+        ]
+      },
+      "status": "CONFIRMED"
+    },
+    {
+      "id": "a1000049-0000-4000-8000-000000000049",
+      "mrn_hash": "MRN-951708",
+      "name": "Vigneshwaran K.",
+      "date_of_birth": "1992-10-30",
+      "gender": "MALE",
+      "primary_language": "en",
+      "chief_complaint": "Wedding ring stuck on left ring finger due to warm weather swelling, good distal capillary refill",
+      "symptom_vector": {
+        "device": {
+          "ring_incarceration": true,
+          "perfusion_intact": true
+        }
+      },
+      "vitals": {
+        "heart_rate": 72,
+        "respiratory_rate": 14,
+        "systolic_bp": 118,
+        "diastolic_bp": 74,
+        "oxygen_saturation": 99,
+        "temperature_celsius": 36.6,
+        "capillary_blood_glucose": 98
+      },
+      "calculated_risk_score": 11,
+      "calculated_category": "LOW",
+      "hard_red_flag_triggered": false,
+      "red_flag_details": [],
+      "confidence_score": 0.98,
+      "explainability_payload": {
+        "model_version": "v2.1",
+        "latency_ms": 18,
+        "top_risk_drivers": [
+          {
+            "feature": "Intact Capillary Perfusion",
+            "contribution_percent": 7,
+            "direction": "positive",
+            "description": "Ring entrapment without ischemia"
+          },
+          {
+            "feature": "Brisk Pink Refill (< 2 sec)",
+            "contribution_percent": -45,
+            "direction": "negative",
+            "description": "No digital cyanosis or nerve deficit"
+          }
+        ]
+      },
+      "status": "PENDING_REVIEW"
+    },
+    {
+      "id": "a1000050-0000-4000-8000-000000000050",
+      "mrn_hash": "MRN-062819",
+      "name": "Vijayalakshmi S.",
+      "date_of_birth": "1981-08-08",
+      "gender": "FEMALE",
+      "primary_language": "ta",
+      "chief_complaint": "Lingering fatigue and tiredness 1 week after mild viral fever, vitals stable, normal hydration",
+      "symptom_vector": {
+        "general": {
+          "post_viral_fatigue": true
+        }
+      },
+      "vitals": {
+        "heart_rate": 76,
+        "respiratory_rate": 14,
+        "systolic_bp": 112,
+        "diastolic_bp": 70,
+        "oxygen_saturation": 99,
+        "temperature_celsius": 36.7,
+        "capillary_blood_glucose": 94
+      },
+      "calculated_risk_score": 20,
+      "calculated_category": "LOW",
+      "hard_red_flag_triggered": false,
+      "red_flag_details": [],
+      "confidence_score": 0.96,
+      "explainability_payload": {
+        "model_version": "v2.1",
+        "latency_ms": 20,
+        "top_risk_drivers": [
+          {
+            "feature": "Post-Viral Convalescence",
+            "contribution_percent": 12,
+            "direction": "positive",
+            "description": "Post-infectious asthenia without active infection"
+          },
+          {
+            "feature": "Clear Auscultation & Normal Vitals",
+            "contribution_percent": -48,
+            "direction": "negative",
+            "description": "Complete physiological stability"
+          }
+        ]
+      },
+      "status": "CONFIRMED"
+    }
+  ]
+}

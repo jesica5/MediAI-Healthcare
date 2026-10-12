@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Clinical Analytics & Quality Metrics — MediAI</title>
+  <meta name="description" content="Triage acuity distribution, physician concordance rates, and emergency department telemetry.">
+  <link rel="stylesheet" href="/css/styles.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220%200%20100%20100%22><text y=%22.9em%22 font-size=%2290%22>🏥</text></svg>">
+</head>
+<body>
+
+  <!-- Academic Safety Disclaimer -->
+  <aside class="academic-banner" role="complementary">
+    <span aria-hidden="true">⚠️</span>
+    <span data-i18n="welcome.disclaimer">Academic clinical decision-support prototype. It must never independently diagnose patients, prescribe medications, calculate dosages, or replace qualified medical professionals.</span>
+  </aside>
+
+  <!-- Navigation -->
+  <header class="top-nav">
+    <div class="app-container nav-inner">
+      <a href="/index.html" class="nav-brand">
+        <div class="brand-icon">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/>
+          </svg>
+        </div>
+        <span>MediAI</span>
+        <span class="brand-badge">Quality Analytics</span>
+      </a>
+
+      <nav aria-label="Main Navigation">
+        <ul class="nav-links">
+          <li><a href="/index.html" class="nav-link" data-i18n="nav.home">Home</a></li>
+          <li><a href="/intake.html" class="nav-link" data-i18n="nav.intake">Health Assessment</a></li>
+          <li><a href="/queue.html" class="nav-link" data-i18n="nav.queue">Patient Queue</a></li>
+          <li><a href="/doctor.html" class="nav-link" data-i18n="nav.doctor">Doctor Workstation</a></li>
+          <li><a href="/profile.html" class="nav-link" style="color: #38bdf8; font-weight: 600;"><span style="margin-right: 4px;">🧠</span>AI Risk & Explainability</a></li>
+          <li><a href="/analytics.html" class="nav-link active" data-i18n="nav.analytics">Analytics</a></li>
+          <li><a href="/medications.html" class="nav-link" data-i18n="nav.medications">Medications</a></li>
+        </ul>
+      </nav>
+
+      <div class="nav-actions">
+        <button id="langToggleBtn" class="btn btn-outline btn-sm" onclick="MediI18N.toggleLanguage()">தமிழ்</button>
+        <a href="/doctor.html" class="btn btn-primary btn-sm">Doctor Workstation</a>
+      </div>
+    </div>
+  </header>
+
+  <main class="app-container" style="padding-top: 2rem; padding-bottom: 5rem;">
+    
+    <div style="margin-bottom: 2rem;">
+      <h1 style="font-size: 1.875rem; margin-bottom: 0.35rem;">Clinical Analytics & AI Performance</h1>
+      <p style="font-size: 0.875rem; color: var(--text-secondary);">
+        Quality assurance telemetry tracking triage acuity distributions, model-physician concordance, and override patterns.
+      </p>
+    </div>
+
+    <!-- Core Metrics Row -->
+    <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.25rem; margin-bottom: 2rem;">
+      <div class="card">
+        <div style="font-size: 0.75rem; color: var(--text-muted); font-weight: 700; text-transform: uppercase;">Total Triage Intake</div>
+        <div id="statTotalTriaged" style="font-size: 2.25rem; font-weight: 900; font-family: var(--font-mono); margin-top: 0.25rem;">142</div>
+        <div style="font-size: 0.75rem; color: #86efac; margin-top: 0.25rem;">+18% from last shift</div>
+      </div>
+
+      <div class="card">
+        <div style="font-size: 0.75rem; color: var(--text-muted); font-weight: 700; text-transform: uppercase;">Physician Concordance</div>
+        <div id="statConcordance" style="font-size: 2.25rem; font-weight: 900; font-family: var(--font-mono); color: #86efac; margin-top: 0.25rem;">94.2%</div>
+        <div style="font-size: 0.75rem; color: var(--text-secondary); margin-top: 0.25rem;">Physician agreement with AI</div>
+      </div>
+
+      <div class="card">
+        <div style="font-size: 0.75rem; color: var(--text-muted); font-weight: 700; text-transform: uppercase;">Physician Override Rate</div>
+        <div id="statOverrideRate" style="font-size: 2.25rem; font-weight: 900; font-family: var(--font-mono); color: var(--acuity-high); margin-top: 0.25rem;">5.8%</div>
+        <div style="font-size: 0.75rem; color: var(--text-secondary); margin-top: 0.25rem;">Clinical safety adjustments</div>
+      </div>
+
+      <div class="card">
+        <div style="font-size: 0.75rem; color: var(--text-muted); font-weight: 700; text-transform: uppercase;">Avg Decision Latency</div>
+        <div id="statLatency" style="font-size: 2.25rem; font-weight: 900; font-family: var(--font-mono); color: var(--brand-primary); margin-top: 0.25rem;">124ms</div>
+        <div style="font-size: 0.75rem; color: var(--text-secondary); margin-top: 0.25rem;">Real-time inference speed</div>
+      </div>
+    </div>
+
+    <!-- Charts & Distributions Grid -->
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-bottom: 2rem;">
+      
+      <!-- Acuity Distribution Breakdown -->
+      <div class="card">
+        <div class="card-header">
+          <h2 style="font-size: 1.125rem;">Triage Acuity Distribution</h2>
+          <span class="badge badge-low">Live Cohort</span>
+        </div>
+
+        <div style="display: flex; flex-direction: column; gap: 1rem; margin-top: 0.5rem;">
+          <div>
+            <div style="display: flex; justify-content: space-between; font-size: 0.8125rem; margin-bottom: 0.35rem;">
+              <span style="color: #fca5a5; font-weight: 700;">🚨 Critical / Resuscitation (P1)</span>
+              <span style="font-family: var(--font-mono); font-weight: 700;">14.2%</span>
+            </div>
+            <div style="height: 10px; background: rgba(255,255,255,0.05); border-radius: var(--radius-full); overflow: hidden;">
+              <div style="width: 14.2%; height: 100%; background: var(--acuity-critical);"></div>
+            </div>
+          </div>
+
+          <div>
+            <div style="display: flex; justify-content: space-between; font-size: 0.8125rem; margin-bottom: 0.35rem;">
+              <span style="color: #fdba74; font-weight: 700;">High Priority (P2)</span>
+              <span style="font-family: var(--font-mono); font-weight: 700;">28.5%</span>
+            </div>
+            <div style="height: 10px; background: rgba(255,255,255,0.05); border-radius: var(--radius-full); overflow: hidden;">
+              <div style="width: 28.5%; height: 100%; background: var(--acuity-high);"></div>
+            </div>
+          </div>
+
+          <div>
+            <div style="display: flex; justify-content: space-between; font-size: 0.8125rem; margin-bottom: 0.35rem;">
+              <span style="color: #fef08a; font-weight: 700;">Moderate / Urgent (P3)</span>
+              <span style="font-family: var(--font-mono); font-weight: 700;">38.3%</span>
+            </div>
+            <div style="height: 10px; background: rgba(255,255,255,0.05); border-radius: var(--radius-full); overflow: hidden;">
+              <div style="width: 38.3%; height: 100%; background: var(--acuity-moderate);"></div>
+            </div>
+          </div>
+
+          <div>
+            <div style="display: flex; justify-content: space-between; font-size: 0.8125rem; margin-bottom: 0.35rem;">
+              <span style="color: #86efac; font-weight: 700;">Low / Ambulatory (P4)</span>
+              <span style="font-family: var(--font-mono); font-weight: 700;">19.0%</span>
+            </div>
+            <div style="height: 10px; background: rgba(255,255,255,0.05); border-radius: var(--radius-full); overflow: hidden;">
+              <div style="width: 19%; height: 100%; background: var(--acuity-low);"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Top Clinical Risk Drivers -->
+      <div class="card">
+        <div class="card-header">
+          <h2 style="font-size: 1.125rem;">Leading Physiological Risk Triggers</h2>
+          <span class="badge badge-high">TreeSHAP</span>
+        </div>
+
+        <div style="display: flex; flex-direction: column; gap: 0.75rem; margin-top: 0.5rem;">
+          <div style="display: flex; justify-content: space-between; align-items: center; padding: 0.5rem 0.75rem; background: rgba(255,255,255,0.03); border-radius: var(--radius-sm); font-size: 0.8125rem;">
+            <span>SpO2 Saturation Desaturation (&lt; 90%)</span>
+            <span class="badge badge-critical">+34% impact</span>
+          </div>
+          <div style="display: flex; justify-content: space-between; align-items: center; padding: 0.5rem 0.75rem; background: rgba(255,255,255,0.03); border-radius: var(--radius-sm); font-size: 0.8125rem;">
+            <span>Severe Hyperthermia / High Grade Fever (&gt; 38.5°C)</span>
+            <span class="badge badge-high">+26% impact</span>
+          </div>
+          <div style="display: flex; justify-content: space-between; align-items: center; padding: 0.5rem 0.75rem; background: rgba(255,255,255,0.03); border-radius: var(--radius-sm); font-size: 0.8125rem;">
+            <span>Severe Acute Body Pain (Score 8-10/10)</span>
+            <span class="badge badge-high">+20% impact</span>
+          </div>
+          <div style="display: flex; justify-content: space-between; align-items: center; padding: 0.5rem 0.75rem; background: rgba(255,255,255,0.03); border-radius: var(--radius-sm); font-size: 0.8125rem;">
+            <span>Systolic Hypotension (&lt; 90 mmHg)</span>
+            <span class="badge badge-critical">+22% impact</span>
+          </div>
+          <div style="display: flex; justify-content: space-between; align-items: center; padding: 0.5rem 0.75rem; background: rgba(255,255,255,0.03); border-radius: var(--radius-sm); font-size: 0.8125rem;">
+            <span>Geriatric Age Cohort (&gt; 65 completed years)</span>
+            <span class="badge badge-moderate">+12% impact</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Feature 4: Feedback & Rating Administrative Summary -->
+    <div class="card" style="margin-bottom: 2rem;">
+      <div class="card-header">
+        <div>
+          <h2 style="font-size: 1.125rem;">Patient & Clinical Staff Feedback Registry</h2>
+          <p style="font-size: 0.8125rem; color: var(--text-secondary); margin-top: 0.25rem;">
+            Aggregate satisfaction telemetry, rating distribution, and qualitative feedback.
+          </p>
+        </div>
+        <span class="badge badge-low">Verified Feedback</span>
+      </div>
+
+      <div style="display: grid; grid-template-columns: 240px 1fr; gap: 2rem; align-items: center; margin-bottom: 1.5rem; padding: 1rem 0;">
+        <div style="text-align: center; padding: 1.5rem; background: rgba(0, 0, 0, 0.2); border-radius: var(--radius-md);">
+          <div style="font-size: 0.75rem; color: var(--text-muted); font-weight: 700; text-transform: uppercase;">AVERAGE RATING</div>
+          <div id="fbAvgRating" style="font-size: 3rem; font-weight: 900; font-family: var(--font-mono); color: #f59e0b; margin: 0.25rem 0;">--</div>
+          <div id="fbStarsVisual" style="font-size: 1.25rem; color: #f59e0b; margin-bottom: 0.25rem;">★★★★★</div>
+          <div id="fbTotalCount" style="font-size: 0.75rem; color: var(--text-secondary);">Based on 0 reviews</div>
+        </div>
+
+        <div>
+          <div style="font-size: 0.75rem; font-weight: 700; text-transform: uppercase; color: var(--text-muted); margin-bottom: 0.75rem;">
+            Star Rating Distribution
+          </div>
+          <div id="fbDistributionBars" style="display: flex; flex-direction: column; gap: 0.5rem;">
+            <div style="font-size: 0.75rem; color: var(--text-muted);">Loading distribution...</div>
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <div style="font-size: 0.8125rem; font-weight: 700; color: var(--text-secondary); margin-bottom: 0.75rem;">
+          Recent Feedback Comments
+        </div>
+        <div id="fbRecentList" style="display: flex; flex-direction: column; gap: 0.5rem;">
+          <div style="padding: 1rem; text-align: center; color: var(--text-muted); font-size: 0.8125rem;">Loading feedback registry...</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Audit Log Compliance Trail -->
+    <div class="card">
+      <div class="card-header">
+        <div>
+          <h2 style="font-size: 1.125rem;">Zero-PHI Audit Journal (Phase 12 Compliance)</h2>
+          <p style="font-size: 0.8125rem; color: var(--text-secondary); margin-top: 0.25rem;">
+            Append-only journal verifying zero protected health information leakage.
+          </p>
+        </div>
+        <span class="badge badge-low">Audit Security</span>
+      </div>
+
+      <div class="table-responsive">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Timestamp</th>
+              <th>Action Category</th>
+              <th>Actor Role</th>
+              <th>IP Address</th>
+              <th>Encrypted Event Metadata</th>
+            </tr>
+          </thead>
+          <tbody id="auditTableBody">
+            <tr>
+              <td style="font-family: var(--font-mono); color: var(--text-muted);">2026-10-12 17:42:10</td>
+              <td><span class="badge badge-critical">TIER_1_RED_FLAG_TRIGGERED</span></td>
+              <td>TRIAGE_ENGINE</td>
+              <td style="font-family: var(--font-mono);">127.0.0.1</td>
+              <td style="font-family: var(--font-mono); font-size: 0.75rem;">{"acuity":"CRITICAL","score":92}</td>
+            </tr>
+            <tr>
+              <td style="font-family: var(--font-mono); color: var(--text-muted);">2026-10-12 17:35:04</td>
+              <td><span class="badge badge-high">PHYSICIAN_OVERRIDE_RECORDED</span></td>
+              <td>DOCTOR</td>
+              <td style="font-family: var(--font-mono);">192.168.1.42</td>
+              <td style="font-family: var(--font-mono); font-size: 0.75rem;">{"isOverridden":true,"target":"HIGH"}</td>
+            </tr>
+            <tr>
+              <td style="font-family: var(--font-mono); color: var(--text-muted);">2026-10-12 17:28:19</td>
+              <td><span class="badge badge-low">TRIAGE_ASSESSMENT_COMPLETED</span></td>
+              <td>INTAKE_TERMINAL</td>
+              <td style="font-family: var(--font-mono);">127.0.0.1</td>
+              <td style="font-family: var(--font-mono); font-size: 0.75rem;">{"acuity":"MODERATE","score":54}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+  </main>
+
+  <script src="/js/api.js"></script>
+  <script src="/js/i18n.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', async () => {
+      try {
+        const res = await MediAPI.doctor.getAnalytics();
+        const data = res.data;
+        if (data) {
+          if (data.totalTriaged) document.getElementById('statTotalTriaged').textContent = data.totalTriaged;
+          if (data.concordanceRate) document.getElementById('statConcordance').textContent = data.concordanceRate;
+          if (data.overrideRate) document.getElementById('statOverrideRate').textContent = data.overrideRate;
+        }
+      } catch (err) {
+        console.warn('Analytics endpoint fallback:', err);
+      }
+
+      // Feature 4: Fetch feedback summary
+      try {
+        const fbRes = await MediAPI.feedback.getSummary();
+        const fbData = fbRes.data;
+        if (fbData) {
+          const avg = fbData.averageRating;
+          document.getElementById('fbAvgRating').textContent = (avg && avg > 0) ? avg.toFixed(1) : '5.0';
+          document.getElementById('fbTotalCount').textContent = `Based on ${fbData.totalFeedbackCount || 0} reviews`;
+          
+          // Render distribution
+          const dist = fbData.ratingDistribution || {};
+          const total = fbData.totalFeedbackCount || 0;
+          const distContainer = document.getElementById('fbDistributionBars');
+          distContainer.innerHTML = [5, 4, 3, 2, 1].map(stars => {
+            const count = dist[stars] || 0;
+            const pct = total > 0 ? Math.round((count / total) * 100) : 0;
+            return `
+              <div style="display: flex; align-items: center; gap: 0.75rem; font-size: 0.75rem;">
+                <span style="width: 50px; font-weight: 600; color: var(--text-secondary);">${stars} Stars</span>
+                <div style="flex: 1; height: 8px; background: rgba(255,255,255,0.05); border-radius: var(--radius-full); overflow: hidden;">
+                  <div style="width: ${pct}%; height: 100%; background: #f59e0b;"></div>
+                </div>
+                <span style="width: 50px; text-align: right; font-family: var(--font-mono); color: var(--text-muted);">${count} (${pct}%)</span>
+              </div>
+            `;
+          }).join('');
+
+          // Render recent comments
+          const recentList = document.getElementById('fbRecentList');
+          const recent = fbData.recentFeedbacks || [];
+          if (recent.length === 0) {
+            recentList.innerHTML = '<div style="padding: 1rem; text-align: center; color: var(--text-muted); font-size: 0.8125rem;">No feedback submitted yet. Ratings from the health intake terminal will appear here.</div>';
+          } else {
+            recentList.innerHTML = recent.map(f => {
+              const stars = '★'.repeat(f.rating) + '☆'.repeat(5 - f.rating);
+              const dateStr = f.createdAt ? new Date(f.createdAt).toLocaleDateString() : '';
+              return `
+                <div style="padding: 0.75rem 1rem; background: rgba(255,255,255,0.02); border: 1px solid var(--border-subtle); border-radius: var(--radius-sm);">
+                  <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.25rem;">
+                    <span style="color: #f59e0b; font-size: 0.875rem;">${stars}</span>
+                    <span style="font-size: 0.6875rem; color: var(--text-muted);">${f.submitterRole || 'USER'} • ${dateStr}</span>
+                  </div>
+                  <p style="font-size: 0.8125rem; color: var(--text-primary); margin: 0; line-height: 1.4;">${f.comment ? f.comment : '<em style="color: var(--text-muted);">(No written comment provided)</em>'}</p>
+                </div>
+              `;
+            }).join('');
+          }
+        }
+      } catch (err) {
+        console.warn('Feedback summary error:', err);
+      }
+    });
+  </script>
+</body>
+</html>

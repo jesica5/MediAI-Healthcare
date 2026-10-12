@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title th:text="${title} ?: 'MediAI — Smart Patient Triage & Emergency Risk Prediction System'">MediAI — Smart Patient Triage & Emergency Risk Prediction System</title>
+  <meta name="description" content="AI-assisted clinical triage and emergency risk prediction system with explainable decision support.">
+  <!-- Optional Bootstrap CSS Link -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous" onerror="this.onerror=null;">
+  <link rel="stylesheet" th:href="@{/css/styles.css}" href="/css/styles.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220%200%20100%20100%22><text y=%22.9em%22 font-size=%2290%22>🏥</text></svg>">
+</head>
+<body>
+
+  <!-- Academic Safety Disclaimer -->
+  <aside class="academic-banner" role="complementary">
+    <span aria-hidden="true">⚠️</span>
+    <span data-i18n="welcome.disclaimer">Academic clinical decision-support prototype. It must never independently diagnose patients, prescribe medications, calculate dosages, or replace qualified medical professionals.</span>
+  </aside>
+
+  <!-- Top Navigation Header -->
+  <header class="top-nav">
+    <div class="app-container nav-inner">
+      <a href="/index.html" class="nav-brand" aria-label="MediAI Home">
+        <div class="brand-icon">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/>
+          </svg>
+        </div>
+        <span>MediAI</span>
+        <span class="brand-badge">Spring Boot v2.1</span>
+      </a>
+
+      <nav aria-label="Main Navigation">
+        <ul class="nav-links">
+          <li><a href="/index.html" class="nav-link active" data-i18n="nav.home">Home</a></li>
+          <li><a href="/intake.html" class="nav-link" data-i18n="nav.intake">Health Assessment</a></li>
+          <li><a href="/queue.html" class="nav-link" data-i18n="nav.queue">Patient Queue</a></li>
+          <li><a href="/doctor.html" class="nav-link" data-i18n="nav.doctor">Doctor Workstation</a></li>
+          <li><a href="/profile.html" class="nav-link" style="color: #38bdf8; font-weight: 600;"><span style="margin-right: 4px;">🧠</span>AI Risk & Explainability</a></li>
+          <li><a href="/analytics.html" class="nav-link" data-i18n="nav.analytics">Analytics</a></li>
+        </ul>
+      </nav>
+
+      <div class="nav-actions">
+        <button id="langToggleBtn" class="btn btn-outline btn-sm" onclick="MediI18N.toggleLanguage()" title="Switch Language">
+          தமிழ்
+        </button>
+        <a href="/signin.html" class="btn btn-primary btn-sm" data-i18n="nav.signIn">Staff Login</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Hero Content -->
+  <main class="app-container" style="padding-top: 3.5rem; padding-bottom: 4rem;">
+    <div style="text-align: center; max-width: 860px; margin: 0 auto; display: flex; flex-direction: column; gap: 1.5rem; align-items: center;">
+      
+      <!-- Sparkle Badge -->
+      <div style="display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.35rem 1rem; border-radius: var(--radius-full); background: rgba(14, 165, 233, 0.1); border: 1px solid rgba(14, 165, 233, 0.25); color: var(--text-accent); font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em;">
+        <span>✨</span>
+        <span data-i18n="welcome.heroBadge">AI-Powered Clinical Decision Support</span>
+      </div>
+
+      <!-- Main Headline -->
+      <h1 style="font-size: clamp(2rem, 5vw, 3.5rem); line-height: 1.15; font-weight: 900;" data-i18n="welcome.heroTitle">
+        Smart Patient Triage & Emergency Risk Prediction System
+      </h1>
+
+      <p style="font-size: 1.125rem; color: var(--text-secondary); max-width: 680px; line-height: 1.7;" data-i18n="welcome.heroDesc">
+        MediAI empowers healthcare providers with objective, evidence-based triage prioritization, TreeSHAP explainability, and multi-parameter vital signs safety monitoring.
+      </p>
+
+      <!-- Primary Action Buttons -->
+      <div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 1rem; padding-top: 1rem; width: 100%;">
+        <a href="/intake.html" id="heroStartAssessmentBtn" class="btn btn-primary btn-lg" style="min-width: 220px;">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/>
+          </svg>
+          <span data-i18n="welcome.btnIntake">Start Health Assessment</span>
+        </a>
+
+        <a href="/profile.html" class="btn btn-lg" style="background: rgba(14, 165, 233, 0.18); border: 1px solid rgba(14, 165, 233, 0.5); color: #38bdf8; min-width: 220px; box-shadow: 0 4px 14px rgba(14, 165, 233, 0.2);">
+          <span style="font-size: 1.125rem;">🧠</span>
+          <span>AI Risk & Explainability</span>
+        </a>
+
+        <a href="/queue.html" class="btn btn-secondary btn-lg">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+            <circle cx="9" cy="7" r="4"/>
+            <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
+            <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+          </svg>
+          <span data-i18n="nav.queue">Patient Queue</span>
+        </a>
+
+        <a href="/doctor.html" class="btn btn-outline btn-lg">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect width="18" height="11" x="3" y="11" rx="2" ry="2"/>
+            <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+          </svg>
+          <span data-i18n="welcome.btnDoctor">Doctor Workstation</span>
+        </a>
+      </div>
+    </div>
+
+    <!-- Capabilities Overview Grid -->
+    <div style="margin-top: 4.5rem; display: flex; flex-direction: column; gap: 1.5rem;">
+      <h2 style="font-size: 0.8125rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text-muted); text-align: center;" data-i18n="welcome.featuresTitle">
+        Core Capabilities
+      </h2>
+
+      <div class="grid-cols-3" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem;">
+        <div class="card">
+          <div style="width: 42px; height: 42px; border-radius: var(--radius-md); background: rgba(6, 182, 212, 0.12); color: var(--brand-cyan); display: flex; align-items: center; justify-content: center; margin-bottom: 1rem;">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/><path d="M2 12h20"/>
+            </svg>
+          </div>
+          <h3 style="font-size: 1.125rem; margin-bottom: 0.5rem;" data-i18n="welcome.feat1Title">Bilingual Clinical Engine</h3>
+          <p style="font-size: 0.8125rem; color: var(--text-secondary); line-height: 1.6;" data-i18n="welcome.feat1Desc">
+            Native English and Tamil risk explanations designed to maximize patient comprehension and reassurance during emergency intake.
+          </p>
+        </div>
+
+        <div class="card">
+          <div style="width: 42px; height: 42px; border-radius: var(--radius-md); background: rgba(16, 185, 129, 0.12); color: #34d399; display: flex; align-items: center; justify-content: center; margin-bottom: 1rem;">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+            </svg>
+          </div>
+          <h3 style="font-size: 1.125rem; margin-bottom: 0.5rem;" data-i18n="welcome.feat2Title">Data Protection & RLS</h3>
+          <p style="font-size: 0.8125rem; color: var(--text-secondary); line-height: 1.6;" data-i18n="welcome.feat2Desc">
+            AES-256 encrypted patient names, SHA-256 MRN identifier hashing, and immutable append-only audit journals with zero PHI leakage.
+          </p>
+        </div>
+
+        <div class="card">
+          <div style="width: 42px; height: 42px; border-radius: var(--radius-md); background: rgba(168, 85, 247, 0.12); color: #c084fc; display: flex; align-items: center; justify-content: center; margin-bottom: 1rem;">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/>
+            </svg>
+          </div>
+          <h3 style="font-size: 1.125rem; margin-bottom: 0.5rem;" data-i18n="welcome.feat3Title">Clinical Safety Baselines</h3>
+          <p style="font-size: 0.8125rem; color: var(--text-secondary); line-height: 1.6;" data-i18n="welcome.feat3Desc">
+            Deterministic red flag boundaries across 7 clinical domains prioritize acute resuscitation without autonomous treatment decisions.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- PHASE 6 ENHANCEMENT: Replaced "Calculating Risk Tiers" section with "Health Assessment" section in same location -->
+    <section id="healthAssessmentSection" class="card" style="margin-top: 3rem; background: linear-gradient(135deg, rgba(15, 23, 42, 0.95), rgba(30, 41, 59, 0.95)); border: 1px solid rgba(14, 165, 233, 0.35); box-shadow: var(--shadow-glow);">
+      <div style="display: flex; flex-direction: column; gap: 1.25rem;">
+        <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem;">
+          <div style="display: flex; align-items: center; gap: 0.75rem;">
+            <div style="width: 36px; height: 36px; border-radius: var(--radius-md); background: rgba(14, 165, 233, 0.2); color: var(--brand-primary); display: flex; align-items: center; justify-content: center;">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/>
+              </svg>
+            </div>
+            <div>
+              <h3 style="font-size: 1.125rem; color: var(--text-primary);" data-i18n="welcome.healthAssessmentTitle">
+                Health Assessment & Clinical Intake
+              </h3>
+              <p style="font-size: 0.75rem; color: var(--text-secondary);">
+                Active Module: Multi-Step Patient Triage & Physiological Safety Assessment
+              </p>
+            </div>
+          </div>
+
+          <a href="/intake.html" class="btn btn-primary" id="btnStartHealthAssessment">
+            <span data-i18n="welcome.btnIntake">Start Health Assessment</span>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/>
+            </svg>
+          </a>
+        </div>
+
+        <p style="font-size: 0.875rem; color: var(--text-secondary); line-height: 1.6;" data-i18n="welcome.healthAssessmentDesc">
+          Patients can submit clinical health information, symptoms, medical history, and vital signs for evaluation by the MediAI decision-support engine. Assessments are classified into 4 standardized acuity tiers with TreeSHAP explainability.
+        </p>
+
+        <!-- Clinical Acuity Standard Color Tokens Note -->
+        <div style="padding-top: 0.5rem; border-top: 1px solid var(--border-subtle);">
+          <span style="font-size: 0.75rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.05em; display: block; margin-bottom: 0.75rem;">
+            Shared Clinical Acuity Design Tokens
+          </span>
+          <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.75rem;" class="grid-cols-4">
+            <div style="padding: 0.65rem; border-radius: var(--radius-md); background: var(--acuity-critical-bg); border: 1px solid var(--acuity-critical-border); text-align: center;">
+              <div style="width: 8px; height: 8px; border-radius: 50%; background: var(--acuity-critical); margin: 0 auto 0.25rem;"></div>
+              <span style="font-size: 0.75rem; font-weight: 700; color: #fca5a5;">Critical (P1)</span>
+            </div>
+            <div style="padding: 0.65rem; border-radius: var(--radius-md); background: var(--acuity-high-bg); border: 1px solid var(--acuity-high-border); text-align: center;">
+              <div style="width: 8px; height: 8px; border-radius: 50%; background: var(--acuity-high); margin: 0 auto 0.25rem;"></div>
+              <span style="font-size: 0.75rem; font-weight: 700; color: #fdba74;">High (P2)</span>
+            </div>
+            <div style="padding: 0.65rem; border-radius: var(--radius-md); background: var(--acuity-moderate-bg); border: 1px solid var(--acuity-moderate-border); text-align: center;">
+              <div style="width: 8px; height: 8px; border-radius: 50%; background: var(--acuity-moderate); margin: 0 auto 0.25rem;"></div>
+              <span style="font-size: 0.75rem; font-weight: 700; color: #fef08a;">Moderate (P3)</span>
+            </div>
+            <div style="padding: 0.65rem; border-radius: var(--radius-md); background: var(--acuity-low-bg); border: 1px solid var(--acuity-low-border); text-align: center;">
+              <div style="width: 8px; height: 8px; border-radius: 50%; background: var(--acuity-low); margin: 0 auto 0.25rem;"></div>
+              <span style="font-size: 0.75rem; font-weight: 700; color: #86efac;">Low (P4)</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Privacy Notice -->
+    <div style="margin-top: 3rem; padding: 1.25rem; border-radius: var(--radius-lg); background: rgba(30, 41, 59, 0.4); border: 1px solid var(--border-subtle); display: flex; align-items: flex-start; gap: 1rem;">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color: var(--brand-primary); shrink: 0; margin-top: 2px;">
+        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10"/>
+      </svg>
+      <div>
+        <h4 style="font-size: 0.875rem; font-weight: 700; color: var(--text-primary); margin-bottom: 0.25rem;">Zero PHI Storage & Privacy Guarantee</h4>
+        <p style="font-size: 0.75rem; color: var(--text-secondary); line-height: 1.6;">
+          In strict compliance with healthcare regulations, patient identifying data is hashed with SHA-256 and names are encrypted at rest with AES-256. System audit journals log clinical decision timestamps and risk tiers with zero raw Protected Health Information (PHI).
+        </p>
+      </div>
+    </div>
+  </main>
+
+  <!-- App Footer -->
+  <footer class="app-footer">
+    <div class="app-container">
+      <p>© 2026 MediAI Platform • Hospital Clinical Triage & Risk Decision Support System</p>
+    </div>
+  </footer>
+
+  <script src="/js/api.js"></script>
+  <script src="/js/i18n.js"></script>
+</body>
+</html>

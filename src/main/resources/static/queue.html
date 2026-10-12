@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Patient Queue — MediAI</title>
+  <meta name="description" content="Real-time clinical triage patient queue with acuity prioritization and red flag indicators.">
+  <link rel="stylesheet" href="/css/styles.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220%200%20100%20100%22><text y=%22.9em%22 font-size=%2290%22>🏥</text></svg>">
+</head>
+<body>
+
+  <!-- Academic Safety Disclaimer -->
+  <aside class="academic-banner" role="complementary">
+    <span aria-hidden="true">⚠️</span>
+    <span data-i18n="welcome.disclaimer">Academic clinical decision-support prototype. It must never independently diagnose patients, prescribe medications, calculate dosages, or replace qualified medical professionals.</span>
+  </aside>
+
+  <!-- Top Navigation Header -->
+  <header class="top-nav">
+    <div class="app-container nav-inner">
+      <a href="/index.html" class="nav-brand">
+        <div class="brand-icon">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/>
+          </svg>
+        </div>
+        <span>MediAI</span>
+        <span class="brand-badge">Queue Console</span>
+      </a>
+
+      <nav aria-label="Main Navigation">
+        <ul class="nav-links">
+          <li><a href="/index.html" class="nav-link" data-i18n="nav.home">Home</a></li>
+          <li><a href="/intake.html" class="nav-link" data-i18n="nav.intake">Health Assessment</a></li>
+          <li><a href="/queue.html" class="nav-link active" data-i18n="nav.queue">Patient Queue</a></li>
+          <li><a href="/doctor.html" class="nav-link" data-i18n="nav.doctor">Doctor Workstation</a></li>
+          <li><a href="/profile.html" class="nav-link" style="color: #38bdf8; font-weight: 600;"><span style="margin-right: 4px;">🧠</span>AI Risk & Explainability</a></li>
+          <li><a href="/analytics.html" class="nav-link" data-i18n="nav.analytics">Analytics</a></li>
+        </ul>
+      </nav>
+
+      <div class="nav-actions">
+        <button id="langToggleBtn" class="btn btn-outline btn-sm" onclick="MediI18N.toggleLanguage()">தமிழ்</button>
+        <span id="userStatus" style="font-size: 0.8125rem; color: var(--text-secondary); display: none;"></span>
+        <a href="/signin.html" id="authBtn" class="btn btn-primary btn-sm" data-i18n="nav.signIn">Staff Login</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Patient Queue Container -->
+  <main class="app-container" style="padding-top: 2rem; padding-bottom: 4rem;">
+    
+    <!-- Title & Action Header -->
+    <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 1rem; margin-bottom: 1.5rem;">
+      <div>
+        <h1 style="font-size: 1.75rem; margin-bottom: 0.25rem;">Patient Queue</h1>
+        <p style="font-size: 0.8125rem; color: var(--text-secondary);">
+          Real-time patient prioritization based on physiological red flags and multi-parameter clinical risk.
+        </p>
+      </div>
+
+      <div style="display: flex; align-items: center; gap: 0.75rem;">
+        <button type="button" class="btn btn-outline btn-sm" onclick="fetchQueue()">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"/></svg>
+          <span>Refresh</span>
+        </button>
+        <a href="/intake.html" class="btn btn-primary btn-sm">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+          <span>New Patient Intake</span>
+        </a>
+      </div>
+    </div>
+
+    <!-- Quick KPI Summary Stats -->
+    <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; margin-bottom: 1.5rem;">
+      <div class="card" style="padding: 1.25rem;">
+        <div style="font-size: 0.75rem; color: var(--text-muted); font-weight: 700; text-transform: uppercase;">Total in Queue</div>
+        <div id="statTotal" style="font-size: 1.75rem; font-weight: 800; font-family: var(--font-mono); margin-top: 0.25rem;">0</div>
+        <div style="font-size: 0.75rem; color: var(--text-secondary); margin-top: 0.25rem;">Active triage admissions</div>
+      </div>
+
+      <div class="card" style="padding: 1.25rem; border-color: rgba(229, 62, 62, 0.35);">
+        <div style="font-size: 0.75rem; color: #fca5a5; font-weight: 700; text-transform: uppercase;">🚨 Critical / Resuscitation</div>
+        <div id="statCritical" style="font-size: 1.75rem; font-weight: 800; font-family: var(--font-mono); color: var(--acuity-critical); margin-top: 0.25rem;">0</div>
+        <div style="font-size: 0.75rem; color: var(--text-secondary); margin-top: 0.25rem;">Requires immediate attention</div>
+      </div>
+
+      <div class="card" style="padding: 1.25rem; border-color: rgba(237, 137, 54, 0.35);">
+        <div style="font-size: 0.75rem; color: #fdba74; font-weight: 700; text-transform: uppercase;">High Priority</div>
+        <div id="statHigh" style="font-size: 1.75rem; font-weight: 800; font-family: var(--font-mono); color: var(--acuity-high); margin-top: 0.25rem;">0</div>
+        <div style="font-size: 0.75rem; color: var(--text-secondary); margin-top: 0.25rem;">Wait time &lt; 15 mins</div>
+      </div>
+
+      <div class="card" style="padding: 1.25rem;">
+        <div style="font-size: 0.75rem; color: var(--brand-teal); font-weight: 700; text-transform: uppercase;">Moderate & Low</div>
+        <div id="statModerateLow" style="font-size: 1.75rem; font-weight: 800; font-family: var(--font-mono); color: var(--text-primary); margin-top: 0.25rem;">0</div>
+        <div style="font-size: 0.75rem; color: var(--text-secondary); margin-top: 0.25rem;">Standard ambulatory care</div>
+      </div>
+    </div>
+
+    <!-- Filters & Search Toolbar -->
+    <div class="card" style="padding: 1rem; margin-bottom: 1.5rem;">
+      <div style="display: flex; flex-wrap: wrap; gap: 1rem; align-items: center; justify-content: space-between;">
+        
+        <div style="display: flex; flex-wrap: wrap; gap: 0.75rem; align-items: center; flex: 1;">
+          <!-- Search Input -->
+          <div style="position: relative; min-width: 260px;">
+            <input type="text" id="queueSearchInput" class="form-control" placeholder="Search by MRN or Chief Complaint..." oninput="handleFilterChange()">
+          </div>
+
+          <!-- Acuity Filter -->
+          <select id="filterCategory" class="form-control" style="width: 170px;" onchange="handleFilterChange()">
+            <option value="ALL">All Acuities</option>
+            <option value="CRITICAL">🚨 Critical Only</option>
+            <option value="HIGH">High Priority</option>
+            <option value="MODERATE">Moderate</option>
+            <option value="LOW">Low</option>
+          </select>
+
+          <!-- Status Filter -->
+          <select id="filterStatus" class="form-control" style="width: 170px;" onchange="handleFilterChange()">
+            <option value="PENDING_REVIEW">Pending Review</option>
+            <option value="IN_PROGRESS">In Progress</option>
+            <option value="COMPLETED">Completed</option>
+            <option value="ALL">All Statuses</option>
+          </select>
+        </div>
+
+        <div style="font-size: 0.75rem; color: var(--text-muted);">
+          Auto-refreshing every 30s
+        </div>
+      </div>
+    </div>
+
+    <!-- Patient Queue Table -->
+    <div class="table-responsive">
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th style="width: 60px;">Priority</th>
+            <th>Patient Details</th>
+            <th>Chief Complaint</th>
+            <th>Acuity Tier</th>
+            <th>AI Risk</th>
+            <th>Key Vitals Snapshot</th>
+            <th>Arrival</th>
+            <th style="text-align: right;">Action</th>
+          </tr>
+        </thead>
+        <tbody id="queueTableBody">
+          <tr>
+            <td colspan="8" style="text-align: center; padding: 3rem; color: var(--text-muted);">
+              Loading Patient Queue...
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+  </main>
+
+  <script src="/js/api.js"></script>
+  <script src="/js/i18n.js"></script>
+  <script>
+    let queueData = [];
+    let refreshInterval = null;
+
+    // Check staff auth
+    document.addEventListener('DOMContentLoaded', () => {
+      const user = MediAPI.auth.getUser();
+      if (user) {
+        document.getElementById('userStatus').style.display = 'inline-block';
+        document.getElementById('userStatus').textContent = `Logged in as: ${user.fullName} (${user.role})`;
+        const authBtn = document.getElementById('authBtn');
+        authBtn.textContent = 'Sign Out';
+        authBtn.href = '#';
+        authBtn.onclick = (e) => { e.preventDefault(); MediAPI.auth.signOut(); };
+      }
+
+      fetchQueue();
+      refreshInterval = setInterval(fetchQueue, 30000);
+    });
+
+    async function fetchQueue() {
+      const category = document.getElementById('filterCategory').value;
+      const status = document.getElementById('filterStatus').value;
+      const search = document.getElementById('queueSearchInput').value.trim();
+
+      try {
+        const res = await MediAPI.doctor.getQueue({
+          status: status === 'ALL' ? '' : status,
+          category: category,
+          search: search
+        });
+
+        queueData = res.data || [];
+        renderQueue();
+        updateStats();
+      } catch (err) {
+        console.error('Queue load error:', err);
+        document.getElementById('queueTableBody').innerHTML = `
+          <tr>
+            <td colspan="8" style="text-align: center; padding: 2rem; color: #fca5a5;">
+              Unable to connect to Patient Queue. Please ensure the backend server is running.
+            </td>
+          </tr>
+        `;
+      }
+    }
+
+    function handleFilterChange() {
+      fetchQueue();
+    }
+
+    function updateStats() {
+      const total = queueData.length;
+      let critical = 0;
+      let high = 0;
+      let modLow = 0;
+
+      queueData.forEach(item => {
+        const cat = item.calculatedCategory || item.calculated_category;
+        const isRedFlag = item.hardRedFlagTriggered ?? item.hard_red_flag_triggered ?? false;
+        if (cat === 'CRITICAL' || isRedFlag) critical++;
+        else if (cat === 'HIGH') high++;
+        else modLow++;
+      });
+
+      document.getElementById('statTotal').textContent = total;
+      document.getElementById('statCritical').textContent = critical;
+      document.getElementById('statHigh').textContent = high;
+      document.getElementById('statModerateLow').textContent = modLow;
+    }
+
+    function renderQueue() {
+      const tbody = document.getElementById('queueTableBody');
+      if (queueData.length === 0) {
+        tbody.innerHTML = `
+          <tr>
+            <td colspan="8" style="text-align: center; padding: 3rem; color: var(--text-muted);">
+              No patients found matching the selected filter criteria.
+            </td>
+          </tr>
+        `;
+        return;
+      }
+
+      tbody.innerHTML = queueData.map((item, idx) => {
+        const pt = item.patient || {};
+        const vitals = item.vitals || {};
+        const isRedFlag = item.hardRedFlagTriggered ?? item.hard_red_flag_triggered ?? false;
+        const cat = item.calculatedCategory || item.calculated_category || 'MODERATE';
+        const rawScore = item.calculatedRiskScore ?? item.calculated_risk_score ?? 0;
+        const score = Math.round(rawScore);
+        const complaint = item.chiefComplaint || item.chief_complaint || 'Unspecified';
+        const dob = pt.dateOfBirth || pt.date_of_birth;
+
+        // Calculate dynamic age if DOB exists
+        let ageStr = '--';
+        if (dob) {
+          const age = MediAPI.clinical.calculateAge(dob);
+          if (age !== null) ageStr = `${age}y`;
+        }
+
+        // Acuity Badge
+        let badgeClass = 'badge-moderate';
+        if (cat === 'CRITICAL') badgeClass = 'badge-critical';
+        else if (cat === 'HIGH') badgeClass = 'badge-high';
+        else if (cat === 'LOW') badgeClass = 'badge-low';
+
+        // Arrival Time
+        const created = item.createdAt || item.created_at;
+        const arrival = created ? new Date(created).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : '--';
+
+        const hr = vitals.heartRate ?? vitals.heart_rate ?? '--';
+        const sbp = vitals.systolicBp ?? vitals.systolic_bp ?? '--';
+        const dbp = vitals.diastolicBp ?? vitals.diastolic_bp ?? '--';
+        const spo2 = vitals.oxygenSaturation ?? vitals.oxygen_saturation ?? null;
+        const temp = vitals.temperatureCelsius ?? vitals.temperature_celsius ?? null;
+
+        return `
+          <tr style="${isRedFlag ? 'background: rgba(229, 62, 62, 0.05);' : ''}">
+            <td>
+              <div style="display: flex; align-items: center; gap: 0.35rem;">
+                ${isRedFlag ? '<span title="Hard Red Flag" style="color: #ef4444; font-size: 1rem;">🚨</span>' : ''}
+                <span style="font-weight: 700; font-family: var(--font-mono); color: var(--text-muted);">#${idx + 1}</span>
+              </div>
+            </td>
+            <td>
+              <div style="font-weight: 600; color: var(--text-primary);">${pt.displayName || 'Patient'}</div>
+              <div style="font-size: 0.75rem; color: var(--text-muted); font-family: var(--font-mono);">${pt.mrnHash || pt.id?.substring(0, 8)} • ${ageStr} • ${pt.gender || '--'}</div>
+            </td>
+            <td>
+              <div style="max-width: 220px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;" title="${item.chiefComplaint || ''}">
+                ${item.chiefComplaint || 'Unspecified'}
+              </div>
+            </td>
+            <td>
+              <span class="badge ${badgeClass}">${cat}</span>
+            </td>
+            <td>
+              <strong style="font-family: var(--font-mono); color: ${score >= 70 ? '#fca5a5' : score >= 40 ? '#fdba74' : '#86efac'};">
+                ${score}%
+              </strong>
+            </td>
+            <td>
+              <div style="font-size: 0.75rem; font-family: var(--font-mono); color: var(--text-secondary); line-height: 1.4;">
+                HR: ${vitals.heartRate || '--'} • BP: ${vitals.systolicBp || '--'}/${vitals.diastolicBp || '--'}<br>
+                SpO2: ${vitals.oxygenSaturation ? vitals.oxygenSaturation + '%' : '--'} • Temp: ${vitals.temperatureCelsius ? vitals.temperatureCelsius + '°C' : '--'}
+              </div>
+            </td>
+            <td style="font-size: 0.8125rem; color: var(--text-muted); font-family: var(--font-mono);">
+              ${arrival}
+            </td>
+            <td style="text-align: right;">
+              <a href="/review.html?id=${item.id}" class="btn btn-secondary btn-sm">
+                <span>Review & Override</span>
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+              </a>
+            </td>
+          </tr>
+        `;
+      }).join('');
+    }
+  </script>
+</body>
+</html>

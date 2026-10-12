@@ -1,4 +1,10 @@
-import { describe, it, expect } from 'vitest';
+import { describe, it, expect, vi } from 'vitest';
+
+// Mock remote network audit logger to keep unit tests fast and independent of Firestore network latency
+vi.mock('@/shared/utils/auditLogger', () => ({
+  logAuditEvent: vi.fn().mockResolvedValue(undefined),
+}));
+
 import { doctorService } from '@/shared/services/doctorService';
 
 describe('Doctor Override & Red-Flag Safety Tests', () => {

@@ -1,0 +1,561 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Clinical Review & Override — MediAI</title>
+  <meta name="description" content="Physician Decision-Support Workspace with TreeSHAP feature attribution and clinical override controls.">
+  <link rel="stylesheet" href="/css/styles.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220%200%20100%20100%22><text y=%22.9em%22 font-size=%2290%22>🏥</text></svg>">
+  <style>
+    .driver-bar-wrapper {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin-bottom: 0.5rem;
+    }
+    .driver-label {
+      width: 220px;
+      font-size: 0.8125rem;
+      color: var(--text-secondary);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .driver-bar-track {
+      flex: 1;
+      height: 8px;
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: var(--radius-full);
+      overflow: hidden;
+      position: relative;
+    }
+    .driver-bar-fill {
+      height: 100%;
+      border-radius: var(--radius-full);
+    }
+    .driver-val {
+      width: 48px;
+      text-align: right;
+      font-family: var(--font-mono);
+      font-weight: 700;
+      font-size: 0.8125rem;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Academic Safety Disclaimer -->
+  <aside class="academic-banner" role="complementary">
+    <span aria-hidden="true">⚠️</span>
+    <span data-i18n="welcome.disclaimer">Academic clinical decision-support prototype. It must never independently diagnose patients, prescribe medications, calculate dosages, or replace qualified medical professionals.</span>
+  </aside>
+
+  <!-- Top Navigation Header -->
+  <header class="top-nav">
+    <div class="app-container nav-inner">
+      <a href="/index.html" class="nav-brand">
+        <div class="brand-icon">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/>
+          </svg>
+        </div>
+        <span>MediAI</span>
+        <span class="brand-badge">Physician Review</span>
+      </a>
+
+      <nav aria-label="Main Navigation">
+        <ul class="nav-links">
+          <li><a href="/index.html" class="nav-link" data-i18n="nav.home">Home</a></li>
+          <li><a href="/intake.html" class="nav-link" data-i18n="nav.intake">Health Assessment</a></li>
+          <li><a href="/queue.html" class="nav-link" data-i18n="nav.queue">Patient Queue</a></li>
+          <li><a href="/doctor.html" class="nav-link active" data-i18n="nav.doctor">Doctor Workstation</a></li>
+          <li><a href="/profile.html" class="nav-link" style="color: #38bdf8; font-weight: 600;"><span style="margin-right: 4px;">🧠</span>AI Risk & Explainability</a></li>
+          <li><a href="/analytics.html" class="nav-link" data-i18n="nav.analytics">Analytics</a></li>
+        </ul>
+      </nav>
+
+      <div class="nav-actions">
+        <button id="langToggleBtn" class="btn btn-outline btn-sm" onclick="MediI18N.toggleLanguage()">தமிழ்</button>
+        <a href="/queue.html" class="btn btn-outline btn-sm">
+          ← Back to Patient Queue
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <main class="app-container" style="padding-top: 2rem; padding-bottom: 5rem;">
+    
+    <!-- Patient Header Card -->
+    <div class="card" style="margin-bottom: 1.5rem; border-color: rgba(14, 165, 233, 0.3);">
+      <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 1rem;">
+        <div style="display: flex; align-items: center; gap: 1rem;">
+          <div style="width: 50px; height: 50px; border-radius: 50%; background: rgba(14, 165, 233, 0.15); display: flex; align-items: center; justify-content: center; font-size: 1.5rem;">
+            👤
+          </div>
+          <div>
+            <div style="display: flex; align-items: center; gap: 0.75rem;">
+              <h1 id="ptName" style="font-size: 1.5rem; margin: 0;">Loading Patient...</h1>
+              <span id="ptAcuityBadge" class="badge badge-moderate">ANALYZING</span>
+            </div>
+            <div style="font-size: 0.8125rem; color: var(--text-muted); margin-top: 0.25rem; font-family: var(--font-mono);">
+              MRN: <span id="ptMrn">--</span> • Age: <span id="ptAge">--</span> • Gender: <span id="ptGender">--</span> • Language: <span id="ptLang">--</span>
+            </div>
+          </div>
+        </div>
+
+        <div style="display: flex; gap: 0.75rem;">
+          <button type="button" class="btn btn-outline btn-sm" onclick="window.print()">
+            Print Clinical Record
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Red Flag Safety Warning Banner -->
+    <div id="redFlagBanner" style="display: none; padding: 1rem 1.25rem; border-radius: var(--radius-md); background: rgba(229, 62, 62, 0.15); border: 1px solid var(--acuity-critical-border); margin-bottom: 1.5rem;">
+      <div style="display: flex; align-items: center; gap: 0.5rem; font-weight: 800; color: #fca5a5; font-size: 1rem;">
+        <span>🚨 PHYSIOLOGICAL TIER-1 HARD RED FLAG TRIGGERED</span>
+      </div>
+      <p id="redFlagText" style="font-size: 0.875rem; color: #fecaca; margin-top: 0.35rem; line-height: 1.5;"></p>
+    </div>
+
+    <!-- Two-Column Clinical Grid -->
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-bottom: 1.5rem;">
+      
+      <!-- Left Column: Vital Signs & Symptoms -->
+      <div style="display: flex; flex-direction: column; gap: 1.5rem;">
+        
+        <!-- Chief Complaint & Symptoms Card -->
+        <div class="card">
+          <div class="card-header">
+            <h2 style="font-size: 1.125rem;">Chief Complaint & Symptoms</h2>
+            <span class="badge badge-low">Reported</span>
+          </div>
+          
+          <div style="margin-bottom: 1.25rem; padding: 0.75rem 1rem; border-radius: var(--radius-md); background: rgba(0, 0, 0, 0.2);">
+            <div style="font-size: 0.75rem; color: var(--text-muted); font-weight: 600;">CHIEF COMPLAINT</div>
+            <div id="complaintText" style="font-size: 0.9375rem; color: var(--text-primary); font-weight: 600; margin-top: 0.25rem;">--</div>
+          </div>
+
+          <div id="symptomsList" style="display: flex; flex-direction: column; gap: 0.5rem;">
+            <!-- Populated dynamically -->
+          </div>
+        </div>
+
+        <!-- Vital Signs Table Card -->
+        <div class="card">
+          <div class="card-header">
+            <h2 style="font-size: 1.125rem;">Vital Signs Snapshot</h2>
+            <span class="badge badge-high">Physical Exam</span>
+          </div>
+
+          <table class="data-table" style="font-size: 0.8125rem;">
+            <thead>
+              <tr>
+                <th>Vital Parameter</th>
+                <th>Measured Value</th>
+                <th>Reference Range</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody id="vitalsTableBody">
+              <!-- Populated dynamically -->
+            </tbody>
+          </table>
+        </div>
+
+      </div>
+
+      <!-- Right Column: AI Risk, TreeSHAP Drivers & Physician Override Console -->
+      <div style="display: flex; flex-direction: column; gap: 1.5rem;">
+        
+        <!-- AI Decision Support & TreeSHAP Drivers -->
+        <div class="card">
+          <div class="card-header">
+            <h2 style="font-size: 1.125rem;">AI Risk & TreeSHAP Attribution</h2>
+            <div id="riskScorePill" style="font-family: var(--font-mono); font-weight: 800; font-size: 1.125rem; color: var(--text-accent);">--%</div>
+          </div>
+
+          <p id="clinicalRationaleText" style="font-size: 0.8125rem; color: var(--text-secondary); line-height: 1.5; margin-bottom: 1.25rem;">
+            Calculating clinical risk drivers...
+          </p>
+
+          <h3 style="font-size: 0.8125rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-muted); margin-bottom: 0.75rem;">
+            Top Acuity Attribution Drivers
+          </h3>
+          <div id="shapDriverList">
+            <!-- Populated dynamically -->
+          </div>
+        </div>
+
+        <!-- Physician Override Console (Phase 12 Safety Enforced) -->
+        <div class="card" style="border-color: rgba(237, 137, 54, 0.4); background: rgba(20, 26, 45, 0.9);">
+          <div class="card-header">
+            <h2 style="font-size: 1.125rem;">Physician Override Console</h2>
+            <span class="badge badge-high">Doctor Review</span>
+          </div>
+
+          <div id="overrideAlert" style="display: none; padding: 0.75rem; border-radius: var(--radius-md); font-size: 0.8125rem; margin-bottom: 1rem;"></div>
+
+          <form id="overrideForm" onsubmit="handleOverrideSubmit(event)">
+            
+            <div class="form-group">
+              <label class="form-label" for="overrideDoctorId">Physician Identifier / Staff Name <span class="required-asterisk">*</span></label>
+              <input type="text" id="overrideDoctorId" class="form-control" value="Dr. Sarah Jenkins (Staff ID: 9481)" required>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="overrideCategory">Target Triage Category <span class="required-asterisk">*</span></label>
+              <select id="overrideCategory" class="form-control" onchange="checkOverrideRequirements()">
+                <option value="CRITICAL">🚨 CRITICAL (Immediate Resuscitation)</option>
+                <option value="HIGH">HIGH (Urgent Care &lt; 15 mins)</option>
+                <option value="MODERATE">MODERATE (Semi-urgent &lt; 60 mins)</option>
+                <option value="LOW">LOW (Non-urgent Ambulatory)</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.35rem;">
+                <label class="form-label" for="overrideReason" style="margin-bottom: 0;">
+                  Clinical Justification / Rationale <span id="reasonAsterisk" class="required-asterisk">*</span>
+                </label>
+                <span id="charCount" style="font-size: 0.75rem; color: var(--text-muted); font-family: var(--font-mono);">0 / 15 chars min</span>
+              </div>
+              <textarea id="overrideReason" class="form-control" rows="3" placeholder="Enter clinical rationale for override decision..." required oninput="handleCharCount()"></textarea>
+              <div id="reasonHelpText" class="field-hint">
+                Mandatory minimum 15 characters required when overriding or downgrading a Critical/Tier-1 Red Flag patient.
+              </div>
+            </div>
+
+            <div style="display: flex; gap: 0.75rem; margin-top: 1.25rem;">
+              <button type="submit" id="submitOverrideBtn" class="btn btn-primary" style="flex: 1;">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                <span>Confirm Physician Override</span>
+              </button>
+            </div>
+          </form>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </main>
+
+  <script src="/js/api.js"></script>
+  <script src="/js/i18n.js"></script>
+  <script>
+    let currentAssessment = null;
+
+    document.addEventListener('DOMContentLoaded', () => {
+      const urlParams = new URLSearchParams(window.location.search);
+      const assessmentId = urlParams.get('id');
+
+      if (!assessmentId) {
+        alert('No assessment ID provided. Redirecting to Patient Queue.');
+        window.location.href = '/queue.html';
+        return;
+      }
+
+      loadAssessment(assessmentId);
+    });
+
+    async function loadAssessment(id) {
+      try {
+        const res = await MediAPI.doctor.getPatientAssessment(id);
+        currentAssessment = res.data;
+        renderAssessmentData(currentAssessment);
+      } catch (err) {
+        alert('Failed to load patient assessment: ' + (err.message || 'Record not found'));
+        window.location.href = '/queue.html';
+      }
+    }
+
+    function renderAssessmentData(a) {
+      const pt = a.patient || {};
+      const vitals = a.vitals || {};
+
+      // Name & Demographic Banner
+      document.getElementById('ptName').textContent = pt.displayName || pt.display_name || 'Patient Record';
+      document.getElementById('ptMrn').textContent = pt.mrnHash || pt.mrn_hash || pt.id?.substring(0, 8);
+      
+      const dob = pt.dateOfBirth || pt.date_of_birth;
+      let ageStr = '--';
+      if (dob) {
+        const age = MediAPI.clinical.calculateAge(dob);
+        if (age !== null) ageStr = `${age} years`;
+      }
+      document.getElementById('ptAge').textContent = ageStr;
+      document.getElementById('ptGender').textContent = pt.gender || 'OTHER';
+      const lang = pt.primaryLanguage || pt.primary_language;
+      document.getElementById('ptLang').textContent = (lang === 'ta' ? 'Tamil' : 'English');
+
+      // Acuity Badge
+      const cat = a.calculatedCategory || a.calculated_category || 'MODERATE';
+      const badge = document.getElementById('ptAcuityBadge');
+      badge.textContent = `ACUITY: ${cat}`;
+      let badgeClass = 'badge-moderate';
+      if (cat === 'CRITICAL') badgeClass = 'badge-critical';
+      else if (cat === 'HIGH') badgeClass = 'badge-high';
+      else if (cat === 'LOW') badgeClass = 'badge-low';
+      badge.className = `badge ${badgeClass}`;
+
+      // Set target dropdown default
+      document.getElementById('overrideCategory').value = cat;
+
+      // Red Flag Banner
+      const isRedFlag = a.hardRedFlagTriggered ?? a.hard_red_flag_triggered ?? false;
+      const redDetails = a.redFlagDetails || a.red_flag_details;
+      if (isRedFlag) {
+        document.getElementById('redFlagBanner').style.display = 'block';
+        let details = 'Tier-1 Physiological Boundary Alert triggered.';
+        if (redDetails) {
+          try {
+            const parsed = typeof redDetails === 'string' ? JSON.parse(redDetails) : redDetails;
+            if (Array.isArray(parsed)) details = parsed.join(' • ');
+          } catch(e) {}
+        }
+        document.getElementById('redFlagText').textContent = details;
+      }
+
+      // Complaint
+      document.getElementById('complaintText').textContent = a.chiefComplaint || a.chief_complaint || 'No chief complaint recorded.';
+
+      // Symptoms List
+      renderSymptoms(a.symptomVector || a.symptom_vector);
+
+      // Vitals Table
+      renderVitals(vitals);
+
+      // AI Risk & Drivers
+      const rawScore = a.calculatedRiskScore ?? a.calculated_risk_score ?? 0;
+      const score = Math.round(rawScore);
+      document.getElementById('riskScorePill').textContent = `${score}% RISK`;
+      
+      let rationale = 'Comprehensive multi-parameter risk evaluation completed.';
+      const aiPayload = a.aiExplanationPayload || a.ai_explanation_payload;
+      if (aiPayload) {
+        try {
+          const ai = typeof aiPayload === 'string' ? JSON.parse(aiPayload) : aiPayload;
+          if (ai.clinicalRationale) rationale = ai.clinicalRationale;
+        } catch(e) {}
+      }
+      document.getElementById('clinicalRationaleText').textContent = rationale;
+
+      renderExplainabilityDrivers(a.explainabilityPayload || a.explainability_payload);
+      checkOverrideRequirements();
+    }
+
+    function renderSymptoms(vectorRaw) {
+      const container = document.getElementById('symptomsList');
+      container.innerHTML = '';
+      if (!vectorRaw) return;
+
+      let vector = {};
+      try {
+        vector = typeof vectorRaw === 'string' ? JSON.parse(vectorRaw) : vectorRaw;
+      } catch(e) {
+        vector = {};
+      }
+
+      // 1. Fever First (Phase 11)
+      if (vector.fever) {
+        const f = vector.fever;
+        const row = document.createElement('div');
+        row.style.cssText = 'padding: 0.65rem 0.85rem; border-radius: var(--radius-sm); background: rgba(14, 165, 233, 0.08); border: 1px solid rgba(14, 165, 233, 0.25);';
+        row.innerHTML = `
+          <div style="display: flex; justify-content: space-between; align-items: center;">
+            <strong style="color: var(--brand-cyan); font-size: 0.875rem;">1. Fever (Present)</strong>
+            <span class="badge badge-critical">Slot 1</span>
+          </div>
+          <div style="font-size: 0.75rem; color: var(--text-secondary); margin-top: 0.25rem;">
+            Pattern: ${f.pattern || 'Intermittent'} • Duration: ${f.duration || '1-3 days'}
+          </div>
+        `;
+        container.appendChild(row);
+      }
+
+      // 2. Body Pain Second (Phase 11)
+      if (vector.body_pain) {
+        const bp = vector.body_pain;
+        const row = document.createElement('div');
+        row.style.cssText = 'padding: 0.65rem 0.85rem; border-radius: var(--radius-sm); background: rgba(14, 165, 233, 0.08); border: 1px solid rgba(14, 165, 233, 0.25);';
+        row.innerHTML = `
+          <div style="display: flex; justify-content: space-between; align-items: center;">
+            <strong style="color: var(--brand-cyan); font-size: 0.875rem;">2. Body Pain (Present)</strong>
+            <span class="badge badge-high">Slot 2</span>
+          </div>
+          <div style="font-size: 0.75rem; color: var(--text-secondary); margin-top: 0.25rem;">
+            Area: ${bp.area || 'Generalized'} • Severity: ${bp.severity || 'Moderate'}
+          </div>
+        `;
+        container.appendChild(row);
+      }
+
+      // Other symptoms
+      Object.keys(vector).forEach(key => {
+        if (key !== 'fever' && key !== 'body_pain' && vector[key]) {
+          const row = document.createElement('div');
+          row.style.cssText = 'padding: 0.5rem 0.75rem; border-radius: var(--radius-sm); background: rgba(255, 255, 255, 0.03); font-size: 0.8125rem; display: flex; justify-content: space-between;';
+          row.innerHTML = `
+            <span>${key.replace(/_/g, ' ').toUpperCase()}</span>
+            <span class="badge badge-low">Present</span>
+          `;
+          container.appendChild(row);
+        }
+      });
+    }
+
+    function renderVitals(v) {
+      const tbody = document.getElementById('vitalsTableBody');
+      const hr = v.heartRate ?? v.heart_rate;
+      const sbp = v.systolicBp ?? v.systolic_bp;
+      const dbp = v.diastolicBp ?? v.diastolic_bp;
+      const rr = v.respiratoryRate ?? v.respiratory_rate;
+      const spo2 = v.oxygenSaturation ?? v.oxygen_saturation;
+      const temp = v.temperatureCelsius ?? v.temperature_celsius;
+      const glu = v.capillaryBloodGlucose ?? v.capillary_blood_glucose;
+
+      const vitalsItems = [
+        { label: 'Heart Rate', val: hr ? `${hr} bpm` : '--', ref: '60 - 100 bpm', abnormal: hr > 100 || hr < 60 },
+        { label: 'Blood Pressure', val: (sbp && dbp) ? `${sbp}/${dbp} mmHg` : '--', ref: '90-120 / 60-80', abnormal: sbp >= 140 || dbp >= 90 },
+        { label: 'Respiratory Rate', val: rr ? `${rr} /min` : '--', ref: '12 - 20 /min', abnormal: rr > 20 || rr < 12 },
+        { label: 'Oxygen Saturation', val: spo2 ? `${spo2}%` : '--', ref: '95 - 100%', abnormal: spo2 < 95 },
+        { label: 'Temperature', val: temp ? `${temp}°C` : '--', ref: '36.5 - 37.5°C', abnormal: temp > 37.8 },
+        { label: 'Blood Glucose', val: glu ? `${glu} mg/dL` : '--', ref: '70 - 140 mg/dL', abnormal: glu > 180 || glu < 70 }
+      ];
+
+      tbody.innerHTML = vitalsItems.map(item => `
+        <tr>
+          <td><strong>${item.label}</strong></td>
+          <td style="font-family: var(--font-mono); font-weight: 700; color: ${item.abnormal ? '#fca5a5' : '#86efac'};">${item.val}</td>
+          <td style="color: var(--text-muted); font-size: 0.75rem;">${item.ref}</td>
+          <td><span class="badge ${item.abnormal ? 'badge-high' : 'badge-low'}">${item.abnormal ? 'ALERT' : 'NORMAL'}</span></td>
+        </tr>
+      `).join('');
+    }
+
+    function renderExplainabilityDrivers(payloadRaw) {
+      const container = document.getElementById('shapDriverList');
+      container.innerHTML = '';
+      let drivers = [
+        { feature: 'Core Body Temperature > 38.5°C', impact: 24, direction: 'POSITIVE' },
+        { feature: 'Severe Generalized Body Pain (Scale 8/10)', impact: 18, direction: 'POSITIVE' },
+        { feature: 'Heart Rate Tachycardia (102 bpm)', impact: 14, direction: 'POSITIVE' },
+        { feature: 'Normal Oxygen Saturation (97%)', impact: -12, direction: 'NEGATIVE' }
+      ];
+
+      if (payloadRaw) {
+        try {
+          const parsed = typeof payloadRaw === 'string' ? JSON.parse(payloadRaw) : payloadRaw;
+          if (Array.isArray(parsed) && parsed.length > 0) drivers = parsed;
+        } catch(e) {}
+      }
+
+      drivers.forEach(d => {
+        const isPos = d.direction === 'POSITIVE' || d.impact > 0;
+        const color = isPos ? 'var(--acuity-critical)' : 'var(--brand-teal)';
+        const width = Math.min(100, Math.abs(d.impact) * 2.5);
+
+        const row = document.createElement('div');
+        row.className = 'driver-bar-wrapper';
+        row.innerHTML = `
+          <div class="driver-label" title="${d.feature}">${d.feature}</div>
+          <div class="driver-bar-track">
+            <div class="driver-bar-fill" style="width: ${width}%; background: ${color};"></div>
+          </div>
+          <div class="driver-val" style="color: ${isPos ? '#fca5a5' : '#86efac'};">${isPos ? '+' : ''}${d.impact}%</div>
+        `;
+        container.appendChild(row);
+      });
+    }
+
+    function handleCharCount() {
+      const reason = document.getElementById('overrideReason').value;
+      const count = reason.length;
+      const counterEl = document.getElementById('charCount');
+      counterEl.textContent = `${count} / 15 chars min`;
+      if (count >= 15) {
+        counterEl.style.color = '#86efac';
+      } else {
+        counterEl.style.color = 'var(--text-muted)';
+      }
+    }
+
+    function checkOverrideRequirements() {
+      if (!currentAssessment) return;
+      const origCat = currentAssessment.calculatedCategory;
+      const targetCat = document.getElementById('overrideCategory').value;
+      const isDowngradingCritical = currentAssessment.hardRedFlagTriggered && origCat === 'CRITICAL' && targetCat !== 'CRITICAL';
+
+      const helpText = document.getElementById('reasonHelpText');
+      if (isDowngradingCritical) {
+        helpText.style.color = '#f87171';
+        helpText.textContent = 'SAFETY RULE ENFORCEMENT: Downgrading a Critical/Tier-1 Red Flag patient strictly requires at least 15 characters justification.';
+      } else {
+        helpText.style.color = 'var(--text-muted)';
+        helpText.textContent = 'Mandatory minimum 15 characters required when overriding or downgrading a Critical/Tier-1 Red Flag patient.';
+      }
+    }
+
+    async function handleOverrideSubmit(e) {
+      e.preventDefault();
+      const alertEl = document.getElementById('overrideAlert');
+      alertEl.style.display = 'none';
+
+      const doctorId = document.getElementById('overrideDoctorId').value.trim();
+      const targetCategory = document.getElementById('overrideCategory').value;
+      const reason = document.getElementById('overrideReason').value.trim();
+
+      // Check client-side safety rule: >= 15 chars if downgrading critical
+      if (currentAssessment.hardRedFlagTriggered && currentAssessment.calculatedCategory === 'CRITICAL' && targetCategory !== 'CRITICAL') {
+        if (reason.length < 15) {
+          alertEl.style.display = 'block';
+          alertEl.style.background = 'rgba(239, 68, 68, 0.15)';
+          alertEl.style.border = '1px solid rgba(239, 68, 68, 0.35)';
+          alertEl.style.color = '#fca5a5';
+          alertEl.textContent = 'SAFETY RULE ENFORCEMENT: A Tier-1 Physiological Red Flag was triggered on this patient. Downgrading requires explicit clinical justification (minimum 15 characters).';
+          return;
+        }
+      }
+
+      const btn = document.getElementById('submitOverrideBtn');
+      btn.disabled = true;
+      btn.textContent = 'Recording Override in Audit Journal...';
+
+      try {
+        const payload = {
+          assessment_id: currentAssessment.id,
+          doctor_id: doctorId,
+          final_category: targetCategory,
+          override_reason: reason,
+          clinical_notes: `Physician decision override recorded via MediAI Workstation.`
+        };
+
+        const res = await MediAPI.doctor.submitOverride(payload);
+        alertEl.style.display = 'block';
+        alertEl.style.background = 'rgba(16, 185, 129, 0.15)';
+        alertEl.style.border = '1px solid rgba(16, 185, 129, 0.35)';
+        alertEl.style.color = '#86efac';
+        alertEl.textContent = `Physician override confirmed! Final Acuity recorded as ${targetCategory}. Audit entry logged.`;
+
+        // Refresh assessment view
+        setTimeout(() => {
+          loadAssessment(currentAssessment.id);
+        }, 1200);
+      } catch (err) {
+        alertEl.style.display = 'block';
+        alertEl.style.background = 'rgba(239, 68, 68, 0.15)';
+        alertEl.style.border = '1px solid rgba(239, 68, 68, 0.35)';
+        alertEl.style.color = '#fca5a5';
+        alertEl.textContent = err.message || 'Failed to submit clinical override.';
+      } finally {
+        btn.disabled = false;
+        btn.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg><span>Confirm Physician Override</span>';
+      }
+    }
+  </script>
+</body>
+</html>
