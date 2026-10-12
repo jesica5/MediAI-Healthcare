@@ -1,0 +1,884 @@
+
+<html xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:w='urn:schemas-microsoft-com:office:word' xmlns='http://www.w3.org/TR/REC-html40'>
+<head>
+<meta charset='utf-8'>
+<title>MediAI - Implementation Plan for Review</title>
+<!--[if gte mso 9]>
+<xml>
+  <w:WordDocument>
+    <w:View>Print</w:View>
+    <w:Zoom>100</w:Zoom>
+    <w:DoNotOptimizeForBrowser/>
+  </w:WordDocument>
+</xml>
+<![endif]-->
+<style>
+  @page {
+    size: 21.0cm 29.7cm; /* A4 */
+    margin: 2.0cm 2.0cm 2.0cm 2.0cm;
+    mso-page-orientation: portrait;
+  }
+  @page Section1 {
+    mso-header-margin: 1.0cm;
+    mso-footer-margin: 1.0cm;
+  }
+  div.Section1 {
+    page: Section1;
+  }
+</style>
+
+  <meta charset="UTF-8">
+  <title>MediAI - Comprehensive Implementation Plan for Review</title>
+  <style>
+    @page {
+      size: A4;
+      margin: 1.6cm 1.4cm 1.6cm 1.4cm;
+      @bottom-right {
+        content: counter(page);
+        font-size: 8pt;
+        color: #64748b;
+      }
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      color: #1e293b;
+      background: #ffffff;
+      line-height: 1.5;
+      font-size: 9.5pt;
+    }
+
+    .page {
+      page-break-after: always;
+      position: relative;
+    }
+
+    .page:last-child {
+      page-break-after: avoid;
+    }
+
+    /* Cover Page */
+    .cover {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      height: 100%;
+      min-height: 250mm;
+      padding: 2.5cm 1.5cm 2cm 1.5cm;
+      border: 1px solid #e2e8f0;
+      border-radius: 8px;
+      background: linear-gradient(180deg, #f8fafc 0%, #ffffff 100%);
+    }
+
+    .cover-badge {
+      display: inline-block;
+      padding: 4px 12px;
+      background: rgba(14, 165, 233, 0.12);
+      border: 1px solid rgba(14, 165, 233, 0.4);
+      color: #0284c7;
+      font-weight: 700;
+      font-size: 8.5pt;
+      border-radius: 9999px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 1.5rem;
+    }
+
+    .cover-title {
+      font-size: 26pt;
+      font-weight: 900;
+      color: #0f172a;
+      line-height: 1.15;
+      margin-bottom: 0.5rem;
+    }
+
+    .cover-subtitle {
+      font-size: 13pt;
+      color: #475569;
+      font-weight: 500;
+      margin-bottom: 2rem;
+      line-height: 1.4;
+    }
+
+    .cover-meta-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.25rem;
+      padding: 1.5rem;
+      background: #f1f5f9;
+      border-radius: 8px;
+      border-left: 4px solid #0284c7;
+      margin-bottom: 2rem;
+    }
+
+    .meta-item {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .meta-label {
+      font-size: 7.5pt;
+      font-weight: 700;
+      text-transform: uppercase;
+      color: #64748b;
+      letter-spacing: 0.05em;
+    }
+
+    .meta-val {
+      font-size: 9.5pt;
+      font-weight: 700;
+      color: #0f172a;
+      margin-top: 2px;
+    }
+
+    .cover-footer {
+      border-top: 1px solid #cbd5e1;
+      padding-top: 1rem;
+      font-size: 8pt;
+      color: #64748b;
+      display: flex;
+      justify-content: space-between;
+    }
+
+    /* Standard Section Formatting */
+    h1 {
+      font-size: 16pt;
+      font-weight: 800;
+      color: #0f172a;
+      border-bottom: 2px solid #0284c7;
+      padding-bottom: 4px;
+      margin-bottom: 0.85rem;
+      margin-top: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    h2 {
+      font-size: 12pt;
+      font-weight: 700;
+      color: #1e293b;
+      margin-top: 0.85rem;
+      margin-bottom: 0.4rem;
+    }
+
+    h3 {
+      font-size: 10pt;
+      font-weight: 700;
+      color: #334155;
+      margin-top: 0.6rem;
+      margin-bottom: 0.3rem;
+    }
+
+    p {
+      margin-bottom: 0.6rem;
+      color: #334155;
+      text-align: justify;
+    }
+
+    ul, ol {
+      margin-left: 1.2rem;
+      margin-bottom: 0.6rem;
+      color: #334155;
+    }
+
+    li {
+      margin-bottom: 0.25rem;
+    }
+
+    /* Callout Card */
+    .callout {
+      padding: 0.75rem 1rem;
+      border-radius: 6px;
+      margin-bottom: 0.85rem;
+      font-size: 9pt;
+      page-break-inside: avoid;
+    }
+
+    .callout-info {
+      background: #f0f9ff;
+      border-left: 4px solid #0284c7;
+      color: #0369a1;
+    }
+
+    .callout-alert {
+      background: #fef2f2;
+      border-left: 4px solid #ef4444;
+      color: #b91c1c;
+    }
+
+    .callout-success {
+      background: #f0fdf4;
+      border-left: 4px solid #22c55e;
+      color: #15803d;
+    }
+
+    /* Tables */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 8.5pt;
+      margin-bottom: 0.85rem;
+      page-break-inside: avoid;
+    }
+
+    th {
+      background: #f1f5f9;
+      color: #0f172a;
+      font-weight: 700;
+      text-align: left;
+      padding: 6px 8px;
+      border: 1px solid #cbd5e1;
+    }
+
+    td {
+      padding: 5px 8px;
+      border: 1px solid #cbd5e1;
+      color: #334155;
+      vertical-align: top;
+    }
+
+    tr:nth-child(even) {
+      background: #f8fafc;
+    }
+
+    /* Badges */
+    .badge {
+      display: inline-block;
+      padding: 2px 6px;
+      font-size: 7.5pt;
+      font-weight: 700;
+      border-radius: 4px;
+      text-transform: uppercase;
+    }
+
+    .badge-critical { background: #fee2e2; color: #991b1b; }
+    .badge-high { background: #ffedd5; color: #9a3412; }
+    .badge-moderate { background: #fef9c3; color: #854d0e; }
+    .badge-low { background: #dcfce7; color: #166534; }
+    .badge-info { background: #e0f2fe; color: #075985; }
+
+    .code-pill {
+      font-family: Consolas, "Courier New", monospace;
+      font-size: 8pt;
+      background: #f1f5f9;
+      border: 1px solid #e2e8f0;
+      padding: 1px 4px;
+      border-radius: 3px;
+      color: #0f172a;
+    }
+
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.75rem;
+      page-break-inside: avoid;
+      margin-bottom: 0.85rem;
+    }
+
+    .card {
+      border: 1px solid #e2e8f0;
+      border-radius: 6px;
+      padding: 0.75rem;
+      background: #ffffff;
+    }
+  </style>
+</head>
+<body><div class="Section1">
+
+  <!-- ==================== COVER PAGE ==================== -->
+  <div class="page cover">
+    <div>
+      <span class="cover-badge">Academic Clinical Decision-Support Prototype</span>
+      <div class="cover-title">MediAI</div>
+      <div style="font-size: 18pt; font-weight: 800; color: #0284c7; margin-bottom: 0.5rem;">
+        Smart Patient Triage & Emergency Risk Prediction System
+      </div>
+      <div class="cover-subtitle">
+        Comprehensive Technical Architecture, System Engineering & Implementation Plan for Evaluation & Code Review
+      </div>
+
+      <div class="cover-meta-grid">
+        <div class="meta-item">
+          <span class="meta-label">Primary Author & Developer</span>
+          <span class="meta-val">Jesica Jasmine J.</span>
+        </div>
+        <div class="meta-item">
+          <span class="meta-label">Project Repository</span>
+          <span class="meta-val">https://github.com/jesica5/MediAI-Healthcare.git</span>
+        </div>
+        <div class="meta-item">
+          <span class="meta-label">Target Architecture</span>
+          <span class="meta-val">Spring Boot 3.3.4 • MySQL 8.0 • Java 17+ • Vanilla HTML/CSS/JS</span>
+        </div>
+        <div class="meta-item">
+          <span class="meta-label">Evaluation Phase</span>
+          <span class="meta-val">Capstone Project Final Review & System Demonstration</span>
+        </div>
+        <div class="meta-item">
+          <span class="meta-label">Core Clinical Engine</span>
+          <span class="meta-val">Deterministic Triage Engine + Google Gemini AI (2.5-Flash) + TreeSHAP</span>
+        </div>
+        <div class="meta-item">
+          <span class="meta-label">Verification Status</span>
+          <span class="meta-val" style="color: #16a34a;">18/18 Automated JUnit Tests Passing • Build SUCCESS</span>
+        </div>
+      </div>
+
+      <div class="callout callout-alert">
+        <strong>Academic Medical Safety Disclaimer:</strong> MediAI is an educational clinical decision-support research system designed to evaluate multi-parameter physiological triage and explainability drivers. It must never independently diagnose patients, prescribe pharmaceuticals, compute drug dosages, or substitute qualified emergency physicians.
+      </div>
+    </div>
+
+    <div class="cover-footer">
+      <span>MediAI Triage Platform Documentation</span>
+      <span>Confidential & Proprietary • For Evaluation Review</span>
+      <span>October 2026</span>
+    </div>
+  </div>
+
+  <!-- ==================== PAGE 2: EXECUTIVE SUMMARY & ARCHITECTURE ==================== -->
+  <div class="page">
+    <h1>1. Executive Summary & Architecture Overview</h1>
+    
+    <p>
+      <strong>MediAI</strong> is an end-to-end, full-stack hospital clinical triage and patient prioritization system engineered according to modern hospital emergency department protocols (Emergency Severity Index / Canadian Triage Acuity Scale). It bridges high-throughput front-end clinical workflows with persistent relational storage and multi-domain AI explainability.
+    </p>
+
+    <h2>1.1 Approved Technology Stack Alignment</h2>
+    <p>
+      The system strictly adheres to the approved capstone toolset requirements, ensuring full compliance without disallowed dependencies:
+    </p>
+
+    <table>
+      <thead>
+        <tr>
+          <th>Tier</th>
+          <th>Technology</th>
+          <th>Version / Specification</th>
+          <th>Role in System</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Front-End</strong></td>
+          <td>HTML5, Vanilla CSS3, Modern JavaScript</td>
+          <td>ECMAScript 2022 / CSS Variables</td>
+          <td>Accessible, high-performance UI matching clinical terminal guidelines without third-party design bloat.</td>
+        </tr>
+        <tr>
+          <td><strong>Templates</strong></td>
+          <td>Thymeleaf & Static Resource Engines</td>
+          <td>Spring Boot 3.3.4 Starter</td>
+          <td>Dual-serving of clinical views (intake terminal, queue, doctor workstation, analytics).</td>
+        </tr>
+        <tr>
+          <td><strong>Back-End</strong></td>
+          <td>Java Core, Spring Boot RESTful Web Services</td>
+          <td>Java 17 (LTS), Spring Boot 3.3.4</td>
+          <td>Enterprise service architecture, dependency injection, and deterministic clinical engines.</td>
+        </tr>
+        <tr>
+          <td><strong>ORM & Persistence</strong></td>
+          <td>Spring Data JPA & Hibernate Core</td>
+          <td>Hibernate 6.5.3, JPA 3.1</td>
+          <td>Entity-relational mapping, transactional data consistency, derived queries, and relationship integrity.</td>
+        </tr>
+        <tr>
+          <td><strong>Database</strong></td>
+          <td>MySQL Relational Database Server</td>
+          <td>MySQL 8.0+ / InnoDB Engine</td>
+          <td>Persistent, ACID-compliant transactional storage for patients, vitals, triage records, and audit journals.</td>
+        </tr>
+        <tr>
+          <td><strong>Build & Lifecycle</strong></td>
+          <td>Apache Maven</td>
+          <td>Maven 3.9+ via <span class="code-pill">mvnw</span> wrapper</td>
+          <td>Dependency resolution, multi-stage compilation, and automated test execution.</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h2>1.2 Core Architectural Principles & Strict UI Preservation</h2>
+    <div class="callout callout-info">
+      <strong>Zero UI Disruption Mandate:</strong> All new capabilities (Voice Input, Notifications, 2-Step OTP, Feedback Ratings, and AI Clinical Chatbot) are added in a 100% backward-compatible manner. Existing layouts, colors, fonts, routes, and triage risk algorithms remain completely intact.
+    </div>
+
+    <ul>
+      <li><strong>Deterministic Safety First:</strong> Machine learning inferences are strictly bounded by hard deterministic physiological tripwires (e.g., SpO2 &lt; 90% immediately overrides all models to P1 Critical).</li>
+      <li><strong>Zero Protected Health Information (PHI) Leakage:</strong> Patient names are encrypted at rest with AES-256-GCM. Medical Record Numbers (MRNs) use SHA-256 salted hashes. System audit journals log zero raw patient health identifiers.</li>
+      <li><strong>Bilingual Clinical Accessibility:</strong> Full dynamic language interchange between English (<span class="code-pill">en-US</span>) and Tamil (<span class="code-pill">ta-IN</span>) across user interfaces, voice recognition, and clinical reassurance output.</li>
+    </ul>
+
+    <h2>1.3 System Component Architecture</h2>
+    <div class="grid-2">
+      <div class="card">
+        <h3>Clinical Decision Support Layer</h3>
+        <p style="font-size: 8.5pt;">
+          • <strong>TriageEngineService:</strong> Computes scaled risk scores (0-100) and priority categories (P1 to P4).<br>
+          • <strong>GeminiAiService:</strong> Evaluates prompt-guarded contextual clinical rationale.<br>
+          • <strong>TreeSHAP Factor Breakdown:</strong> Transparent attribution weights explaining why an acuity tier was assigned.
+        </p>
+      </div>
+      <div class="card">
+        <h3>Security & Audit Layer</h3>
+        <p style="font-size: 8.5pt;">
+          • <strong>JwtAuthFilter & SecurityConfig:</strong> Stateless bearer token management.<br>
+          • <strong>AuthService & OTP Engine:</strong> SHA-256 hashed 2-factor passcodes with 5-min timeout and attempt limiting.<br>
+          • <strong>AuditService:</strong> Immutable journal logging actor roles, IP addresses, and encrypted action categories.
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== PAGE 3: FEATURE 1 & FEATURE 2 ==================== -->
+  <div class="page">
+    <h1>2. Review of Core Features: Feature 1 & Feature 2</h1>
+
+    <h2>2.1 Feature 1: Voice Input for Clinical Symptoms</h2>
+    <p>
+      The voice recognition module enables patients and triage triage nurses to dictate acute symptoms hands-free, which is especially vital in emergency triage where manual keyboard entry can cause critical intake delays.
+    </p>
+
+    <div class="callout callout-success">
+      <strong>Implementation Location:</strong> Integrated seamlessly adjacent to the chief complaint input field in <span class="code-pill">intake.html</span> (line 230) and <span class="code-pill">profile.html</span> (line 112) via a compact microphone button (<span class="code-pill">btn btn-outline btn-sm</span>).
+    </div>
+
+    <table>
+      <thead>
+        <tr>
+          <th>Requirement</th>
+          <th>Implementation Mechanism</th>
+          <th>Verification Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Bilingual Speech Recognition</strong></td>
+          <td>Leverages Web Speech API (<span class="code-pill">MediAPI.voice.createRecognizer</span>) configured to stream either <span class="code-pill">en-US</span> or <span class="code-pill">ta-IN</span> dynamically based on active language selection.</td>
+          <td><span class="badge badge-low">Verified</span></td>
+        </tr>
+        <tr>
+          <td><strong>Editable Confirmation</strong></td>
+          <td>Transcribed speech streams into the editable <span class="code-pill">ptComplaint</span> text input. Patients and nurses can review, adjust, or delete text before advancing. Speech is never submitted automatically.</td>
+          <td><span class="badge badge-low">Verified</span></td>
+        </tr>
+        <tr>
+          <td><strong>Manual Typing Fallback</strong></td>
+          <td>Input field retains standard keyboard focus. Manual typing remains 100% available without interruption.</td>
+          <td><span class="badge badge-low">Verified</span></td>
+        </tr>
+        <tr>
+          <td><strong>Permission & Error Safety</strong></td>
+          <td>Catches <span class="code-pill">not-allowed</span>, <span class="code-pill">no-speech</span>, and unsupported browser states with polite inline non-blocking guidance banners.</td>
+          <td><span class="badge badge-low">Verified</span></td>
+        </tr>
+        <tr>
+          <td><strong>Preservation of Triage Logic</strong></td>
+          <td>Captured text flows into the existing <span class="code-pill">POST /api/v1/triage/assess</span> pipeline without altering clinical calculations.</td>
+          <td><span class="badge badge-low">Verified</span></td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h2>2.2 Feature 2: Real-Time Clinical Notifications & Alerts System</h2>
+    <p>
+      A persistent, role-aware notification subsystem provides automated clinical alerts for intake completion, triage tier status updates, resuscitation red flags, and doctor override events.
+    </p>
+
+    <div class="grid-2">
+      <div class="card">
+        <h3>Database & Entity Structure</h3>
+        <p style="font-size: 8.5pt;">
+          • <strong>Entity:</strong> <span class="code-pill">Notification.java</span> mapping to table <span class="code-pill">notifications</span>.<br>
+          • <strong>Fields:</strong> <span class="code-pill">id</span>, <span class="code-pill">targetRole</span> (ALL, DOCTOR, NURSE), <span class="code-pill">title</span>, <span class="code-pill">message</span>, <span class="code-pill">priority</span> (CRITICAL, HIGH, INFO), <span class="code-pill">isRead</span>, <span class="code-pill">referenceId</span>, <span class="code-pill">createdAt</span>.<br>
+          • <strong>Repository:</strong> <span class="code-pill">NotificationRepository.java</span> supporting unread counting and role filtering.
+        </p>
+      </div>
+      <div class="card">
+        <h3>UI Top-Nav Bell Drawer</h3>
+        <p style="font-size: 8.5pt;">
+          • <strong>Global Injector:</strong> <span class="code-pill">MediAPI.initNotifications()</span> auto-mounts a bell (<span class="code-pill">🔔</span>) in <span class="code-pill">.nav-actions</span> on every page.<br>
+          • <strong>Badge:</strong> Real-time unread counter pill.<br>
+          • <strong>Drawer:</strong> Interactive dropdown showing timestamps, priority color indicators, individual "Mark read" triggers, and "Mark all read" button.
+        </p>
+      </div>
+    </div>
+
+    <h3>Automated Alert Triggers Workflow</h3>
+    <table>
+      <thead>
+        <tr>
+          <th>Clinical Trigger Event</th>
+          <th>Target Role</th>
+          <th>Priority Tier</th>
+          <th>Notification Content</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Patient Intake Assessment Completed</td>
+          <td><span class="badge badge-info">ALL</span></td>
+          <td><span class="badge badge-moderate">INFO</span></td>
+          <td>"New Triage Assessment Recorded with [Category] priority."</td>
+        </tr>
+        <tr>
+          <td>Tier-1 Hard Red Flag / Critical Hypoxia Triggered</td>
+          <td><span class="badge badge-critical">DOCTOR / NURSE</span></td>
+          <td><span class="badge badge-critical">CRITICAL</span></td>
+          <td>"🚨 CRITICAL Triage Alert: Immediate resuscitation bay attention required."</td>
+        </tr>
+        <tr>
+          <td>Physician Overrides AI Triage Classification</td>
+          <td><span class="badge badge-high">ALL</span></td>
+          <td><span class="badge badge-high">HIGH</span></td>
+          <td>"👨‍⚕️ Physician Triage Override: Category updated to [Target Category]."</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- ==================== PAGE 4: FEATURE 3 & FEATURE 4 ==================== -->
+  <div class="page">
+    <h1>3. Review of Core Features: Feature 3 & Feature 4</h1>
+
+    <h2>3.1 Feature 3: Login Authentication, Role Authorization & 2-Step OTP Security</h2>
+    <p>
+      Staff authentication portal (<span class="code-pill">signin.html</span>) provides enterprise-grade Two-Step Verification (2FA) with cryptographically secure One-Time Passcodes (OTP) while completely preserving the existing visual layout.
+    </p>
+
+    <div class="grid-2">
+      <div class="card">
+        <h3>Two-Step Verification Protocol</h3>
+        <ol style="font-size: 8.5pt; margin-left: 1rem;">
+          <li><strong>Step 1:</strong> User submits email and password. Server validates credentials against BCrypt hashes in MySQL.</li>
+          <li><strong>Step 2:</strong> Generates a 6-digit random passcode, cryptographically hashes it with SHA-256, and stores it in <span class="code-pill">user_otps</span> with a 5-minute expiry timestamp.</li>
+          <li><strong>Client Challenge:</strong> Form transitions in-place to Step 2 showing masked email (<span class="code-pill">d***r@mediai.org</span>), countdown timer, and OTP input field.</li>
+          <li><strong>Validation:</strong> Submitting OTP verifies hash match. Upon success, OTP is immediately invalidated and JWT token is issued.</li>
+        </ol>
+      </div>
+      <div class="card">
+        <h3>Security Guardrails & Hardening</h3>
+        <ul style="font-size: 8.5pt;">
+          <li><strong>Zero Cleartext Storage:</strong> Passcodes are hashed with SHA-256 before database insertion.</li>
+          <li><strong>Attempt Limiting:</strong> Maximum 3 failed verification attempts before the session token is permanently revoked.</li>
+          <li><strong>Single-Use Enforcement:</strong> Re-using a validated OTP returns HTTP 400 Bad Request.</li>
+          <li><strong>Resend Rate Limiting:</strong> 60-second cooldown period prevents SMS/email flooding.</li>
+          <li><strong>Backend RBAC:</strong> Endpoints enforce role verification via JWT claims and request headers.</li>
+        </ul>
+      </div>
+    </div>
+
+    <h2>3.2 Feature 4: Patient Care Experience & Feedback Ratings Registry</h2>
+    <p>
+      An integrated clinical quality rating and feedback subsystem allows patients and clinicians to submit verified care evaluations following triage intake without modifying medical calculations.
+    </p>
+
+    <div class="callout callout-info">
+      <strong>Clinical Fire-walling:</strong> Feedback scores and qualitative comments are strictly segregated from AI risk scores, TreeSHAP algorithms, and triage classifications. They are used purely for clinical operations and service quality telemetry.
+    </div>
+
+    <h3>Component Architecture</h3>
+    <table>
+      <thead>
+        <tr>
+          <th>Subsystem</th>
+          <th>Implementation Details</th>
+          <th>Location</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Feedback Form</strong></td>
+          <td>Interactive 1-to-5 star rating selector + sanitized text comment area (capped at 1,000 characters to prevent buffer abuse). Appears immediately after triage calculation.</td>
+          <td>Step 4 in <span class="code-pill">intake.html</span></td>
+        </tr>
+        <tr>
+          <td><strong>Persistent Entity</strong></td>
+          <td><span class="code-pill">Feedback.java</span> stored in MySQL <span class="code-pill">feedbacks</span> table with <span class="code-pill">rating</span>, <span class="code-pill">comment</span>, <span class="code-pill">submitterRole</span>, <span class="code-pill">category</span>, <span class="code-pill">createdAt</span>.</td>
+          <td><span class="code-pill">com.mediai.entity.Feedback</span></td>
+        </tr>
+        <tr>
+          <td><strong>Admin Telemetry Registry</strong></td>
+          <td>Displays aggregate metrics: average star rating, total submission counter, star distribution percentage bars (5★ through 1★), and real-time qualitative comment list.</td>
+          <td>Card in <span class="code-pill">analytics.html</span></td>
+        </tr>
+        <tr>
+          <td><strong>REST Endpoints</strong></td>
+          <td><span class="code-pill">POST /api/v1/feedback</span> (submission) and <span class="code-pill">GET /api/v1/feedback/summary</span> (aggregation).</td>
+          <td><span class="code-pill">FeedbackController.java</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- ==================== PAGE 5: FEATURE 5 & DATABASE SCHEMA ==================== -->
+  <div class="page">
+    <h1>4. Review of Feature 5 & Complete Database Schema</h1>
+
+    <h2>4.1 Feature 5: Clinical AI Chatbot Assistant (MediAI Assistant)</h2>
+    <p>
+      A universal, non-intrusive floating clinical widget (<span class="code-pill">#mediaiChatbotLauncher</span>) mounted across all pages to guide patients and clinicians with symptom inquiries, normal vital sign baselines, and emergency triage navigation.
+    </p>
+
+    <div class="grid-2">
+      <div class="card">
+        <h3>Clinical Intelligence & Safety Interception</h3>
+        <p style="font-size: 8.5pt;">
+          • <strong>Red-Flag Emergency Interception:</strong> Automatic real-time regex detection of life-threatening presentations (crushing chest pain, severe dyspnea, heavy hemorrhage, stroke symptoms) in English & Tamil.<br>
+          • <strong>Emergency Directive:</strong> Immediately flags <span class="code-pill">is_emergency = true</span>, halts standard Q&A, and issues prominent directive to dial <strong>108 / 112 / 911</strong> or proceed directly to the Emergency Room.<br>
+          • <strong>AI Generative + Clinical Fallback:</strong> Seamless fallback covering fever thresholds (&ge; 38.5°C), clinical pain scales (1-10), and vital signs baselines.
+        </p>
+      </div>
+      <div class="card">
+        <h3>Interactive Widget Capabilities</h3>
+        <p style="font-size: 8.5pt;">
+          • <strong>Bilingual Interchange:</strong> Instant toggle between English (<span class="code-pill">EN</span>) and Tamil (<span class="code-pill">தமிழ்</span>) updating prompt context and chips.<br>
+          • <strong>Integrated Voice Dictation:</strong> Built-in microphone button powered by Web Speech API allowing hands-free patient voice queries.<br>
+          • <strong>Quick Action Chips:</strong> One-click prompts for common medical inquiries.<br>
+          • <strong>Session Memory:</strong> Conversations persistently stored in MySQL <span class="code-pill">chat_messages</span> with history retrieval and clearing APIs.
+        </p>
+      </div>
+    </div>
+
+    <h2>4.2 Relational Database Schema Architecture (MySQL 8.0)</h2>
+    <p>
+      All data entities are managed using Hibernate with <span class="code-pill">spring.jpa.hibernate.ddl-auto=update</span>, guaranteeing zero data loss on restart and maintaining relational integrity:
+    </p>
+
+    <table>
+      <thead>
+        <tr>
+          <th>Table Name</th>
+          <th>Primary Key</th>
+          <th>Key Columns & Constraints</th>
+          <th>Relational Purpose</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><span class="code-pill">patients</span></td>
+          <td><span class="code-pill">id</span> (VARCHAR 36)</td>
+          <td><span class="code-pill">mrn_hash</span>, <span class="code-pill">encrypted_name</span>, <span class="code-pill">dob</span>, <span class="code-pill">gender</span></td>
+          <td>Master patient demographics with AES-256 encrypted names.</td>
+        </tr>
+        <tr>
+          <td><span class="code-pill">vital_signs</span></td>
+          <td><span class="code-pill">id</span> (VARCHAR 36)</td>
+          <td><span class="code-pill">patient_id</span> (FK), <span class="code-pill">heart_rate</span>, <span class="code-pill">systolic_bp</span>, <span class="code-pill">spo2</span>, <span class="code-pill">temp</span></td>
+          <td>Physiological vital readings with validation bounds.</td>
+        </tr>
+        <tr>
+          <td><span class="code-pill">triage_assessments</span></td>
+          <td><span class="code-pill">id</span> (VARCHAR 36)</td>
+          <td><span class="code-pill">patient_id</span> (FK), <span class="code-pill">vitals_id</span> (FK), <span class="code-pill">calculated_category</span>, <span class="code-pill">risk_score</span></td>
+          <td>Acuity classification with TreeSHAP and AI rationale payloads.</td>
+        </tr>
+        <tr>
+          <td><span class="code-pill">triage_reviews</span></td>
+          <td><span class="code-pill">id</span> (VARCHAR 36)</td>
+          <td><span class="code-pill">assessment_id</span> (FK), <span class="code-pill">doctor_id</span>, <span class="code-pill">final_category</span>, <span class="code-pill">is_overridden</span></td>
+          <td>Doctor overrides and clinical confirmation audits.</td>
+        </tr>
+        <tr>
+          <td><span class="code-pill">notifications</span></td>
+          <td><span class="code-pill">id</span> (VARCHAR 36)</td>
+          <td><span class="code-pill">target_role</span>, <span class="code-pill">title</span>, <span class="code-pill">message</span>, <span class="code-pill">priority</span>, <span class="code-pill">is_read</span></td>
+          <td>Role-based persistent clinical alerts and triage updates.</td>
+        </tr>
+        <tr>
+          <td><span class="code-pill">user_otps</span></td>
+          <td><span class="code-pill">id</span> (VARCHAR 36)</td>
+          <td><span class="code-pill">temp_token</span> (IDX), <span class="code-pill">otp_hash</span>, <span class="code-pill">attempts</span>, <span class="code-pill">expires_at</span></td>
+          <td>Single-use SHA-256 hashed 2FA passcode sessions.</td>
+        </tr>
+        <tr>
+          <td><span class="code-pill">feedbacks</span></td>
+          <td><span class="code-pill">id</span> (VARCHAR 36)</td>
+          <td><span class="code-pill">rating</span> (1-5), <span class="code-pill">comment</span>, <span class="code-pill">submitter_role</span>, <span class="code-pill">reference_id</span></td>
+          <td>Patient care experience and staff feedback records.</td>
+        </tr>
+        <tr>
+          <td><span class="code-pill">chat_messages</span></td>
+          <td><span class="code-pill">id</span> (VARCHAR 36)</td>
+          <td><span class="code-pill">conversation_id</span> (IDX), <span class="code-pill">sender</span>, <span class="code-pill">message</span> (TEXT), <span class="code-pill">is_emergency</span></td>
+          <td>Bilingual clinical assistant conversation history.</td>
+        </tr>
+        <tr>
+          <td><span class="code-pill">audit_logs</span></td>
+          <td><span class="code-pill">id</span> (VARCHAR 36)</td>
+          <td><span class="code-pill">action_category</span>, <span class="code-pill">actor_id</span>, <span class="code-pill">ip_address</span>, <span class="code-pill">timestamp</span></td>
+          <td>Zero-PHI append-only compliance journal trail.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- ==================== PAGE 6: API CATALOG & VERIFICATION ==================== -->
+  <div class="page">
+    <h1>5. RESTful API Catalog & Verification Results</h1>
+
+    <h2>5.1 Comprehensive RESTful Service Endpoints</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Method</th>
+          <th>Endpoint Route</th>
+          <th>Access / Role</th>
+          <th>Description & Purpose</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><span class="code-pill">POST</span></td>
+          <td><span class="code-pill">/api/v1/auth/login-step1</span></td>
+          <td>Public</td>
+          <td>Validates credentials; issues temp token & dispatches 6-digit OTP.</td>
+        </tr>
+        <tr>
+          <td><span class="code-pill">POST</span></td>
+          <td><span class="code-pill">/api/v1/auth/verify-otp</span></td>
+          <td>Public</td>
+          <td>Verifies OTP hash; enforces attempt limits; issues JWT session token.</td>
+        </tr>
+        <tr>
+          <td><span class="code-pill">POST</span></td>
+          <td><span class="code-pill">/api/v1/auth/resend-otp</span></td>
+          <td>Public</td>
+          <td>Issues replacement OTP with cooldown rate-limit verification.</td>
+        </tr>
+        <tr>
+          <td><span class="code-pill">POST</span></td>
+          <td><span class="code-pill">/api/v1/triage/assess</span></td>
+          <td>Public / Intake</td>
+          <td>Computes triage category, risk score, TreeSHAP & dispatches alert.</td>
+        </tr>
+        <tr>
+          <td><span class="code-pill">GET</span></td>
+          <td><span class="code-pill">/api/v1/notifications</span></td>
+          <td>Authenticated</td>
+          <td>Retrieves notifications filtered by role (<span class="code-pill">?role=ALL/DOCTOR/NURSE</span>).</td>
+        </tr>
+        <tr>
+          <td><span class="code-pill">PUT</span></td>
+          <td><span class="code-pill">/api/v1/notifications/read-all</span></td>
+          <td>Authenticated</td>
+          <td>Marks all unread notifications as read.</td>
+        </tr>
+        <tr>
+          <td><span class="code-pill">POST</span></td>
+          <td><span class="code-pill">/api/v1/feedback</span></td>
+          <td>Public / User</td>
+          <td>Submits 1-5 star care rating and sanitized qualitative comment.</td>
+        </tr>
+        <tr>
+          <td><span class="code-pill">GET</span></td>
+          <td><span class="code-pill">/api/v1/feedback/summary</span></td>
+          <td>Admin / Staff</td>
+          <td>Returns aggregate average, distribution bars, and recent comments.</td>
+        </tr>
+        <tr>
+          <td><span class="code-pill">POST</span></td>
+          <td><span class="code-pill">/api/v1/chat/message</span></td>
+          <td>Public / Patient</td>
+          <td>Interprets clinical query, intercepts red flags, returns AI reply.</td>
+        </tr>
+        <tr>
+          <td><span class="code-pill">POST</span></td>
+          <td><span class="code-pill">/api/v1/doctor/override</span></td>
+          <td>Doctor / Staff</td>
+          <td>Physician confirmation/override with 15-char rationale safety check.</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h2>5.2 Verification Suite & Test Results Summary</h2>
+    <div class="callout callout-success">
+      <strong>Automated Test Status:</strong> All 18 automated JUnit 5 unit and integration tests passed cleanly. Complete integration scripts (<span class="code-pill">verify_features.ps1</span> and <span class="code-pill">verify_chatbot.ps1</span>) executed with zero errors.
+    </div>
+
+    <table>
+      <thead>
+        <tr>
+          <th>Test Suite</th>
+          <th>Tests Run</th>
+          <th>Pass Rate</th>
+          <th>Key Validations Tested</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><span class="code-pill">AgeCalculationTest</span></td>
+          <td>4</td>
+          <td>100%</td>
+          <td>Leap year math, future date rejection, dynamic age badge updates.</td>
+        </tr>
+        <tr>
+          <td><span class="code-pill">VitalSignsValidationTest</span></td>
+          <td>5</td>
+          <td>100%</td>
+          <td>Physiological bounds (HR 20-300, BP, SpO2, Temp), Diastolic &lt; Systolic check.</td>
+        </tr>
+        <tr>
+          <td><span class="code-pill">TriageEngineTest</span></td>
+          <td>4</td>
+          <td>100%</td>
+          <td>Hard red-flag tripwires, scaled risk score math, TreeSHAP impact drivers.</td>
+        </tr>
+        <tr>
+          <td><span class="code-pill">GeminiAiServiceTest</span></td>
+          <td>3</td>
+          <td>100%</td>
+          <td>Prompt-guarded payload parsing, deterministic clinical fallback.</td>
+        </tr>
+        <tr>
+          <td><span class="code-pill">DoctorServiceTest</span></td>
+          <td>2</td>
+          <td>100%</td>
+          <td>15-character rationale enforcement on Critical downgrade, notification trigger.</td>
+        </tr>
+        <tr>
+          <td><span class="code-pill">verify_features.ps1</span></td>
+          <td>6 Flow Stages</td>
+          <td>100%</td>
+          <td>E2E check: HTTP delivery, 2FA OTP, Notifications, Triage, Feedback, Doctor review.</td>
+        </tr>
+        <tr>
+          <td><span class="code-pill">verify_chatbot.ps1</span></td>
+          <td>6 Flow Stages</td>
+          <td>100%</td>
+          <td>Bilingual greeting, symptom Q&A, Tamil queries, Emergency 108 interception, DB history.</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h2>5.3 Demonstration & Reviewer Run Instructions</h2>
+    <div class="grid-2">
+      <div class="card">
+        <h3>Launch Commands</h3>
+        <p style="font-size: 8.5pt;">
+          1. Verify MySQL is running on <span class="code-pill">localhost:3306</span>.<br>
+          2. Execute Spring Boot application:<br>
+          <span class="code-pill">.\mvnw.cmd spring-boot:run</span><br>
+          3. Open browser: <span class="code-pill">http://localhost:8080</span>
+        </p>
+      </div>
+      <div class="card">
+        <h3>Pre-configured Credentials (1-Click Fill)</h3>
+        <p style="font-size: 8.5pt;">
+          • <strong>Doctor Workstation:</strong> <span class="code-pill">doctor@mediai.org</span> / <span class="code-pill">Doctor@123</span><br>
+          • <strong>Triage Nurse:</strong> <span class="code-pill">nurse@mediai.org</span> / <span class="code-pill">Nurse@123</span><br>
+          • <strong>Administrator:</strong> <span class="code-pill">admin@mediai.org</span> / <span class="code-pill">Admin@123</span>
+        </p>
+      </div>
+    </div>
+  </div>
+
+</div></body>
+</html>
