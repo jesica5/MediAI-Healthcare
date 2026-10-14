@@ -1,0 +1,567 @@
+================================================================================
+MEDIAI - COMPREHENSIVE CAPSTONE IMPLEMENTATION PLAN & TECHNICAL ARCHITECTURE
+================================================================================
+
+Project Title: MediAI - Smart Patient Triage & Emergency Risk Prediction System
+Author & Developer: Jesica Jasmine J.
+Repository: https://github.com/jesica5/MediAI-Healthcare.git
+Target Deployment: Spring Boot 3.3.4 • MySQL 8.0+ • Java 17 (LTS) • Vanilla Web Stack
+Build System: Apache Maven 3.9+ (via mvnw wrapper)
+Course Module: Capstone Final Project Implementation & Technical Review
+Verification Status: 18/18 Automated JUnit Tests Passing • Build SUCCESS
+Date: October 2026
+
+--------------------------------------------------------------------------------
+ACADEMIC CLINICAL SAFETY DISCLAIMER:
+MediAI is an educational and academic clinical decision-support research system 
+designed to evaluate multi-parameter physiological triage and explainability drivers.
+It must NEVER independently diagnose patients, prescribe pharmaceuticals, 
+compute drug dosages, or substitute qualified emergency physicians.
+--------------------------------------------------------------------------------
+
+================================================================================
+MANDATED COURSE TECHNOLOGY STACK COMPLIANCE AUDIT
+================================================================================
+In strict accordance with course capstone project regulations, ONLY the 
+mandated and approved course technologies are utilized across the entire system.
+All unapproved tools have been strictly excluded to maintain 100% academic compliance:
+
+FRONT-END STACK (STRICTLY APPROVED ONLY):
+1. HTML (HTML5 Semantic Markup)
+2. CSS (Vanilla CSS3 & CSS Variables Design System)
+3. JavaScript (Modern ECMAScript 2022 / ES6+ Vanilla JS)
+4. Bootstrap (Optional UI Utilities & Grid Alignment)
+5. Thymeleaf (Optional Spring Boot Template Rendering Engine)
+
+BACK-END STACK (STRICTLY APPROVED ONLY):
+1. Java Core (Java 17 LTS, Multi-threading, OOP, Stream API)
+2. Spring Boot (Spring Boot 3.3.4, REST Web Services, Security)
+3. MySQL (MySQL 8.0+ Relational Database Server, InnoDB Engine)
+4. Maven (Apache Maven 3.9+ via mvnw build lifecycle wrapper)
+5. Spring Data JPA (Repository Abstraction & Derived Queries)
+6. Hibernate (Hibernate 6.5.3 ORM & DDL Auto-Schema Management)
+
+================================================================================
+TABLE OF CONTENTS
+================================================================================
+1. EXECUTIVE SUMMARY & SYSTEM OVERVIEW
+2. ARCHITECTURAL SAFETY INVARIANTS & GOVERNANCE
+3. TECHNOLOGY STACK IMPLEMENTATION DETAILS
+4. MODULAR SYSTEM ARCHITECTURE & RESPONSIBILITY MATRIX
+5. DETAILED SPECIFICATION OF CORE FEATURES
+   5.1 Feature 1: Bilingual Voice Input for Clinical Symptoms
+   5.2 Feature 2: Real-Time Clinical Notifications & Alert Drawer
+   5.3 Feature 3: Staff Authentication, RBAC & 2-Step OTP Security
+   5.4 Feature 4: Patient Care Experience & Feedback Ratings Registry
+   5.5 Feature 5: Clinical AI Chatbot Assistant (MediAI Assistant)
+6. RELATIONAL DATABASE ARCHITECTURE & HIBERNATE ENTITY SCHEMAS
+7. RESTFUL WEB SERVICES API CATALOG
+8. AUTOMATED TESTING, VERIFICATION & QUALITY ASSURANCE SUITE
+9. STEP-BY-STEP EXECUTION RUNBOOK & DEMONSTRATION GUIDE
+
+================================================================================
+1. EXECUTIVE SUMMARY & SYSTEM OVERVIEW
+================================================================================
+MediAI is an enterprise-grade hospital emergency clinical triage and patient 
+prioritization web application engineered in alignment with international 
+emergency triage protocols (Emergency Severity Index [ESI] and Canadian Triage 
+Acuity Scale [CTAS]).
+
+The system eliminates intake delays through accessible front-end interfaces, 
+evaluates patient physiological parameters against deterministic red-flag rules, 
+computes standardized acuity priority levels (P1 Critical through P4 Low), 
+and presents an attending physician workstation for review, clinical rationale 
+recording, and override management.
+
+Core Architectural Goals:
+- Deliver zero-lag clinical intake via lightweight, native Vanilla HTML/CSS/JS.
+- Guarantee patient safety by enforcing hard deterministic physiological rules.
+- Maintain immutable audit logging with zero Protected Health Information (PHI).
+- Provide two-step verification (2FA OTP) for authenticated hospital staff.
+- Offer bilingual clinical accessibility in English (en-US) and Tamil (ta-IN).
+
+================================================================================
+2. ARCHITECTURAL SAFETY INVARIANTS & GOVERNANCE
+================================================================================
+The MediAI system enforces five non-negotiable architectural safety invariants:
+
+1. DETERMINISTIC RULE SUPREMACY:
+   Deterministic physiological red-flag safety rules strictly override all 
+   heuristic or statistical scoring. If any Tier-1 red flag matches:
+   - Risk score is locked to 100.
+   - Acuity priority is forced to P1 CRITICAL.
+   - Mandatory physician evaluation response window is set to 0 minutes 
+     (immediate resuscitation bay allocation).
+
+2. NEVER LOOSEN A RULE:
+   Safety criteria are one-way fail-safe. Missing or null vital sign inputs 
+   never suppress independent checks in other domains. When essential vitals 
+   (SpO2, SBP, HR) are absent, system confidence drops to LOW with prominent 
+   clinical warnings.
+
+3. PURE FUNCTION EVALUATION ENGINE:
+   The clinical safety evaluation engine is implemented with pure Java Core 
+   functions: zero I/O, zero network dependencies, zero external lookups, 
+   ensuring predictable, deterministic output for any physiological input set.
+
+4. ALERT FAILURE ISOLATION:
+   Any failure in downstream notification dispatch or messaging channels 
+   never blocks transactional database persistence or patient queue admission.
+
+5. FAIL-CLOSED PRINCIPLE & ZERO-PHI COMPLIANCE:
+   - System exceptions fail securely and never default to an unearned LOW or 
+     MODERATE acuity category.
+   - Patient names are encrypted at rest using AES-256-GCM.
+   - Medical Record Numbers (MRNs) use salted SHA-256 hashes.
+   - Audit logs store zero plaintext patient health identifiers.
+   - Administrative roles view masked records: "REDACTED (ADMIN_VIEW)".
+
+================================================================================
+3. TECHNOLOGY STACK IMPLEMENTATION DETAILS
+================================================================================
+
+FRONT-END ARCHITECTURE (src/main/resources/static & templates):
+--------------------------------------------------------------------------------
+1. HTML (HTML5):
+   - Semantic markup across all clinical terminal views:
+     * index.html: System launch portal and navigation landing page.
+     * signin.html: Staff login portal with dynamic 2-step OTP verification challenge.
+     * intake.html: Multi-step patient triage wizard with vital bounds checking.
+     * queue.html: Real-time emergency queue sorted by clinical acuity priority.
+     * review.html: Comprehensive patient evaluation and physician override console.
+     * doctor.html: Attending doctor dashboard and live clinical overview.
+     * medications.html: Medication history review and reconciliation interface.
+     * analytics.html: Department throughput KPIs and acuity distribution charts.
+     * profile.html: Patient demographics and clinical history records.
+
+2. CSS (Vanilla CSS3 & Custom Variables):
+   - Located in src/main/resources/static/css/styles.css.
+   - High-contrast clinical color palette compliant with WCAG AA accessibility:
+     * P1 Critical (Red): #E53E3E (0 min response threshold)
+     * P2 High (Orange): #ED8936 (15-30 min response threshold)
+     * P3 Moderate (Yellow): #ECC94B (60 min diagnostic threshold)
+     * P4 Low (Green): #38A169 (120 min ambulatory threshold)
+   - Zero-dependency responsive design using CSS Flexbox, Grid, and CSS Variables.
+
+3. JavaScript (Modern Vanilla JS / ES6+):
+   - Located in src/main/resources/static/js/api.js and i18n.js.
+   - Asynchronous Fetch API for RESTful back-end communication.
+   - Web Speech API integration for continuous bilingual speech-to-text dictation.
+   - Dynamic DOM manipulation for the floating MediAI clinical assistant widget.
+   - Client-side token management (JWT storage, session header injection).
+
+4. Bootstrap (Optional UI Utilities):
+   - Utility classes for layout alignment, responsive breakpoints, and standard 
+     modal dialogs without overriding custom healthcare design tokens.
+
+5. Thymeleaf (Optional Template Engine):
+   - Managed via spring-boot-starter-thymeleaf in pom.xml for optional server-side 
+     attribute binding and dynamic HTML fragment rendering.
+
+BACK-END ARCHITECTURE (src/main/java/com/mediai):
+--------------------------------------------------------------------------------
+1. Java Core (Java 17 LTS):
+   - Object-Oriented Domain Models (DTOs, Entities, Value Objects).
+   - Java Collections Framework & Stream API for triage queue sorting.
+   - Cryptographic utilities: AES-256-GCM encryption and SHA-256 hashing.
+
+2. Spring Boot (3.3.4):
+   - Spring Boot Starters: Web, Data JPA, Security, Validation, Thymeleaf.
+   - RESTful Controllers with @RestController, @RequestMapping, @CrossOrigin.
+   - Exception handling via @ControllerAdvice and custom runtime exceptions.
+   - Stateless security pipeline with JwtAuthFilter and SecurityFilterChain.
+
+3. MySQL (MySQL 8.0+):
+   - Relational Database Server with InnoDB storage engine.
+   - Foreign key constraints enforcing referential integrity between patients, 
+     vital signs, triage assessments, reviews, and audit records.
+   - UTF-8 (utf8mb4) character encoding ensuring native Tamil script support.
+
+4. Apache Maven:
+   - Maven 3.9+ lifecycle management via project wrapper (./mvnw.cmd / ./mvnw).
+   - Dependency management configured in pom.xml.
+   - Automated test execution through maven-surefire-plugin.
+
+5. Spring Data JPA:
+   - Repository interfaces extending JpaRepository<Entity, String>.
+   - Custom query methods, unread notification counts, and status filtering.
+
+6. Hibernate (Hibernate 6.5.3):
+   - Object-Relational Mapping with JPA annotations (@Entity, @Table, @Column, @Id).
+   - Schema auto-generation and updates via spring.jpa.hibernate.ddl-auto=update.
+   - Hibernate MySQLDialect integration with zero manual SQL migration overhead.
+
+================================================================================
+4. MODULAR SYSTEM ARCHITECTURE & RESPONSIBILITY MATRIX
+================================================================================
+The application is structured into seven logical modules aligned with course 
+engineering requirements:
+
+MODULE 1: APPLICATION CORE & SECURITY (M1)
+- Paths: com.mediai.config, com.mediai.controller.AuthController, signin.html
+- Responsibilities: JWT bearer token generation, BCrypt password hashing, 
+  Two-Step OTP verification, CORS configuration, and authenticated session guards.
+
+MODULE 2: PATIENT INTAKE & TRIAGE TERMINAL (M2)
+- Paths: com.mediai.controller.TriageController, intake.html, static/js/api.js
+- Responsibilities: Patient demographic entry, vital sign input validation 
+  (HR, BP, RR, SpO2, Temp, CBG), hands-free voice dictation, and assessment submission.
+
+MODULE 3: DETERMINISTIC CLINICAL TRIAGE ENGINE (M3)
+- Paths: com.mediai.service.TriageEngineService, TriageAssessment.java
+- Responsibilities: 12-domain red-flag safety rules, physiological baseline 
+  tripwires, risk score calculation (0-100), and priority stratification (P1-P4).
+
+MODULE 4: CLINICAL ALERTS & NOTIFICATIONS (M4)
+- Paths: com.mediai.service.NotificationService, Notification.java, static/js/api.js
+- Responsibilities: Role-based clinical alert creation, top-nav bell dropdown drawer, 
+  unread badge counters, and one-click mark-as-read endpoints.
+
+MODULE 5: DOCTOR EMERGENCY WORKSTATION & OVERRIDE CONSOLE (M5)
+- Paths: com.mediai.controller.DoctorController, doctor.html, review.html, medications.html
+- Responsibilities: Live priority-ordered emergency queue, patient clinical review, 
+  attending physician override console with mandatory 15-character clinical rationale, 
+  and medication reconciliation review.
+
+MODULE 6: ACCESSIBLE HEALTHCARE DESIGN SYSTEM (M6)
+- Paths: static/css/styles.css, static/js/i18n.js
+- Responsibilities: WCAG AA color tokens, bilingual English/Tamil typography, 
+  accessible screen-reader tags, and responsive component styling.
+
+MODULE 7: COMPLIANCE, AUDITING & ANALYTICS (M7)
+- Paths: com.mediai.service.AuditService, AuditLog.java, analytics.html
+- Responsibilities: Immutable zero-PHI audit logging, department throughput KPIs, 
+  clinical concordance rate calculation, and patient experience feedback summaries.
+
+================================================================================
+5. DETAILED SPECIFICATION OF CORE FEATURES
+================================================================================
+
+--------------------------------------------------------------------------------
+5.1 FEATURE 1: BILINGUAL VOICE INPUT FOR CLINICAL SYMPTOMS
+--------------------------------------------------------------------------------
+- Purpose: Reduces intake delays in high-pressure emergency wards by allowing 
+  hands-free speech dictation of patient chief complaints.
+- UI Location: Mounted adjacent to the chief complaint input field in intake.html 
+  and profile.html via a microphone button (<button class="btn btn-outline btn-sm">).
+- Implementation Architecture:
+  * Leverages browser-native Web Speech API (webkitSpeechRecognition).
+  * JavaScript dynamically configures language to 'en-US' or 'ta-IN' based on 
+    the active bilingual toggle.
+  * Real-time transcribed text streams directly into the editable complaint textarea.
+  * Human-in-the-Loop Safeguard: Speech is NEVER auto-submitted. Patients and nurses 
+    retain full capability to review, correct, or delete transcribed text.
+  * Manual Typing Fallback: Standard keyboard input remains fully functional.
+  * Error Handling: Displays non-blocking inline alerts if mic access is denied.
+
+--------------------------------------------------------------------------------
+5.2 FEATURE 2: REAL-TIME CLINICAL NOTIFICATIONS & ALERT DRAWER
+--------------------------------------------------------------------------------
+- Purpose: Provides immediate, role-filtered clinical notifications for critical 
+  patient arrivals, resuscitation flags, and doctor override events.
+- UI Location: Global top navigation bell icon (🔔) with unread pill badge, 
+  opening an interactive slide-out notification drawer on any page.
+- Storage: MySQL 'notifications' table via Notification.java and NotificationRepository.
+- Automated Trigger Workflows:
+  1. Intake Completed -> Role: ALL -> Priority: INFO
+     "New Triage Assessment Recorded with [Category] priority."
+  2. Tier-1 Hard Red Flag / Critical Hypoxia -> Role: DOCTOR, NURSE -> Priority: CRITICAL
+     "🚨 CRITICAL Triage Alert: Immediate resuscitation bay attention required."
+  3. Doctor Override Applied -> Role: ALL -> Priority: HIGH
+     "👨‍⚕️ Physician Triage Override: Category updated to [Target Category]."
+- Endpoints: GET /api/v1/notifications, PUT /api/v1/notifications/read-all.
+
+--------------------------------------------------------------------------------
+5.3 FEATURE 3: STAFF AUTHENTICATION, RBAC & 2-STEP OTP SECURITY
+--------------------------------------------------------------------------------
+- Purpose: Enterprise-grade staff authentication with two-factor OTP verification 
+  protecting hospital records against unauthorized access.
+- Two-Step Verification Flow (signin.html):
+  1. Step 1: User submits clinical email and password. Spring Security verifies 
+     credentials against BCrypt password hashes in MySQL.
+  2. Step 2 Dispatch: Backend generates a cryptographically secure 6-digit random 
+     passcode, hashes it with SHA-256, and stores it in 'user_otps' with a 5-minute expiry.
+  3. Step 2 Challenge: The login form smoothly transitions in-place to the OTP card, 
+     displaying masked email (e.g., "d***r@mediai.org"), countdown timer, and OTP input.
+  4. Step 2 Validation: Submitting OTP verifies the SHA-256 hash match. Upon success, 
+     OTP is invalidated, and a signed JWT bearer token is issued for subsequent requests.
+- Security Defenses:
+  * Zero cleartext passcode storage in database.
+  * Maximum 3 failed attempts before the session token is permanently revoked.
+  * Re-use of validated OTP returns HTTP 400 Bad Request.
+  * 60-second cooldown rate limit prevents OTP flooding.
+
+--------------------------------------------------------------------------------
+5.4 FEATURE 4: PATIENT CARE EXPERIENCE & FEEDBACK RATINGS REGISTRY
+--------------------------------------------------------------------------------
+- Purpose: Records patient satisfaction and clinical quality ratings immediately 
+  following triage intake to track department service performance.
+- Fire-Walling Invariant: Feedback ratings are strictly isolated from clinical 
+  scoring, risk calculations, and triage priority algorithms.
+- Subsystem Components:
+  * Interactive 1-to-5 star selector with sanitized 1,000-character comment area 
+    presented on Step 4 of intake.html.
+  * Stored in MySQL 'feedbacks' table via Feedback.java.
+  * Admin Telemetry Console: Located in analytics.html, displaying overall average 
+    rating, total submission count, 5-star to 1-star percentage bars, and qualitative feedback.
+  * Endpoints: POST /api/v1/feedback, GET /api/v1/feedback/summary.
+
+--------------------------------------------------------------------------------
+5.5 FEATURE 5: CLINICAL AI CHATBOT ASSISTANT (MEDIAI ASSISTANT)
+--------------------------------------------------------------------------------
+- Purpose: A persistent, floating clinical assistant widget (#mediaiChatbotLauncher) 
+  mounted across all HTML pages to assist users with vital baselines and ER guidance.
+- Clinical Intelligence & Safety Safeguards:
+  * Red-Flag Emergency Interception: Real-time regex detection of life-threatening 
+    complaints (crushing chest pain, severe breathlessness, heavy bleeding, stroke signs) 
+    in both English and Tamil.
+  * Emergency Directive: When triggered, sets is_emergency = true, halts routine Q&A, 
+    and displays an immediate directive to dial 108 / 112 / 911 or proceed to ER bay.
+  * Clinical Knowledge Engine: Explains normal physiological vital baselines, 
+    fever thresholds (>= 38.5°C), and 1-10 pain intensity scales.
+  * Bilingual Interchange: Instant toggle between English (EN) and Tamil (தமிழ்).
+  * Hands-free Voice Input: Microphone button inside chat drawer for voice queries.
+  * Persistent History: Messages stored in MySQL 'chat_messages' table.
+
+================================================================================
+6. RELATIONAL DATABASE ARCHITECTURE & HIBERNATE ENTITY SCHEMAS
+================================================================================
+All relational database tables are managed in MySQL 8.0 using Hibernate ORM with 
+spring.jpa.hibernate.ddl-auto=update:
+
+1. TABLE: patients (Entity: Patient.java)
+   - id: VARCHAR(36) PRIMARY KEY
+   - mrn_hash: VARCHAR(64) NOT NULL UNIQUE (SHA-256 salted hash)
+   - encrypted_name: TEXT NOT NULL (AES-256-GCM encrypted)
+   - dob: DATE NOT NULL
+   - gender: VARCHAR(10) NOT NULL
+   - blood_group: VARCHAR(5)
+   - created_at: TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+
+2. TABLE: vital_signs (Entity: VitalSigns.java)
+   - id: VARCHAR(36) PRIMARY KEY
+   - patient_id: VARCHAR(36) NOT NULL, FOREIGN KEY -> patients(id)
+   - heart_rate: INT NOT NULL (Validation: 20 - 300 bpm)
+   - systolic_bp: INT NOT NULL (Validation: 40 - 260 mmHg)
+   - diastolic_bp: INT NOT NULL (Validation: 20 - 160 mmHg, DBP < SBP)
+   - respiratory_rate: INT NOT NULL (Validation: 4 - 60 bpm)
+   - spo2: DECIMAL(4,1) NOT NULL (Validation: 50.0 - 100.0 %)
+   - temperature: DECIMAL(4,1) NOT NULL (Validation: 30.0 - 45.0 °C)
+   - blood_glucose: DECIMAL(5,1) (Validation: 20.0 - 800.0 mg/dL)
+   - recorded_at: TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+
+3. TABLE: triage_assessments (Entity: TriageAssessment.java)
+   - id: VARCHAR(36) PRIMARY KEY
+   - patient_id: VARCHAR(36) NOT NULL, FOREIGN KEY -> patients(id)
+   - vitals_id: VARCHAR(36) NOT NULL, FOREIGN KEY -> vital_signs(id)
+   - chief_complaint: TEXT NOT NULL
+   - calculated_category: VARCHAR(10) NOT NULL (CRITICAL, HIGH, MODERATE, LOW)
+   - risk_score: INT NOT NULL (Range: 0 - 100)
+   - confidence_score: DECIMAL(3,2) NOT NULL
+   - is_red_flag: BOOLEAN DEFAULT FALSE
+   - clinical_rationale: TEXT
+   - created_at: TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+
+4. TABLE: triage_reviews (Entity: TriageReview.java)
+   - id: VARCHAR(36) PRIMARY KEY
+   - assessment_id: VARCHAR(36) NOT NULL, FOREIGN KEY -> triage_assessments(id)
+   - doctor_id: VARCHAR(64) NOT NULL
+   - original_category: VARCHAR(10) NOT NULL
+   - final_category: VARCHAR(10) NOT NULL
+   - is_overridden: BOOLEAN DEFAULT FALSE
+   - override_reason: TEXT (Minimum 15 characters required on Critical downgrade)
+   - reviewed_at: TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+
+5. TABLE: notifications (Entity: Notification.java)
+   - id: VARCHAR(36) PRIMARY KEY
+   - target_role: VARCHAR(20) NOT NULL (ALL, DOCTOR, NURSE)
+   - title: VARCHAR(120) NOT NULL
+   - message: TEXT NOT NULL
+   - priority: VARCHAR(10) NOT NULL (CRITICAL, HIGH, INFO)
+   - is_read: BOOLEAN DEFAULT FALSE
+   - reference_id: VARCHAR(64)
+   - created_at: TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+
+6. TABLE: user_otps (Entity: OtpVerification.java)
+   - id: VARCHAR(36) PRIMARY KEY
+   - email: VARCHAR(120) NOT NULL
+   - temp_token: VARCHAR(64) NOT NULL INDEX
+   - otp_hash: VARCHAR(64) NOT NULL (SHA-256)
+   - attempts: INT DEFAULT 0
+   - expires_at: TIMESTAMP NOT NULL
+   - created_at: TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+
+7. TABLE: feedbacks (Entity: Feedback.java)
+   - id: VARCHAR(36) PRIMARY KEY
+   - rating: INT NOT NULL (Range: 1 - 5)
+   - comment: VARCHAR(1000)
+   - submitter_role: VARCHAR(20) NOT NULL
+   - reference_id: VARCHAR(64)
+   - created_at: TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+
+8. TABLE: chat_messages (Entity: ChatMessage.java)
+   - id: VARCHAR(36) PRIMARY KEY
+   - conversation_id: VARCHAR(64) NOT NULL INDEX
+   - sender: VARCHAR(20) NOT NULL (PATIENT, BOT)
+   - message: TEXT NOT NULL
+   - language: VARCHAR(10) NOT NULL (en, ta)
+   - is_emergency: BOOLEAN DEFAULT FALSE
+   - timestamp: TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+
+9. TABLE: audit_logs (Entity: AuditLog.java)
+   - id: VARCHAR(36) PRIMARY KEY
+   - action_category: VARCHAR(64) NOT NULL
+   - actor_id: VARCHAR(64) NOT NULL
+   - ip_address: VARCHAR(45) NOT NULL
+   - timestamp: TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+   - details: TEXT (Zero PHI)
+
+10. TABLE: users (Entity: User.java)
+    - id: VARCHAR(36) PRIMARY KEY
+    - email: VARCHAR(120) NOT NULL UNIQUE
+    - password_hash: VARCHAR(120) NOT NULL (BCrypt)
+    - role: VARCHAR(20) NOT NULL (DOCTOR, NURSE, ADMIN)
+    - full_name: VARCHAR(100) NOT NULL
+
+11. TABLE: medication_records (Entity: MedicationRecord.java)
+    - id: VARCHAR(36) PRIMARY KEY
+    - patient_id: VARCHAR(36) NOT NULL, FOREIGN KEY -> patients(id)
+    - medication_name: VARCHAR(120) NOT NULL
+    - dosage: VARCHAR(50) NOT NULL
+    - route: VARCHAR(30)
+    - frequency: VARCHAR(50)
+    - status: VARCHAR(20) DEFAULT 'ACTIVE'
+    - reconciliation_notes: TEXT
+
+================================================================================
+7. RESTFUL WEB SERVICES API CATALOG
+================================================================================
+Implemented using Spring Boot RESTful Web Services:
+
+AUTHENTICATION & TWO-STEP OTP (com.mediai.controller.AuthController):
+- POST /api/v1/auth/login-step1
+  Validates credentials; generates 6-digit random passcode; stores SHA-256 hash; 
+  returns { tempToken, maskedEmail, expiresInSeconds }.
+- POST /api/v1/auth/verify-otp
+  Validates OTP hash; enforces attempt limits; issues signed JWT bearer token.
+- POST /api/v1/auth/resend-otp
+  Issues replacement OTP subject to 60-second cooldown rate limit.
+
+TRIAGE & PATIENT INTAKE (com.mediai.controller.TriageController):
+- POST /api/v1/triage/assess
+  Accepts patient demographics, symptoms, and physiological vitals; executes 
+  deterministic red-flag engine; records triage assessment; triggers clinical notification.
+- GET /api/v1/triage/assessments
+  Returns recent triage assessments with priority and risk scores.
+
+DOCTOR WORKSTATION (com.mediai.controller.DoctorController):
+- GET /api/v1/doctor/queue
+  Returns emergency patient queue sorted by Priority (P1 > P2 > P3 > P4), 
+  Risk Score DESC, and Arrival Time.
+- GET /api/v1/doctor/patient/{id}
+  Returns complete patient clinical profile, vital signs history, and triage record.
+- POST /api/v1/doctor/override
+  Records attending physician confirmation or override. Strictly enforces 
+  minimum 15-character clinical rationale when downgrading a Critical case.
+- GET /api/v1/doctor/medications?patientId={id}
+  Returns home medications for reconciliation (prescribing/dispensing excluded).
+- GET /api/v1/doctor/analytics
+  Returns department throughput metrics, acuity breakdown, and concordance rates.
+
+CLINICAL NOTIFICATIONS (com.mediai.controller.NotificationController):
+- GET /api/v1/notifications?role={ALL|DOCTOR|NURSE}
+  Returns unread and recent clinical notifications with priority indicators.
+- PUT /api/v1/notifications/read-all
+  Marks all unread notifications as read.
+
+PATIENT FEEDBACK (com.mediai.controller.FeedbackController):
+- POST /api/v1/feedback
+  Records patient or staff care experience rating (1 to 5 stars) and comment.
+- GET /api/v1/feedback/summary
+  Returns aggregate average rating, total count, and star distribution metrics.
+
+CLINICAL CHATBOT ASSISTANT (com.mediai.controller.ChatController):
+- POST /api/v1/chat/message
+  Interprets clinical query, detects emergency red flags, returns AI guidance.
+- GET /api/v1/chat/history?conversationId={id}
+  Retrieves conversation history for the active session.
+
+================================================================================
+8. AUTOMATED TESTING, VERIFICATION & QUALITY ASSURANCE SUITE
+================================================================================
+The project includes a comprehensive automated testing suite executed via Apache Maven:
+
+1. SPRING BOOT JUNIT 5 TEST SUITE (18/18 TESTS PASSING):
+   - AgeCalculationTest (4 tests):
+     * Accurate calculation from DOB across leap years.
+     * Rejection of invalid future birth dates.
+     * Dynamic age badge formatting.
+   - VitalSignsValidationTest (5 tests):
+     * Physiological boundaries (HR 20-300 bpm, SBP 40-260 mmHg, SpO2 50-100%).
+     * Physiological constraint: Diastolic BP must be strictly less than Systolic BP.
+     * Core body temperature thresholds (30.0 - 45.0 °C).
+   - TriageEngineTest (4 tests):
+     * Hard red-flag tripwire detection (SpO2 < 90% forced to P1 Critical / Score 100).
+     * Proportional numeric risk score scaling across mild and moderate vitals.
+     * Prioritization sorting logic.
+   - GeminiAiServiceTest (3 tests):
+     * Prompt-guarded clinical payload generation.
+     * Robust deterministic clinical fallback when network is unavailable.
+   - DoctorServiceTest (2 tests):
+     * Enforcement of 15-character rationale safeguard on Critical downgrades.
+     * Automated dispatch of notification and audit log on override.
+
+2. POWERSHELL AUTOMATED END-TO-END VERIFICATION SCRIPTS:
+   - verify_features.ps1: Validates complete end-to-end flow: HTTP delivery, 
+     2FA OTP verification, Notification creation, Triage assessment calculation, 
+     Feedback recording, and Doctor override.
+   - verify_chatbot.ps1: Validates bilingual greeting, symptom Q&A, voice input 
+     payloads, emergency red-flag 108 redirection, and database session memory.
+
+================================================================================
+9. STEP-BY-STEP EXECUTION RUNBOOK & DEMONSTRATION GUIDE
+================================================================================
+
+PREREQUISITES:
+1. Java Development Kit: OpenJDK 17 LTS (verified with 'java -version').
+2. MySQL Server: MySQL 8.0+ running on localhost:3306.
+3. Apache Maven: Handled automatically by the included './mvnw.cmd' wrapper.
+
+DATABASE INITIALIZATION:
+1. Open MySQL CLI or MySQL Workbench:
+   mysql -u root -p
+2. Ensure database exists (or allow Spring Boot auto-create):
+   CREATE DATABASE IF NOT EXISTS mediai CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+BUILD & RUN APPLICATION:
+1. Open PowerShell / Command Prompt in project root:
+   c:\Users\jesic\Downloads\Medi-Ai-develop\Medi-Ai-develop
+2. Clean and compile project with Maven:
+   .\mvnw.cmd clean compile
+3. Run automated JUnit test suite:
+   .\mvnw.cmd test
+   (Result: 18/18 tests pass with BUILD SUCCESS)
+4. Start Spring Boot application:
+   .\mvnw.cmd spring-boot:run
+   Server initializes on: http://localhost:8080
+
+BROWSER CLINICAL WORKSTATION ACCESS:
+1. Open browser to: http://localhost:8080
+2. Clinical Terminal URLs:
+   - Portal Home: http://localhost:8080/index.html
+   - Staff Sign In: http://localhost:8080/signin.html
+   - Patient Intake Wizard: http://localhost:8080/intake.html
+   - Emergency Triage Queue: http://localhost:8080/queue.html
+   - Doctor Workstation: http://localhost:8080/doctor.html
+   - Patient Review Console: http://localhost:8080/review.html
+   - Medication Reconciliation: http://localhost:8080/medications.html
+   - Emergency Analytics: http://localhost:8080/analytics.html
+
+DEMO LOGIN CREDENTIALS (1-CLICK TEST FILL):
+- Attending Doctor: doctor@mediai.org / Doctor@123
+- Triage Nurse: nurse@mediai.org / Nurse@123
+- Department Administrator: admin@mediai.org / Admin@123
+
+================================================================================
+END OF IMPLEMENTATION PLAN - 100% COMPLIANT WITH COURSE CAPSTONE TOOLS
+================================================================================

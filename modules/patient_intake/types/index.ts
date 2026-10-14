@@ -36,12 +36,22 @@ export interface InfectionSepsisSymptoms {
   altered_mentation?: boolean;
   rigors?: boolean;
   diaphoresis?: boolean;
+  fever?: boolean;
+  hypothermia?: boolean;
+  fatigue_malaise?: boolean;
+  cellulitis_wound_infection?: boolean;
+  other?: boolean;
 }
 
 export interface RespiratorySymptoms {
   cough_character?: 'none' | 'dry' | 'productive' | 'hemoptysis';
   accessory_muscle_use?: boolean;
   stridor?: boolean;
+  shortness_of_breath?: boolean;
+  wheeze?: boolean;
+  chest_tightness?: boolean;
+  cyanosis?: boolean;
+  other?: boolean;
 }
 
 export interface CardiacSymptoms {
@@ -49,6 +59,11 @@ export interface CardiacSymptoms {
   radiation?: 'none' | 'left_arm' | 'jaw' | 'back' | 'both_arms' | 'other';
   diaphoresis?: boolean;
   palpitations?: boolean;
+  chest_pain?: boolean;
+  syncope?: boolean;
+  pedal_edema?: boolean;
+  orthopnea?: boolean;
+  other?: boolean;
 }
 
 export interface NeurologicalSymptoms {
@@ -58,16 +73,30 @@ export interface NeurologicalSymptoms {
   gcs_score?: number | null;
   pupil_response?: 'normal' | 'sluggish' | 'unresponsive' | 'asymmetric';
   seizures?: boolean;
+  dizziness_fainting?: boolean;
+  severe_thunderclap_headache?: boolean;
+  numbness_weakness?: boolean;
+  confusion_delirium?: boolean;
+  other?: boolean;
 }
 
 export interface BloodPressureSymptoms {
   severe_headache?: boolean;
   chest_pain?: boolean;
+  blurred_vision?: boolean;
+  epistaxis?: boolean;
+  dizziness_standing?: boolean;
+  other?: boolean;
 }
 
 export interface DiabetesSymptoms {
   kussmaul_breathing?: boolean;
   fruity_breath?: boolean;
+  polydipsia_polyuria?: boolean;
+  hypoglycemia_symptoms?: boolean;
+  extreme_fatigue?: boolean;
+  nausea_vomiting_dka?: boolean;
+  other?: boolean;
 }
 
 export interface GastrointestinalSymptoms {
@@ -75,6 +104,13 @@ export interface GastrointestinalSymptoms {
   rebound_tenderness?: boolean;
   emesis?: 'none' | 'clear' | 'bilious' | 'coffee_ground' | 'hematemesis';
   stool_color?: 'normal' | 'melena' | 'hematochezia' | 'clay_colored';
+  severe_abdominal_pain?: boolean;
+  nausea_vomiting?: boolean;
+  hematemesis?: boolean;
+  rectal_bleeding_melena?: boolean;
+  severe_diarrhea?: boolean;
+  abdominal_distension?: boolean;
+  other?: boolean;
 }
 
 export interface InjuryTraumaSymptoms {
@@ -82,6 +118,12 @@ export interface InjuryTraumaSymptoms {
   bleeding_rate?: 'none' | 'controlled' | 'rapid' | 'pulsatile';
   deformity?: boolean;
   airway_patency?: 'patent' | 'threatened' | 'obstructed';
+  blunt_head_trauma?: boolean;
+  active_bleeding?: boolean;
+  fracture_dislocation?: boolean;
+  burn_injury?: boolean;
+  spinal_tenderness?: boolean;
+  other?: boolean;
 }
 
 export interface PregnancySymptoms {
@@ -89,6 +131,10 @@ export interface PregnancySymptoms {
   pelvic_pain?: boolean;
   vaginal_bleeding?: boolean;
   severe_headache?: boolean;
+  fluid_leakage?: boolean;
+  reduced_fetal_movement?: boolean;
+  facial_edema?: boolean;
+  other?: boolean;
 }
 
 export interface AllergicSymptoms {
@@ -96,6 +142,11 @@ export interface AllergicSymptoms {
   mucosal_swelling?: boolean;
   voice_change?: boolean;
   wheeze?: boolean;
+  throat_tightness?: boolean;
+  facial_swelling?: boolean;
+  generalized_pruritus?: boolean;
+  anaphylaxis_history?: boolean;
+  other?: boolean;
 }
 
 export interface DehydrationSymptoms {
@@ -103,6 +154,11 @@ export interface DehydrationSymptoms {
   mucous_membranes?: 'moist' | 'dry' | 'very_dry';
   urine_output?: 'normal' | 'reduced' | 'none';
   capillary_refill_seconds?: number | null;
+  extreme_thirst?: boolean;
+  sunken_eyes?: boolean;
+  anuria_oliguria?: boolean;
+  postural_dizziness?: boolean;
+  other?: boolean;
 }
 
 export interface ToxicExposureSymptoms {
@@ -110,6 +166,12 @@ export interface ToxicExposureSymptoms {
   puncture_marks?: boolean;
   salivation?: 'normal' | 'excessive' | 'dry';
   pupil_size?: 'normal' | 'pinpoint' | 'dilated';
+  snake_animal_bite?: boolean;
+  chemical_poisoning?: boolean;
+  smoke_inhalation?: boolean;
+  loss_of_consciousness_toxin?: boolean;
+  hypersalivation_lacrimation?: boolean;
+  other?: boolean;
 }
 
 export interface SymptomVector {

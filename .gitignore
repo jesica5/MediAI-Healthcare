@@ -40,5 +40,9 @@ dist/
 # Maven / Java build artifacts
 target/
 *.class
+
+# Binaries
+cloudflared.exe
+
 .factorypath
 

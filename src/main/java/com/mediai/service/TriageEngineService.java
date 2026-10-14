@@ -267,9 +267,19 @@ public class TriageEngineService {
         else if (cc.contains("unconscious") || cc.contains("faint") || cc.contains("syncope") || cc.contains("மயக்கம்")) score += 20;
         else if (cc.contains("severe pain") || cc.contains("agony") || cc.contains("கடுமையான வலி")) score += 15;
 
-        // PHASE 11: Symptom 1 - FEVER
+        // PHASE 11: Symptom 1 - FEVER (Slot 1)
         Map<String, Object> fever = getNestedMap(symptoms, "fever");
-        boolean feverPresent = getBoolean(fever, "present") || cc.contains("fever") || cc.contains("காய்ச்சல்");
+        boolean feverPresent = false;
+        if (fever.containsKey("present")) {
+            feverPresent = getBoolean(fever, "present");
+        } else if (symptoms.containsKey("fever")) {
+            Object fVal = symptoms.get("fever");
+            if (fVal instanceof Boolean) feverPresent = (Boolean) fVal;
+            else feverPresent = true;
+        } else {
+            feverPresent = cc.contains("fever") || cc.contains("காய்ச்சல்");
+        }
+
         if (feverPresent) {
             score += 25;
             String pattern = getString(fever, "pattern", "continuous");
@@ -278,9 +288,19 @@ public class TriageEngineService {
             }
         }
 
-        // PHASE 11: Symptom 2 - BODY PAIN
+        // PHASE 11: Symptom 2 - BODY PAIN (Slot 2)
         Map<String, Object> bodyPain = getNestedMap(symptoms, "body_pain");
-        boolean bodyPainPresent = getBoolean(bodyPain, "present") || cc.contains("body pain") || cc.contains("உடல் வலி");
+        boolean bodyPainPresent = false;
+        if (bodyPain.containsKey("present")) {
+            bodyPainPresent = getBoolean(bodyPain, "present");
+        } else if (symptoms.containsKey("body_pain")) {
+            Object bpVal = symptoms.get("body_pain");
+            if (bpVal instanceof Boolean) bodyPainPresent = (Boolean) bpVal;
+            else bodyPainPresent = true;
+        } else {
+            bodyPainPresent = cc.contains("body pain") || cc.contains("உடல் வலி");
+        }
+
         if (bodyPainPresent) {
             score += 20;
             String severity = getString(bodyPain, "severity", "moderate");

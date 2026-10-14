@@ -537,3 +537,157 @@ a {
   .nav-links { display: none; }
   .grid-cols-2, .grid-cols-3, .grid-cols-4 { grid-template-columns: 1fr !important; }
 }
+
+/* ==============================================================================
+   Clinical Symptoms Accordion Checklist Styles
+   ============================================================================== */
+.symptoms-toolbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  padding: 0.75rem 1rem;
+  background: rgba(15, 23, 42, 0.7);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  margin-bottom: 1rem;
+}
+
+.domain-accordion-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+}
+
+.accordion-item {
+  border: 1px solid rgba(14, 165, 233, 0.2);
+  border-radius: var(--radius-md);
+  background: rgba(15, 23, 42, 0.65);
+  overflow: hidden;
+  transition: all var(--transition-fast);
+}
+
+.accordion-item:hover {
+  border-color: rgba(14, 165, 233, 0.35);
+}
+
+.accordion-item.open {
+  border-color: rgba(14, 165, 233, 0.5);
+  background: rgba(15, 23, 42, 0.85);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.25);
+}
+
+.accordion-header {
+  padding: 0.85rem 1.15rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  cursor: pointer;
+  user-select: none;
+  background: transparent;
+  transition: background var(--transition-fast);
+}
+
+.accordion-header:hover {
+  background: rgba(14, 165, 233, 0.06);
+}
+
+.accordion-header-left {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+}
+
+.domain-icon {
+  font-size: 1.15rem;
+  line-height: 1;
+}
+
+.domain-title {
+  font-size: 0.9375rem;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.accordion-header-right {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+}
+
+.domain-count-badge {
+  font-size: 0.75rem;
+  padding: 0.15rem 0.5rem;
+  border-radius: var(--radius-full);
+  font-family: var(--font-mono);
+  font-weight: 600;
+}
+
+.accordion-chevron {
+  transition: transform var(--transition-normal);
+  color: var(--text-muted);
+}
+
+.accordion-item.open .accordion-chevron {
+  transform: rotate(180deg);
+  color: var(--brand-cyan);
+}
+
+.accordion-body {
+  padding: 1rem 1.15rem;
+  border-top: 1px solid rgba(14, 165, 233, 0.12);
+  background: rgba(0, 0, 0, 0.22);
+}
+
+.symptom-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.6rem 1rem;
+}
+
+@media (max-width: 640px) {
+  .symptom-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.symptom-checkbox-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.55rem;
+  font-size: 0.8125rem;
+  color: var(--text-primary);
+  cursor: pointer;
+  padding: 0.35rem 0.45rem;
+  border-radius: var(--radius-sm);
+  transition: background var(--transition-fast);
+}
+
+.symptom-checkbox-row:hover {
+  background: rgba(255, 255, 255, 0.03);
+}
+
+.symptom-checkbox-row input[type="checkbox"] {
+  width: 17px;
+  height: 17px;
+  margin-top: 2px;
+  accent-color: var(--brand-primary);
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+.red-flag-tag {
+  display: inline-flex;
+  align-items: center;
+  font-size: 0.6875rem;
+  font-weight: 700;
+  color: #fca5a5;
+  background: rgba(229, 62, 62, 0.18);
+  border: 1px solid rgba(229, 62, 62, 0.35);
+  border-radius: 4px;
+  padding: 0.05rem 0.35rem;
+  margin-left: 0.35rem;
+  white-space: nowrap;
+}
+

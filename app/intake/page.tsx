@@ -12,6 +12,7 @@ import { VitalsStep } from '../../modules/patient_intake/components/VitalsStep';
 import { ReviewStep } from '../../modules/patient_intake/components/ReviewStep';
 import { MissingVitalsDialog } from '../../modules/patient_intake/components/MissingVitalsDialog';
 import { getTranslation } from '../../modules/patient_intake/locales/i18n';
+import { useLanguage } from '@/shared/context/LanguageContext';
 import styles from './intake.module.css';
 
 const STEPS = ['intake', 'symptoms', 'history', 'vitals', 'review'] as const;
@@ -32,9 +33,10 @@ const emptyForm: FormState = {
 };
 
 export default function IntakePage() {
+  const { language: globalLanguage, setLanguage: setGlobalLanguage } = useLanguage();
   const [step, setStep] = useState<Step>('intake');
   const [form, setForm] = useState<FormState>(emptyForm);
-  const [language, setLanguage] = useState<Language>('en');
+  const [language, setLanguage] = useState<Language>(globalLanguage || 'en');
   const [showMissingVitalsDialog, setShowMissingVitalsDialog] = useState(false);
   const [missingVitalsAcknowledged, setMissingVitalsAcknowledged] = useState(false);
   const [submitStatus, setSubmitStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
@@ -46,13 +48,25 @@ export default function IntakePage() {
   const currentStepIndex = STEPS.indexOf(step);
   const missingEssentials = getMissingEssentialVitals(form.vitals as Record<string, number | null | undefined>);
 
+  // Keep language in sync with global header toggle
+  React.useEffect(() => {
+    if (globalLanguage && globalLanguage !== language) {
+      setLanguage(globalLanguage);
+      setForm(prev => ({
+        ...prev,
+        demographics: { ...prev.demographics, primary_language: globalLanguage },
+      }));
+    }
+  }, [globalLanguage, language]);
+
   const handleLanguageChange = useCallback((lang: Language) => {
     setLanguage(lang);
+    setGlobalLanguage(lang);
     setForm(prev => ({
       ...prev,
       demographics: { ...prev.demographics, primary_language: lang },
     }));
-  }, []);
+  }, [setGlobalLanguage]);
 
   const goNext = useCallback(() => {
     const next = STEPS[currentStepIndex + 1];

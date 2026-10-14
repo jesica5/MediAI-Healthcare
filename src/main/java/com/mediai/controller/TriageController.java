@@ -101,7 +101,34 @@ public class TriageController {
             vitalsMap.put("capillaryBloodGlucose", vitals.getCapillaryBloodGlucose());
             aiInput.setVitals(vitalsMap);
         }
-        aiInput.setSymptoms(new ArrayList<>(request.getSymptomVector() != null ? request.getSymptomVector().keySet() : List.of()));
+        List<String> activeSymptoms = new ArrayList<>();
+        if (request.getSymptomVector() != null) {
+            for (Map.Entry<String, Object> entry : request.getSymptomVector().entrySet()) {
+                String sympName = entry.getKey();
+                Object val = entry.getValue();
+                if (val instanceof Boolean && (Boolean) val) {
+                    activeSymptoms.add(sympName);
+                } else if (val instanceof Map) {
+                    @SuppressWarnings("unchecked")
+                    Map<String, Object> map = (Map<String, Object>) val;
+                    Object present = map.get("present");
+                    if (present == null || Boolean.TRUE.equals(present) || "true".equalsIgnoreCase(String.valueOf(present))) {
+                        StringBuilder sb = new StringBuilder(sympName);
+                        List<String> parts = new ArrayList<>();
+                        if (map.containsKey("pattern")) parts.add("pattern: " + map.get("pattern"));
+                        if (map.containsKey("duration")) parts.add("duration: " + map.get("duration"));
+                        if (map.containsKey("severity")) parts.add("severity: " + map.get("severity"));
+                        if (map.containsKey("area")) parts.add("area: " + map.get("area"));
+                        if (map.containsKey("affected_area")) parts.add("area: " + map.get("affected_area"));
+                        if (!parts.isEmpty()) {
+                            sb.append(" (").append(String.join(", ", parts)).append(")");
+                        }
+                        activeSymptoms.add(sb.toString());
+                    }
+                }
+            }
+        }
+        aiInput.setSymptoms(activeSymptoms);
         AiRiskPredictionResponse aiResp = geminiAiService.predictPatientRisk(aiInput);
 
         // 5. Persist Patient, Vitals & Assessment to MySQL

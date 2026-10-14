@@ -252,16 +252,17 @@
       </div>
     </div>
 
-    <!-- Step 2: Symptom Checklist (Phase 11: Fever 1st, Body Pain 2nd) -->
+    <!-- Step 2: Symptom Checklist (Phase 11: Fever 1st, Body Pain 2nd, 12 Domains Accordion) -->
     <div id="stepSection2" class="card" style="display: none;">
-      <div class="card-header">
-        <div>
-          <h2 style="font-size: 1.25rem;">Step 2: Clinical Symptoms Checklist</h2>
-          <p style="font-size: 0.8125rem; color: var(--text-secondary); margin-top: 0.25rem;">
-            Primary symptoms: Fever first and Body Pain second as mandated by clinical triage protocol.
-          </p>
+      <div class="card-header" style="flex-direction: column; align-items: center; text-align: center; gap: 0.35rem; padding-bottom: 1.25rem;">
+        <div style="display: flex; align-items: center; justify-content: space-between; width: 100%;">
+          <span class="badge badge-low" style="visibility: hidden;">Spacer</span>
+          <h2 style="font-size: 1.35rem; font-weight: 800; color: var(--text-primary); margin: 0;">Clinical Symptoms Checklist</h2>
+          <span class="badge badge-high">Symptom Vector</span>
         </div>
-        <span class="badge badge-high">Symptom Vector</span>
+        <p style="font-size: 0.875rem; color: var(--text-secondary); margin: 0; max-width: 650px;">
+          Check all symptoms observed or reported across 12 clinical domains. Primary slots: Fever first and Body Pain second as mandated by clinical triage protocol.
+        </p>
       </div>
 
       <div style="display: flex; flex-direction: column; gap: 1rem;">
@@ -279,17 +280,35 @@
             <span class="badge badge-critical" id="badgeFever">Active</span>
           </div>
 
-          <div id="feverDetails" style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-top: 1rem; padding-top: 1rem; border-top: 1px solid rgba(14, 165, 233, 0.2);">
+          <!-- Fever Present: Yes / No Selection -->
+          <div style="margin-top: 0.85rem; padding-top: 0.75rem; border-top: 1px solid rgba(14, 165, 233, 0.2); display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 0.5rem;">
+            <label class="form-label" style="margin-bottom: 0; font-size: 0.875rem; font-weight: 600;">
+              Fever Present <span class="required-asterisk">*</span>
+            </label>
+            <div style="display: inline-flex; gap: 1.25rem; align-items: center;">
+              <label style="display: inline-flex; align-items: center; gap: 0.4rem; cursor: pointer; font-size: 0.875rem;">
+                <input type="radio" name="feverPresentRadio" id="feverPresentYes" value="YES" checked onchange="setFeverPresent(true)" style="accent-color: var(--brand-primary); width: 16px; height: 16px;">
+                <span style="font-weight: 600; color: var(--text-primary);">Yes</span>
+              </label>
+              <label style="display: inline-flex; align-items: center; gap: 0.4rem; cursor: pointer; font-size: 0.875rem;">
+                <input type="radio" name="feverPresentRadio" id="feverPresentNo" value="NO" onchange="setFeverPresent(false)" style="accent-color: var(--brand-primary); width: 16px; height: 16px;">
+                <span style="font-weight: 500; color: var(--text-secondary);">No</span>
+              </label>
+            </div>
+          </div>
+
+          <!-- Conditional Fever Details (Shown when Yes, hidden/disabled when No) -->
+          <div id="feverDetails" style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-top: 0.75rem; padding-top: 0.75rem; border-top: 1px dashed rgba(14, 165, 233, 0.2);">
             <div>
               <label class="form-label" for="feverPattern">Fever Pattern</label>
               <select id="feverPattern" class="form-control">
-                <option value="CONTINUOUS">Continuous (High plateau)</option>
-                <option value="INTERMITTENT" selected>Intermittent (Spiking then dropping)</option>
-                <option value="REMITTENT">Remittent</option>
+                <option value="INTERMITTENT" selected>Intermittent</option>
+                <option value="CONTINUOUS">Continuous</option>
+                <option value="RECURRING">Recurring</option>
               </select>
             </div>
             <div>
-              <label class="form-label" for="feverDuration">Duration</label>
+              <label class="form-label" for="feverDuration">Fever Duration</label>
               <select id="feverDuration" class="form-control">
                 <option value="UNDER_24_HOURS">Less than 24 hours</option>
                 <option value="1_TO_3_DAYS" selected>1 to 3 days</option>
@@ -312,9 +331,27 @@
             <span class="badge badge-high" id="badgeBodyPain">Active</span>
           </div>
 
-          <div id="bodyPainDetails" style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-top: 1rem; padding-top: 1rem; border-top: 1px solid rgba(14, 165, 233, 0.2);">
+          <!-- Body Pain Present: Yes / No Selection -->
+          <div style="margin-top: 0.85rem; padding-top: 0.75rem; border-top: 1px solid rgba(14, 165, 233, 0.2); display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 0.5rem;">
+            <label class="form-label" style="margin-bottom: 0; font-size: 0.875rem; font-weight: 600;">
+              Body Pain Present <span class="required-asterisk">*</span>
+            </label>
+            <div style="display: inline-flex; gap: 1.25rem; align-items: center;">
+              <label style="display: inline-flex; align-items: center; gap: 0.4rem; cursor: pointer; font-size: 0.875rem;">
+                <input type="radio" name="bodyPainPresentRadio" id="bodyPainPresentYes" value="YES" checked onchange="setBodyPainPresent(true)" style="accent-color: var(--brand-primary); width: 16px; height: 16px;">
+                <span style="font-weight: 600; color: var(--text-primary);">Yes</span>
+              </label>
+              <label style="display: inline-flex; align-items: center; gap: 0.4rem; cursor: pointer; font-size: 0.875rem;">
+                <input type="radio" name="bodyPainPresentRadio" id="bodyPainPresentNo" value="NO" onchange="setBodyPainPresent(false)" style="accent-color: var(--brand-primary); width: 16px; height: 16px;">
+                <span style="font-weight: 500; color: var(--text-secondary);">No</span>
+              </label>
+            </div>
+          </div>
+
+          <!-- Conditional Body Pain Details (Shown when Yes, hidden/disabled when No) -->
+          <div id="bodyPainDetails" style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-top: 0.75rem; padding-top: 0.75rem; border-top: 1px dashed rgba(14, 165, 233, 0.2);">
             <div>
-              <label class="form-label" for="painArea">Primary Pain Area</label>
+              <label class="form-label" for="painArea">Affected Body Area</label>
               <select id="painArea" class="form-control">
                 <option value="GENERALIZED" selected>Generalized / Whole Body Myalgia</option>
                 <option value="LOWER_BACK">Lumbar / Back</option>
@@ -324,7 +361,7 @@
               </select>
             </div>
             <div>
-              <label class="form-label" for="painSeverity">Pain Severity Scale (0 - 10)</label>
+              <label class="form-label" for="painSeverity">Patient-Reported Severity (0 - 10)</label>
               <select id="painSeverity" class="form-control">
                 <option value="MILD">Mild (1 - 3)</option>
                 <option value="MODERATE">Moderate (4 - 6)</option>
@@ -334,37 +371,633 @@
           </div>
         </div>
 
-        <!-- ADDITIONAL ACUTE SYMPTOMS -->
-        <div style="padding: 1rem; background: rgba(0, 0, 0, 0.2); border-radius: var(--radius-md);">
-          <div style="font-size: 0.8125rem; font-weight: 700; color: var(--text-secondary); margin-bottom: 0.75rem;">
-            Additional Symptoms (Select all that apply):
+        <!-- CLINICAL SYMPTOMS TOOLBAR & 12 STANDARDIZED DOMAIN ACCORDIONS -->
+        <div class="symptoms-toolbar">
+          <div style="display: flex; align-items: center; gap: 0.75rem;">
+            <span class="badge badge-primary" id="totalSymptomsCountBadge" style="font-size: 0.8125rem; padding: 0.35rem 0.75rem; background: rgba(14, 165, 233, 0.2); border: 1px solid rgba(14, 165, 233, 0.4); color: var(--brand-cyan);">
+              Total Selected: 2 symptoms
+            </span>
           </div>
-          <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 0.75rem;">
-            <label style="display: flex; align-items: center; gap: 0.5rem; font-size: 0.875rem; cursor: pointer;">
-              <input type="checkbox" id="sympChestPain" style="accent-color: var(--brand-primary);">
-              <span>Chest Pain / Pressure (🚨 Red Flag)</span>
-            </label>
-            <label style="display: flex; align-items: center; gap: 0.5rem; font-size: 0.875rem; cursor: pointer;">
-              <input type="checkbox" id="sympDyspnea" style="accent-color: var(--brand-primary);">
-              <span>Severe Shortness of Breath (🚨 Red Flag)</span>
-            </label>
-            <label style="display: flex; align-items: center; gap: 0.5rem; font-size: 0.875rem; cursor: pointer;">
-              <input type="checkbox" id="sympSyncope" style="accent-color: var(--brand-primary);">
-              <span>Dizziness / Near Syncope</span>
-            </label>
-            <label style="display: flex; align-items: center; gap: 0.5rem; font-size: 0.875rem; cursor: pointer;">
-              <input type="checkbox" id="sympCough" style="accent-color: var(--brand-primary);">
-              <span>Persistent Productive Cough</span>
-            </label>
-            <label style="display: flex; align-items: center; gap: 0.5rem; font-size: 0.875rem; cursor: pointer;">
-              <input type="checkbox" id="sympNausea" style="accent-color: var(--brand-primary);">
-              <span>Nausea / Persistent Vomiting</span>
-            </label>
-            <label style="display: flex; align-items: center; gap: 0.5rem; font-size: 0.875rem; cursor: pointer;">
-              <input type="checkbox" id="sympConfusion" style="accent-color: var(--brand-primary);">
-              <span>Altered Mental State / Lethargy</span>
-            </label>
+          <div style="display: flex; gap: 0.5rem; align-items: center; flex-wrap: wrap;">
+            <button type="button" class="btn btn-outline btn-sm" onclick="expandAllDomains()" title="Expand all 12 clinical domains">
+              <span>Expand All</span>
+            </button>
+            <button type="button" class="btn btn-outline btn-sm" onclick="collapseAllDomains()" title="Collapse all 12 clinical domains">
+              <span>Collapse All</span>
+            </button>
+            <button type="button" class="btn btn-outline btn-sm" style="color: #f87171; border-color: rgba(239, 68, 68, 0.35);" onclick="clearAllSymptoms()" title="Clear all selections">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+              <span>Clear Selections</span>
+            </button>
           </div>
+        </div>
+
+        <div class="domain-accordion-list">
+          
+          <!-- Domain 1: Infection & Sepsis -->
+          <div class="accordion-item open" id="accordionDomain1">
+            <div class="accordion-header" onclick="toggleDomain(1)">
+              <div class="accordion-header-left">
+                <span class="domain-icon">🦠</span>
+                <span class="domain-title">1. Infection & Sepsis</span>
+              </div>
+              <div class="accordion-header-right">
+                <span class="badge badge-low domain-count-badge" id="domainCount1">0 selected</span>
+                <svg class="accordion-chevron" id="chevronDomain1" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+              </div>
+            </div>
+            <div class="accordion-body" id="accordionBody1" style="display: block;">
+              <p style="font-size: 0.75rem; color: var(--text-secondary); margin-bottom: 0.75rem;">Systemic inflammatory response, septic shock risks, and localized severe infections.</p>
+              <div class="symptom-grid">
+                <label class="symptom-checkbox-row">
+                  <input type="checkbox" id="sympConfusion" onchange="updateLiveSymptomCount()">
+                  <span>Altered Mental State / Confusion <span class="red-flag-tag">🚨 Red Flag</span></span>
+                </label>
+                <label class="symptom-checkbox-row">
+                  <input type="checkbox" id="sympRigors" onchange="updateLiveSymptomCount()">
+                  <span>Rigors / Severe Shaking Chills</span>
+                </label>
+                <label class="symptom-checkbox-row">
+                  <input type="checkbox" id="sympDiaphoresis" onchange="updateLiveSymptomCount()">
+                  <span>Diaphoresis / Heavy Drenching Sweats</span>
+                </label>
+                <label class="symptom-checkbox-row">
+                  <input type="checkbox" id="sympHighFever" onchange="updateLiveSymptomCount()">
+                  <span>High Fever (&gt;38.5°C / 101.3°F)</span>
+                </label>
+                <label class="symptom-checkbox-row">
+                  <input type="checkbox" id="sympHypothermia" onchange="updateLiveSymptomCount()">
+                  <span>Core Hypothermia (&lt;35.0°C / Unusually Cold) <span class="red-flag-tag">🚨 Red Flag</span></span>
+                </label>
+                <label class="symptom-checkbox-row">
+                  <input type="checkbox" id="sympFatigueMalaise" onchange="updateLiveSymptomCount()">
+                  <span>Severe Prostration / Extreme Malaise</span>
+                </label>
+                <label class="symptom-checkbox-row">
+                  <input type="checkbox" id="sympCellulitis" onchange="updateLiveSymptomCount()">
+                  <span>Localized Redness / Spreading Skin Infection</span>
+                </label>
+                <label class="symptom-checkbox-row">
+                  <input type="checkbox" id="sympInfectionOther" onchange="updateLiveSymptomCount()">
+                  <span>Other Infection / Sepsis Symptoms</span>
+                </label>
+              </div>
+            </div>
+          </div>
+
+          <!-- Domain 2: Respiratory -->
+          <div class="accordion-item" id="accordionDomain2">
+            <div class="accordion-header" onclick="toggleDomain(2)">
+              <div class="accordion-header-left">
+                <span class="domain-icon">🫁</span>
+                <span class="domain-title">2. Respiratory</span>
+              </div>
+              <div class="accordion-header-right">
+                <span class="badge badge-low domain-count-badge" id="domainCount2">0 selected</span>
+                <svg class="accordion-chevron" id="chevronDomain2" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+              </div>
+            </div>
+            <div class="accordion-body" id="accordionBody2" style="display: none;">
+              <p style="font-size: 0.75rem; color: var(--text-secondary); margin-bottom: 0.75rem;">Airway patency, work of breathing, gas exchange, and acute respiratory distress.</p>
+              <div class="symptom-grid">
+                <label class="symptom-checkbox-row">
+                  <input type="checkbox" id="sympDyspnea" onchange="updateLiveSymptomCount()">
+                  <span>Severe Shortness of Breath / Dyspnea <span class="red-flag-tag">🚨 Red Flag</span></span>
+                </label>
+                <label class="symptom-checkbox-row">
+                  <input type="checkbox" id="sympAccessoryMuscles" onchange="updateLiveSymptomCount()">
+                  <span>Accessory Muscle Use (Intercostal / Retractions) <span class="red-flag-tag">🚨 Red Flag</span></span>
+                </label>
+                <label class="symptom-checkbox-row">
+                  <input type="checkbox" id="sympStridor" onchange="updateLiveSymptomCount()">
+                  <span>Stridor (High-pitched inspiratory sound) <span class="red-flag-tag">🚨 Red Flag</span></span>
+                </label>
+                <label class="symptom-checkbox-row">
+                  <input type="checkbox" id="sympWheeze" onchange="updateLiveSymptomCount()">
+                  <span>Audible Wheezing / Expiratory Bronchospasm</span>
+                </label>
+                <label class="symptom-checkbox-row">
+                  <input type="checkbox" id="sympChestTightness" onchange="updateLiveSymptomCount()">
+                  <span>Chest Tightness with Respiration</span>
+                </label>
+                <label class="symptom-checkbox-row">
+                  <input type="checkbox" id="sympCyanosis" onchange="updateLiveSymptomCount()">
+                  <span>Central Cyanosis (Bluish lips / tongue / nails) <span class="red-flag-tag">🚨 Red Flag</span></span>
+                </label>
+                <label class="symptom-checkbox-row">
+                  <input type="checkbox" id="sympCough" onchange="updateLiveSymptomCount()">
+                  <span>Persistent Productive Cough</span>
+                </label>
+                <label class="symptom-checkbox-row">
+                  <input type="checkbox" id="sympHemoptysis" onchange="updateLiveSymptomCount()">
+                  <span>Coughing up Blood (Hemoptysis) <span class="red-flag-tag">🚨 Red Flag</span></span>
+                </label>
+                <label class="symptom-checkbox-row">
+                  <input type="checkbox" id="sympRespiratoryOther" onchange="updateLiveSymptomCount()">
+                  <span>Other Respiratory Symptoms</span>
+                </label>
+              </div>
+            </div>
+          </div>
+
+          <!-- Domain 3: Cardiac -->
+          <div class="accordion-item" id="accordionDomain3">
+            <div class="accordion-header" onclick="toggleDomain(3)">
+              <div class="accordion-header-left">
+                <span class="domain-icon">❤️</span>
+                <span class="domain-title">3. Cardiac</span>
+              </div>
+              <div class="accordion-header-right">
+                <span class="badge badge-low domain-count-badge" id="domainCount3">0 selected</span>
+                <svg class="accordion-chevron" id="chevronDomain3" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+              </div>
+            </div>
+            <div class="accordion-body" id="accordionBody3" style="display: none;">
+              <p style="font-size: 0.75rem; color: var(--text-secondary); margin-bottom: 0.75rem;">Coronary perfusion, hemodynamics, arrhythmias, and acute coronary syndrome.</p>
+              <div class="symptom-grid">
+                <label class="symptom-checkbox-row">
+                  <input type="checkbox" id="sympChestPain" onchange="updateLiveSymptomCount()">
+                  <span>Acute Chest Pain / Heavy Pressure <span class="red-flag-tag">🚨 Red Flag</span></span>
+                </label>
+                <label class="symptom-checkbox-row">
+                  <input type="checkbox" id="sympRadiation" onchange="updateLiveSymptomCount()">
+                  <span>Radiation to Left Arm / Jaw / Back</span>
+                </label>
+                <label class="symptom-checkbox-row">
+                  <input type="checkbox" id="sympPalpitations" onchange="updateLiveSymptomCount()">
+                  <span>Palpitations / Rapid Racing Heartbeat</span>
+                </label>
+                <label class="symptom-checkbox-row">
+                  <input type="checkbox" id="sympCardiacSyncope" onchange="updateLiveSymptomCount()">
+                  <span>Syncope / Near-Syncope / Unexplained Fainting <span class="red-flag-tag">🚨 Red Flag</span></span>
+                </label>
+                <label class="symptom-checkbox-row">
+                  <input type="checkbox" id="sympPedalEdema" onchange="updateLiveSymptomCount()">
+                  <span>Bilateral Pedal Edema (Ankle/Leg Swelling)</span>
+                </label>
+                <label class="symptom-checkbox-row">
+                  <input type="checkbox" id="sympOrthopnea" onchange="updateLiveSymptomCount()">
+                  <span>Orthopnea (Inability to breathe lying flat)</span>
+                </label>
+                <label class="symptom-checkbox-row">
+                  <input type="checkbox" id="sympCardiacDiaphoresis" onchange="updateLiveSymptomCount()">
+                  <span>Cold Clammy Diaphoresis with Discomfort</span>
+                </label>
+                <label class="symptom-checkbox-row">
+                  <input type="checkbox" id="sympCardiacOther" onchange="updateLiveSymptomCount()">
+                  <span>Other Cardiac Symptoms</span>
+                </label>
+              </div>
+            </div>
+          </div>
+
+          <!-- Domain 4: Neurological -->
+          <div class="accordion-item" id="accordionDomain4">
+            <div class="accordion-header" onclick="toggleDomain(4)">
+              <div class="accordion-header-left">
+                <span class="domain-icon">🧠</span>
+                <span class="domain-title">4. Neurological</span>
+              </div>
+              <div class="accordion-header-right">
+                <span class="badge badge-low domain-count-badge" id="domainCount4">0 selected</span>
+                <svg class="accordion-chevron" id="chevronDomain4" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+              </div>
+            </div>
+            <div class="accordion-body" id="accordionBody4" style="display: none;">
+              <p style="font-size: 0.75rem; color: var(--text-secondary); margin-bottom: 0.75rem;">Acute stroke deficits, altered mental status, seizures, and cranial nerve signs.</p>
+              <div class="symptom-grid">
+                <label class="symptom-checkbox-row">
+                  <input type="checkbox" id="sympFacialDroop" onchange="updateLiveSymptomCount()">
+                  <span>FAST: Facial Droop / Asymmetry <span class="red-flag-tag">🚨 Red Flag</span></span>
+                </label>
+                <label class="symptom-checkbox-row">
+                  <input type="checkbox" id="sympArmDrift" onchange="updateLiveSymptomCount()">
+                  <span>FAST: Arm Drift / Unilateral Weakness <span class="red-flag-tag">🚨 Red Flag</span></span>
+                </label>
+                <label class="symptom-checkbox-row">
+                  <input type="checkbox" id="sympSpeechDiff" onchange="updateLiveSymptomCount()">
+                  <span>FAST: Speech Difficulty / Slurred Speech <span class="red-flag-tag">🚨 Red Flag</span></span>
+                </label>
+                <label class="symptom-checkbox-row">
+                  <input type="checkbox" id="sympSeizures" onchange="updateLiveSymptomCount()">
+                  <span>Seizure Activity / Convulsions / Post-Ictal State <span class="red-flag-tag">🚨 Red Flag</span></span>
+                </label>
+                <label class="symptom-checkbox-row">
+                  <input type="checkbox" id="sympSyncope" onchange="updateLiveSymptomCount()">
+                  <span>Dizziness / Vertigo / Loss of Balance</span>
+                </label>
+                <label class="symptom-checkbox-row">
+                  <input type="checkbox" id="sympThunderclapHeadache" onchange="updateLiveSymptomCount()">
+                  <span>Sudden Severe "Thunderclap" Headache <span class="red-flag-tag">🚨 Red Flag</span></span>
+                </label>
+                <label class="symptom-checkbox-row">
+                  <input type="checkbox" id="sympNumbnessWeakness" onchange="updateLiveSymptomCount()">
+                  <span>Unilateral Numbness / Loss of Sensation</span>
+                </label>
+                <label class="symptom-checkbox-row">
+                  <input type="checkbox" id="sympConfusionDelirium" onchange="updateLiveSymptomCount()">
+                  <span>Acute Disorientation / Agitation / Delirium</span>
+                </label>
+                <label class="symptom-checkbox-row">
+                  <input type="checkbox" id="sympNeurologicalOther" onchange="updateLiveSymptomCount()">
+                  <span>Other Neurological Symptoms</span>
+                </label>
+              </div>
+            </div>
+          </div>
+
+          <!-- Domain 5: Blood Pressure Associated Symptoms -->
+          <div class="accordion-item" id="accordionDomain5">
+            <div class="accordion-header" onclick="toggleDomain(5)">
+              <div class="accordion-header-left">
+                <span class="domain-icon">🩺</span>
+                <span class="domain-title">5. Blood Pressure Associated Symptoms</span>
+              </div>
+              <div class="accordion-header-right">
+                <span class="badge badge-low domain-count-badge" id="domainCount5">0 selected</span>
+                <svg class="accordion-chevron" id="chevronDomain5" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+              </div>
+            </div>
+            <div class="accordion-body" id="accordionBody5" style="display: none;">
+              <p style="font-size: 0.75rem; color: var(--text-secondary); margin-bottom: 0.75rem;">Hypertensive emergency signs, end-organ damage indicators, and acute hypotension.</p>
+              <div class="symptom-grid">
+                <label class="symptom-checkbox-row">
+                  <input type="checkbox" id="sympBpHeadache" onchange="updateLiveSymptomCount()">
+                  <span>Severe Occipital / Throbbing Headache <span class="red-flag-tag">🚨 Red Flag</span></span>
+                </label>
+                <label class="symptom-checkbox-row">
+                  <input type="checkbox" id="sympBpVision" onchange="updateLiveSymptomCount()">
+                  <span>Acute Blurred Vision / Visual Scotoma</span>
+                </label>
+                <label class="symptom-checkbox-row">
+                  <input type="checkbox" id="sympEpistaxis" onchange="updateLiveSymptomCount()">
+                  <span>Severe Spontaneous Epistaxis (Nosebleed)</span>
+                </label>
+                <label class="symptom-checkbox-row">
+                  <input type="checkbox" id="sympPosturalDizziness" onchange="updateLiveSymptomCount()">
+                  <span>Orthostatic Lightheadedness / Dizziness on Standing</span>
+                </label>
+                <label class="symptom-checkbox-row">
+                  <input type="checkbox" id="sympBpChestPain" onchange="updateLiveSymptomCount()">
+                  <span>Concurrent Chest Discomfort / Pressure</span>
+                </label>
+                <label class="symptom-checkbox-row">
+                  <input type="checkbox" id="sympBpOther" onchange="updateLiveSymptomCount()">
+                  <span>Other Blood Pressure Symptoms</span>
+                </label>
+              </div>
+            </div>
+          </div>
+
+          <!-- Domain 6: Diabetes & Metabolic -->
+          <div class="accordion-item" id="accordionDomain6">
+            <div class="accordion-header" onclick="toggleDomain(6)">
+              <div class="accordion-header-left">
+                <span class="domain-icon">🩸</span>
+                <span class="domain-title">6. Diabetes & Metabolic</span>
+              </div>
+              <div class="accordion-header-right">
+                <span class="badge badge-low domain-count-badge" id="domainCount6">0 selected</span>
+                <svg class="accordion-chevron" id="chevronDomain6" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+              </div>
+            </div>
+            <div class="accordion-body" id="accordionBody6" style="display: none;">
+              <p style="font-size: 0.75rem; color: var(--text-secondary); margin-bottom: 0.75rem;">Diabetic ketoacidosis, hyperosmolar crises, and severe symptomatic hypoglycemia.</p>
+              <div class="symptom-grid">
+                <label class="symptom-checkbox-row">
+                  <input type="checkbox" id="sympKussmaul" onchange="updateLiveSymptomCount()">
+                  <span>Deep Rapid Sighing Breathing (Kussmaul) <span class="red-flag-tag">🚨 Red Flag</span></span>
+                </label>
+                <label class="symptom-checkbox-row">
+                  <input type="checkbox" id="sympFruityBreath" onchange="updateLiveSymptomCount()">
+                  <span>Fruity / Acetone Ketotic Breath Odor <span class="red-flag-tag">🚨 Red Flag</span></span>
+                </label>
+                <label class="symptom-checkbox-row">
+                  <input type="checkbox" id="sympPolydipsia" onchange="updateLiveSymptomCount()">
+                  <span>Severe Excessive Thirst & Frequent Urination</span>
+                </label>
+                <label class="symptom-checkbox-row">
+                  <input type="checkbox" id="sympHypoglycemia" onchange="updateLiveSymptomCount()">
+                  <span>Tremors, Diaphoresis & Palpitations (Hypoglycemia)</span>
+                </label>
+                <label class="symptom-checkbox-row">
+                  <input type="checkbox" id="sympExtremeLethargy" onchange="updateLiveSymptomCount()">
+                  <span>Profound Lethargy / Muscle Weakness</span>
+                </label>
+                <label class="symptom-checkbox-row">
+                  <input type="checkbox" id="sympDkaNausea" onchange="updateLiveSymptomCount()">
+                  <span>Severe Abdominal Pain / Vomiting in Diabetic</span>
+                </label>
+                <label class="symptom-checkbox-row">
+                  <input type="checkbox" id="sympDiabeticOther" onchange="updateLiveSymptomCount()">
+                  <span>Other Diabetic & Metabolic Symptoms</span>
+                </label>
+              </div>
+            </div>
+          </div>
+
+          <!-- Domain 7: Gastrointestinal -->
+          <div class="accordion-item" id="accordionDomain7">
+            <div class="accordion-header" onclick="toggleDomain(7)">
+              <div class="accordion-header-left">
+                <span class="domain-icon">🥣</span>
+                <span class="domain-title">7. Gastrointestinal</span>
+              </div>
+              <div class="accordion-header-right">
+                <span class="badge badge-low domain-count-badge" id="domainCount7">0 selected</span>
+                <svg class="accordion-chevron" id="chevronDomain7" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+              </div>
+            </div>
+            <div class="accordion-body" id="accordionBody7" style="display: none;">
+              <p style="font-size: 0.75rem; color: var(--text-secondary); margin-bottom: 0.75rem;">Acute surgical abdomen, peritonitis, GI bleeding, and severe volume loss.</p>
+              <div class="symptom-grid">
+                <label class="symptom-checkbox-row">
+                  <input type="checkbox" id="sympAbdominalPain" onchange="updateLiveSymptomCount()">
+                  <span>Severe Acute Abdominal Pain <span class="red-flag-tag">🚨 Red Flag</span></span>
+                </label>
+                <label class="symptom-checkbox-row">
+                  <input type="checkbox" id="sympReboundTenderness" onchange="updateLiveSymptomCount()">
+                  <span>Rebound Tenderness / Involuntary Guarding / Rigidity <span class="red-flag-tag">🚨 Red Flag</span></span>
+                </label>
+                <label class="symptom-checkbox-row">
+                  <input type="checkbox" id="sympNausea" onchange="updateLiveSymptomCount()">
+                  <span>Persistent Intractable Nausea & Vomiting</span>
+                </label>
+                <label class="symptom-checkbox-row">
+                  <input type="checkbox" id="sympHematemesis" onchange="updateLiveSymptomCount()">
+                  <span>Hematemesis (Vomiting Blood or Coffee-Ground) <span class="red-flag-tag">🚨 Red Flag</span></span>
+                </label>
+                <label class="symptom-checkbox-row">
+                  <input type="checkbox" id="sympGiBleed" onchange="updateLiveSymptomCount()">
+                  <span>Melena / Fresh Blood in Stool (Hematochezia) <span class="red-flag-tag">🚨 Red Flag</span></span>
+                </label>
+                <label class="symptom-checkbox-row">
+                  <input type="checkbox" id="sympProfuseDiarrhea" onchange="updateLiveSymptomCount()">
+                  <span>Profuse Watery Diarrhea (&gt;5 episodes in 24h)</span>
+                </label>
+                <label class="symptom-checkbox-row">
+                  <input type="checkbox" id="sympAbdominalDistension" onchange="updateLiveSymptomCount()">
+                  <span>Marked Abdominal Distension / Obstipation</span>
+                </label>
+                <label class="symptom-checkbox-row">
+                  <input type="checkbox" id="sympGiOther" onchange="updateLiveSymptomCount()">
+                  <span>Other Gastrointestinal Symptoms</span>
+                </label>
+              </div>
+            </div>
+          </div>
+
+          <!-- Domain 8: Injury & Trauma -->
+          <div class="accordion-item" id="accordionDomain8">
+            <div class="accordion-header" onclick="toggleDomain(8)">
+              <div class="accordion-header-left">
+                <span class="domain-icon">🩹</span>
+                <span class="domain-title">8. Injury & Trauma</span>
+              </div>
+              <div class="accordion-header-right">
+                <span class="badge badge-low domain-count-badge" id="domainCount8">0 selected</span>
+                <svg class="accordion-chevron" id="chevronDomain8" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+              </div>
+            </div>
+            <div class="accordion-body" id="accordionBody8" style="display: none;">
+              <p style="font-size: 0.75rem; color: var(--text-secondary); margin-bottom: 0.75rem;">Mechanical trauma, hemorrhage control, fractures, and blunt/penetrating injuries.</p>
+              <div class="symptom-grid">
+                <label class="symptom-checkbox-row">
+                  <input type="checkbox" id="sympDeformity" onchange="updateLiveSymptomCount()">
+                  <span>Visible Bone or Joint Deformity <span class="red-flag-tag">🚨 Red Flag</span></span>
+                </label>
+                <label class="symptom-checkbox-row">
+                  <input type="checkbox" id="sympHeadTraumaLoc" onchange="updateLiveSymptomCount()">
+                  <span>Head Injury with Loss of Consciousness / Confusion <span class="red-flag-tag">🚨 Red Flag</span></span>
+                </label>
+                <label class="symptom-checkbox-row">
+                  <input type="checkbox" id="sympRapidBleeding" onchange="updateLiveSymptomCount()">
+                  <span>Active Rapid Bleeding / Arterial Spurting <span class="red-flag-tag">🚨 Red Flag</span></span>
+                </label>
+                <label class="symptom-checkbox-row">
+                  <input type="checkbox" id="sympAirwayCompromise" onchange="updateLiveSymptomCount()">
+                  <span>Threatened / Compromised Airway <span class="red-flag-tag">🚨 Red Flag</span></span>
+                </label>
+                <label class="symptom-checkbox-row">
+                  <input type="checkbox" id="sympFractureDislocation" onchange="updateLiveSymptomCount()">
+                  <span>Suspected Bone Fracture / Inability to Bear Weight</span>
+                </label>
+                <label class="symptom-checkbox-row">
+                  <input type="checkbox" id="sympBurnTrauma" onchange="updateLiveSymptomCount()">
+                  <span>Thermal, Chemical, or Electrical Burn</span>
+                </label>
+                <label class="symptom-checkbox-row">
+                  <input type="checkbox" id="sympSpineTenderness" onchange="updateLiveSymptomCount()">
+                  <span>Midline Neck / Spinal Pain or Neurologic Deficit <span class="red-flag-tag">🚨 Red Flag</span></span>
+                </label>
+                <label class="symptom-checkbox-row">
+                  <input type="checkbox" id="sympBluntTrauma" onchange="updateLiveSymptomCount()">
+                  <span>Blunt Impact / Penetrating Trauma Mechanism</span>
+                </label>
+                <label class="symptom-checkbox-row">
+                  <input type="checkbox" id="sympTraumaOther" onchange="updateLiveSymptomCount()">
+                  <span>Other Injury & Trauma Symptoms</span>
+                </label>
+              </div>
+            </div>
+          </div>
+
+          <!-- Domain 9: Pregnancy & Obstetric -->
+          <div class="accordion-item" id="accordionDomain9">
+            <div class="accordion-header" onclick="toggleDomain(9)">
+              <div class="accordion-header-left">
+                <span class="domain-icon">🤰</span>
+                <span class="domain-title">9. Pregnancy & Obstetric</span>
+              </div>
+              <div class="accordion-header-right">
+                <span class="badge badge-low domain-count-badge" id="domainCount9">0 selected</span>
+                <svg class="accordion-chevron" id="chevronDomain9" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+              </div>
+            </div>
+            <div class="accordion-body" id="accordionBody9" style="display: none;">
+              <p style="font-size: 0.75rem; color: var(--text-secondary); margin-bottom: 0.75rem;">Ectopic pregnancy risks, pre-eclampsia, placental complications, and obstetric hemorrhage.</p>
+              <div class="symptom-grid">
+                <label class="symptom-checkbox-row">
+                  <input type="checkbox" id="sympPelvicPain" onchange="updateLiveSymptomCount()">
+                  <span>Severe Acute Pelvic / Lower Abdominal Pain <span class="red-flag-tag">🚨 Red Flag</span></span>
+                </label>
+                <label class="symptom-checkbox-row">
+                  <input type="checkbox" id="sympVaginalBleed" onchange="updateLiveSymptomCount()">
+                  <span>Active Vaginal Bleeding in Pregnancy <span class="red-flag-tag">🚨 Red Flag</span></span>
+                </label>
+                <label class="symptom-checkbox-row">
+                  <input type="checkbox" id="sympPreeclampsiaHeadache" onchange="updateLiveSymptomCount()">
+                  <span>Severe Headache / Visual Flashes (Pre-eclampsia) <span class="red-flag-tag">🚨 Red Flag</span></span>
+                </label>
+                <label class="symptom-checkbox-row">
+                  <input type="checkbox" id="sympFluidLeakage" onchange="updateLiveSymptomCount()">
+                  <span>Sudden Amniotic Fluid Leakage / Rupture of Membranes</span>
+                </label>
+                <label class="symptom-checkbox-row">
+                  <input type="checkbox" id="sympDecreasedFetalMovements" onchange="updateLiveSymptomCount()">
+                  <span>Marked Reduction or Cessation of Fetal Movements</span>
+                </label>
+                <label class="symptom-checkbox-row">
+                  <input type="checkbox" id="sympPregnancyEdema" onchange="updateLiveSymptomCount()">
+                  <span>Sudden Swelling of Face, Hands, or Eyes</span>
+                </label>
+                <label class="symptom-checkbox-row">
+                  <input type="checkbox" id="sympPregnancyOther" onchange="updateLiveSymptomCount()">
+                  <span>Other Pregnancy & Obstetric Symptoms</span>
+                </label>
+              </div>
+            </div>
+          </div>
+
+          <!-- Domain 10: Allergic & Anaphylaxis -->
+          <div class="accordion-item" id="accordionDomain10">
+            <div class="accordion-header" onclick="toggleDomain(10)">
+              <div class="accordion-header-left">
+                <span class="domain-icon">⚠️</span>
+                <span class="domain-title">10. Allergic & Anaphylaxis</span>
+              </div>
+              <div class="accordion-header-right">
+                <span class="badge badge-low domain-count-badge" id="domainCount10">0 selected</span>
+                <svg class="accordion-chevron" id="chevronDomain10" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+              </div>
+            </div>
+            <div class="accordion-body" id="accordionBody10" style="display: none;">
+              <p style="font-size: 0.75rem; color: var(--text-secondary); margin-bottom: 0.75rem;">Severe hypersensitivity reactions, acute airway angioedema, and anaphylactic shock.</p>
+              <div class="symptom-grid">
+                <label class="symptom-checkbox-row">
+                  <input type="checkbox" id="sympMucosalSwelling" onchange="updateLiveSymptomCount()">
+                  <span>Lip / Tongue / Mucosal Swelling (Angioedema) <span class="red-flag-tag">🚨 Red Flag</span></span>
+                </label>
+                <label class="symptom-checkbox-row">
+                  <input type="checkbox" id="sympVoiceChange" onchange="updateLiveSymptomCount()">
+                  <span>Hoarseness / Stridor / Sudden Voice Change <span class="red-flag-tag">🚨 Red Flag</span></span>
+                </label>
+                <label class="symptom-checkbox-row">
+                  <input type="checkbox" id="sympThroatTightness" onchange="updateLiveSymptomCount()">
+                  <span>Sensation of Throat Closing / Difficulty Swallowing <span class="red-flag-tag">🚨 Red Flag</span></span>
+                </label>
+                <label class="symptom-checkbox-row">
+                  <input type="checkbox" id="sympUrticaria" onchange="updateLiveSymptomCount()">
+                  <span>Urticaria / Widespread Hives & Erythema</span>
+                </label>
+                <label class="symptom-checkbox-row">
+                  <input type="checkbox" id="sympAllergicWheeze" onchange="updateLiveSymptomCount()">
+                  <span>Audible Wheezing / Bronchospasm</span>
+                </label>
+                <label class="symptom-checkbox-row">
+                  <input type="checkbox" id="sympFacialAngioedema" onchange="updateLiveSymptomCount()">
+                  <span>Acute Facial / Periorbital Swelling</span>
+                </label>
+                <label class="symptom-checkbox-row">
+                  <input type="checkbox" id="sympGeneralizedPruritus" onchange="updateLiveSymptomCount()">
+                  <span>Severe Generalized Itching / Cutaneous Flushing</span>
+                </label>
+                <label class="symptom-checkbox-row">
+                  <input type="checkbox" id="sympAllergenExposure" onchange="updateLiveSymptomCount()">
+                  <span>Exposure to Known Severe Allergen (Food, Drug, Bee/Insect)</span>
+                </label>
+                <label class="symptom-checkbox-row">
+                  <input type="checkbox" id="sympAllergicOther" onchange="updateLiveSymptomCount()">
+                  <span>Other Allergic Symptoms</span>
+                </label>
+              </div>
+            </div>
+          </div>
+
+          <!-- Domain 11: Hydration Status -->
+          <div class="accordion-item" id="accordionDomain11">
+            <div class="accordion-header" onclick="toggleDomain(11)">
+              <div class="accordion-header-left">
+                <span class="domain-icon">💧</span>
+                <span class="domain-title">11. Hydration Status</span>
+              </div>
+              <div class="accordion-header-right">
+                <span class="badge badge-low domain-count-badge" id="domainCount11">0 selected</span>
+                <svg class="accordion-chevron" id="chevronDomain11" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+              </div>
+            </div>
+            <div class="accordion-body" id="accordionBody11" style="display: none;">
+              <p style="font-size: 0.75rem; color: var(--text-secondary); margin-bottom: 0.75rem;">Hypovolemia assessment, capillary refill, mucosal moisture, and acute kidney injury risk.</p>
+              <div class="symptom-grid">
+                <label class="symptom-checkbox-row">
+                  <input type="checkbox" id="sympOliguria" onchange="updateLiveSymptomCount()">
+                  <span>Anuria / No Urine Output for 8+ Hours <span class="red-flag-tag">🚨 Red Flag</span></span>
+                </label>
+                <label class="symptom-checkbox-row">
+                  <input type="checkbox" id="sympExtremeThirst" onchange="updateLiveSymptomCount()">
+                  <span>Severe Intense Thirst & Parched Dry Mouth</span>
+                </label>
+                <label class="symptom-checkbox-row">
+                  <input type="checkbox" id="sympSunkenEyes" onchange="updateLiveSymptomCount()">
+                  <span>Sunken Eyes / Severely Diminished Skin Turgor</span>
+                </label>
+                <label class="symptom-checkbox-row">
+                  <input type="checkbox" id="sympPoorTurgor" onchange="updateLiveSymptomCount()">
+                  <span>Reduced Skin Turgor / Tented Skin</span>
+                </label>
+                <label class="symptom-checkbox-row">
+                  <input type="checkbox" id="sympDryMucous" onchange="updateLiveSymptomCount()">
+                  <span>Dry / Cracked Mucous Membranes</span>
+                </label>
+                <label class="symptom-checkbox-row">
+                  <input type="checkbox" id="sympOrthostaticFaint" onchange="updateLiveSymptomCount()">
+                  <span>Severe Postural Dizziness / Fainting on Standing</span>
+                </label>
+                <label class="symptom-checkbox-row">
+                  <input type="checkbox" id="sympHydrationOther" onchange="updateLiveSymptomCount()">
+                  <span>Other Hydration Symptoms</span>
+                </label>
+              </div>
+            </div>
+          </div>
+
+          <!-- Domain 12: Multi-system & Toxic Exposure -->
+          <div class="accordion-item" id="accordionDomain12">
+            <div class="accordion-header" onclick="toggleDomain(12)">
+              <div class="accordion-header-left">
+                <span class="domain-icon">☣️</span>
+                <span class="domain-title">12. Multi-system & Toxic Exposure</span>
+              </div>
+              <div class="accordion-header-right">
+                <span class="badge badge-low domain-count-badge" id="domainCount12">0 selected</span>
+                <svg class="accordion-chevron" id="chevronDomain12" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+              </div>
+            </div>
+            <div class="accordion-body" id="accordionBody12" style="display: none;">
+              <p style="font-size: 0.75rem; color: var(--text-secondary); margin-bottom: 0.75rem;">Poisonings, envenomation (snake/scorpion), toxic inhalations, and toxidromes.</p>
+              <div class="symptom-grid">
+                <label class="symptom-checkbox-row">
+                  <input type="checkbox" id="sympBiteSting" onchange="updateLiveSymptomCount()">
+                  <span>Bite / Sting Marks (Snake / Scorpion / Spider) <span class="red-flag-tag">🚨 Red Flag</span></span>
+                </label>
+                <label class="symptom-checkbox-row">
+                  <input type="checkbox" id="sympSnakeAnimalBite" onchange="updateLiveSymptomCount()">
+                  <span>Definite Venomous Snake or Rabid Animal Bite <span class="red-flag-tag">🚨 Red Flag</span></span>
+                </label>
+                <label class="symptom-checkbox-row">
+                  <input type="checkbox" id="sympToxicIngestion" onchange="updateLiveSymptomCount()">
+                  <span>Suspected Chemical / Pesticide / Toxin Ingestion <span class="red-flag-tag">🚨 Red Flag</span></span>
+                </label>
+                <label class="symptom-checkbox-row">
+                  <input type="checkbox" id="sympSmokeGasInhalation" onchange="updateLiveSymptomCount()">
+                  <span>Toxic Smoke, Fume, or Gas Inhalation <span class="red-flag-tag">🚨 Red Flag</span></span>
+                </label>
+                <label class="symptom-checkbox-row">
+                  <input type="checkbox" id="sympToxinLossOfConsciousness" onchange="updateLiveSymptomCount()">
+                  <span>Sudden Unresponsiveness / Collapse after Exposure <span class="red-flag-tag">🚨 Red Flag</span></span>
+                </label>
+                <label class="symptom-checkbox-row">
+                  <input type="checkbox" id="sympSludge" onchange="updateLiveSymptomCount()">
+                  <span>Excessive Salivation / Lacrimation (SLUDGE Toxidrome) <span class="red-flag-tag">🚨 Red Flag</span></span>
+                </label>
+                <label class="symptom-checkbox-row">
+                  <input type="checkbox" id="sympToxicOther" onchange="updateLiveSymptomCount()">
+                  <span>Other Toxic Exposure Symptoms</span>
+                </label>
+              </div>
+            </div>
+          </div>
+
         </div>
 
       </div>
@@ -650,33 +1283,203 @@
       }
     }
 
+    // Step 2 Symptoms: Conditional Display & Synchronization
+    function setFeverPresent(isYes) {
+      const cb = document.getElementById('sympFever');
+      const radYes = document.getElementById('feverPresentYes');
+      const radNo = document.getElementById('feverPresentNo');
+      const details = document.getElementById('feverDetails');
+      const badge = document.getElementById('badgeFever');
+      const card = document.getElementById('cardFever');
+      const patternSelect = document.getElementById('feverPattern');
+      const durationSelect = document.getElementById('feverDuration');
+
+      if (cb) cb.checked = isYes;
+      if (radYes) radYes.checked = isYes;
+      if (radNo) radNo.checked = !isYes;
+
+      if (isYes) {
+        if (details) details.style.display = 'grid';
+        if (badge) {
+          badge.textContent = 'Active';
+          badge.className = 'badge badge-critical';
+        }
+        if (card) card.classList.add('featured');
+        if (patternSelect) patternSelect.disabled = false;
+        if (durationSelect) durationSelect.disabled = false;
+      } else {
+        if (details) details.style.display = 'none';
+        if (badge) {
+          badge.textContent = 'Absent';
+          badge.className = 'badge badge-low';
+        }
+        if (card) card.classList.remove('featured');
+        if (patternSelect) patternSelect.disabled = true;
+        if (durationSelect) durationSelect.disabled = true;
+      }
+    }
+
+    function setBodyPainPresent(isYes) {
+      const cb = document.getElementById('sympBodyPain');
+      const radYes = document.getElementById('bodyPainPresentYes');
+      const radNo = document.getElementById('bodyPainPresentNo');
+      const details = document.getElementById('bodyPainDetails');
+      const badge = document.getElementById('badgeBodyPain');
+      const card = document.getElementById('cardBodyPain');
+      const areaSelect = document.getElementById('painArea');
+      const severitySelect = document.getElementById('painSeverity');
+
+      if (cb) cb.checked = isYes;
+      if (radYes) radYes.checked = isYes;
+      if (radNo) radNo.checked = !isYes;
+
+      if (isYes) {
+        if (details) details.style.display = 'grid';
+        if (badge) {
+          badge.textContent = 'Active';
+          badge.className = 'badge badge-high';
+        }
+        if (card) card.classList.add('featured');
+        if (areaSelect) areaSelect.disabled = false;
+        if (severitySelect) severitySelect.disabled = false;
+      } else {
+        if (details) details.style.display = 'none';
+        if (badge) {
+          badge.textContent = 'Absent';
+          badge.className = 'badge badge-low';
+        }
+        if (card) card.classList.remove('featured');
+        if (areaSelect) areaSelect.disabled = true;
+        if (severitySelect) severitySelect.disabled = true;
+      }
+      updateLiveSymptomCount();
+    }
+
     // Toggle Symptom Cards
     function toggleSymptom(type) {
       if (type === 'fever') {
-        const cb = document.getElementById('sympFever');
-        cb.checked = !cb.checked;
-        updateSymptomUI('fever');
+        const isCurrentlyYes = document.getElementById('feverPresentYes') ? document.getElementById('feverPresentYes').checked : document.getElementById('sympFever').checked;
+        setFeverPresent(!isCurrentlyYes);
       } else if (type === 'bodyPain') {
-        const cb = document.getElementById('sympBodyPain');
-        cb.checked = !cb.checked;
-        updateSymptomUI('bodyPain');
+        const isCurrentlyYes = document.getElementById('bodyPainPresentYes') ? document.getElementById('bodyPainPresentYes').checked : document.getElementById('sympBodyPain').checked;
+        setBodyPainPresent(!isCurrentlyYes);
       }
     }
 
     function updateSymptomUI(type) {
       if (type === 'fever') {
         const checked = document.getElementById('sympFever').checked;
-        document.getElementById('feverDetails').style.display = checked ? 'grid' : 'none';
-        const badge = document.getElementById('badgeFever');
-        badge.textContent = checked ? 'Active' : 'Absent';
-        badge.className = checked ? 'badge badge-critical' : 'badge badge-low';
+        setFeverPresent(checked);
       } else if (type === 'bodyPain') {
         const checked = document.getElementById('sympBodyPain').checked;
-        document.getElementById('bodyPainDetails').style.display = checked ? 'grid' : 'none';
-        const badge = document.getElementById('badgeBodyPain');
-        badge.textContent = checked ? 'Active' : 'Absent';
-        badge.className = checked ? 'badge badge-high' : 'badge badge-low';
+        setBodyPainPresent(checked);
       }
+    }
+
+    // 12 Clinical Domains Accordion Controls & Live Counter
+    function toggleDomain(domainNum) {
+      const item = document.getElementById('accordionDomain' + domainNum);
+      const body = document.getElementById('accordionBody' + domainNum);
+      if (!item || !body) return;
+      const isOpen = item.classList.contains('open');
+      if (isOpen) {
+        item.classList.remove('open');
+        body.style.display = 'none';
+      } else {
+        item.classList.add('open');
+        body.style.display = 'block';
+      }
+    }
+
+    function expandAllDomains() {
+      for (let i = 1; i <= 12; i++) {
+        const item = document.getElementById('accordionDomain' + i);
+        const body = document.getElementById('accordionBody' + i);
+        if (item && body) {
+          item.classList.add('open');
+          body.style.display = 'block';
+        }
+      }
+    }
+
+    function collapseAllDomains() {
+      for (let i = 1; i <= 12; i++) {
+        const item = document.getElementById('accordionDomain' + i);
+        const body = document.getElementById('accordionBody' + i);
+        if (item && body) {
+          item.classList.remove('open');
+          body.style.display = 'none';
+        }
+      }
+    }
+
+    function updateLiveSymptomCount() {
+      let totalCount = 0;
+
+      // Slot 1: Fever
+      const feverYes = document.getElementById('feverPresentYes') ? document.getElementById('feverPresentYes').checked : (document.getElementById('sympFever')?.checked ?? false);
+      if (feverYes) totalCount++;
+
+      // Slot 2: Body Pain
+      const bodyPainYes = document.getElementById('bodyPainPresentYes') ? document.getElementById('bodyPainPresentYes').checked : (document.getElementById('sympBodyPain')?.checked ?? false);
+      if (bodyPainYes) totalCount++;
+
+      // Domains 1 - 12
+      for (let d = 1; d <= 12; d++) {
+        const body = document.getElementById('accordionBody' + d);
+        let domainCount = 0;
+        if (body) {
+          const checkboxes = body.querySelectorAll('input[type="checkbox"]');
+          checkboxes.forEach(cb => {
+            if (cb.checked) {
+              domainCount++;
+              totalCount++;
+            }
+          });
+        }
+        const badge = document.getElementById('domainCount' + d);
+        if (badge) {
+          badge.textContent = `${domainCount} selected`;
+          if (domainCount > 0) {
+            badge.className = 'badge badge-primary domain-count-badge';
+            badge.style.background = 'rgba(14, 165, 233, 0.25)';
+            badge.style.color = '#38bdf8';
+            badge.style.borderColor = 'rgba(14, 165, 233, 0.4)';
+          } else {
+            badge.className = 'badge badge-low domain-count-badge';
+            badge.style.background = '';
+            badge.style.color = '';
+            badge.style.borderColor = '';
+          }
+        }
+      }
+
+      const totalBadge = document.getElementById('totalSymptomsCountBadge');
+      if (totalBadge) {
+        totalBadge.textContent = `Total Selected: ${totalCount} symptoms`;
+      }
+    }
+
+    function clearAllSymptoms() {
+      if (!confirm('Are you sure you want to clear all selected symptoms across all 12 clinical domains?')) {
+        return;
+      }
+      for (let d = 1; d <= 12; d++) {
+        const body = document.getElementById('accordionBody' + d);
+        if (body) {
+          const checkboxes = body.querySelectorAll('input[type="checkbox"]');
+          checkboxes.forEach(cb => { cb.checked = false; });
+        }
+      }
+      if (document.getElementById('feverPresentNo')) {
+        document.getElementById('feverPresentNo').checked = true;
+        setFeverPresent(false);
+      }
+      if (document.getElementById('bodyPainPresentNo')) {
+        document.getElementById('bodyPainPresentNo').checked = true;
+        setBodyPainPresent(false);
+      }
+      updateLiveSymptomCount();
     }
 
     // Phase 8: Live Vitals Validation
@@ -766,28 +1569,177 @@
       btn.disabled = true;
       btn.innerHTML = '<span class="spinner"></span> Processing AI Clinical Triage...';
 
-      // Build symptom vector
+      // Build symptom vector (Slot 1 Fever, Slot 2 Body Pain, followed by 12 Clinical Domains)
       const symptomVector = {};
-      if (document.getElementById('sympFever').checked) {
+      const isFeverYes = document.getElementById('feverPresentYes') ? document.getElementById('feverPresentYes').checked : (document.getElementById('sympFever')?.checked ?? false);
+      if (isFeverYes) {
         symptomVector['fever'] = {
           present: true,
-          pattern: document.getElementById('feverPattern').value,
-          duration: document.getElementById('feverDuration').value
+          pattern: document.getElementById('feverPattern')?.value || 'INTERMITTENT',
+          duration: document.getElementById('feverDuration')?.value || '1_TO_3_DAYS'
+        };
+        symptomVector['fever_flag'] = true;
+      } else {
+        symptomVector['fever'] = {
+          present: false
         };
       }
-      if (document.getElementById('sympBodyPain').checked) {
+
+      const isBodyPainYes = document.getElementById('bodyPainPresentYes') ? document.getElementById('bodyPainPresentYes').checked : (document.getElementById('sympBodyPain')?.checked ?? false);
+      if (isBodyPainYes) {
         symptomVector['body_pain'] = {
           present: true,
-          area: document.getElementById('painArea').value,
-          severity: document.getElementById('painSeverity').value
+          area: document.getElementById('painArea')?.value || 'GENERALIZED',
+          severity: document.getElementById('painSeverity')?.value || 'SEVERE'
+        };
+        symptomVector['body_pain_flag'] = true;
+      } else {
+        symptomVector['body_pain'] = {
+          present: false
         };
       }
-      if (document.getElementById('sympChestPain').checked) symptomVector['chest_pain'] = true;
-      if (document.getElementById('sympDyspnea').checked) symptomVector['dyspnea'] = true;
-      if (document.getElementById('sympSyncope').checked) symptomVector['syncope'] = true;
-      if (document.getElementById('sympCough').checked) symptomVector['cough'] = true;
-      if (document.getElementById('sympNausea').checked) symptomVector['nausea_vomiting'] = true;
-      if (document.getElementById('sympConfusion').checked) symptomVector['altered_mental_state'] = true;
+
+      // Domain 1: Infection & Sepsis
+      const infSepsis = {};
+      if (document.getElementById('sympConfusion')?.checked) { infSepsis.altered_mentation = true; symptomVector['altered_mental_state'] = true; }
+      if (document.getElementById('sympRigors')?.checked) infSepsis.rigors = true;
+      if (document.getElementById('sympDiaphoresis')?.checked) infSepsis.diaphoresis = true;
+      if (document.getElementById('sympHighFever')?.checked) infSepsis.fever = true;
+      if (document.getElementById('sympHypothermia')?.checked) infSepsis.hypothermia = true;
+      if (document.getElementById('sympFatigueMalaise')?.checked) infSepsis.fatigue_malaise = true;
+      if (document.getElementById('sympCellulitis')?.checked) infSepsis.cellulitis_wound_infection = true;
+      if (document.getElementById('sympInfectionOther')?.checked) infSepsis.other = true;
+      if (Object.keys(infSepsis).length > 0) symptomVector['infection_sepsis'] = infSepsis;
+
+      // Domain 2: Respiratory
+      const resp = {};
+      if (document.getElementById('sympDyspnea')?.checked) { resp.shortnessOfBreath = true; symptomVector['dyspnea'] = true; }
+      if (document.getElementById('sympAccessoryMuscles')?.checked) resp.accessory_muscle_use = true;
+      if (document.getElementById('sympStridor')?.checked) resp.stridor = true;
+      if (document.getElementById('sympWheeze')?.checked) resp.wheeze = true;
+      if (document.getElementById('sympChestTightness')?.checked) resp.chest_tightness = true;
+      if (document.getElementById('sympCyanosis')?.checked) resp.cyanosis = true;
+      if (document.getElementById('sympCough')?.checked) { resp.productive_cough = true; symptomVector['cough'] = true; }
+      if (document.getElementById('sympHemoptysis')?.checked) resp.hemoptysis = true;
+      if (document.getElementById('sympRespiratoryOther')?.checked) resp.other = true;
+      if (Object.keys(resp).length > 0) symptomVector['respiratory'] = resp;
+
+      // Domain 3: Cardiac
+      const cardiac = {};
+      if (document.getElementById('sympChestPain')?.checked) { cardiac.chest_pain = true; cardiac.chest_pain_character = 'crushing'; symptomVector['chest_pain'] = true; }
+      if (document.getElementById('sympRadiation')?.checked) cardiac.radiation = 'left_arm_jaw';
+      if (document.getElementById('sympPalpitations')?.checked) cardiac.palpitations = true;
+      if (document.getElementById('sympCardiacSyncope')?.checked) cardiac.syncope = true;
+      if (document.getElementById('sympPedalEdema')?.checked) cardiac.pedal_edema = true;
+      if (document.getElementById('sympOrthopnea')?.checked) cardiac.orthopnea = true;
+      if (document.getElementById('sympCardiacDiaphoresis')?.checked) cardiac.diaphoresis = true;
+      if (document.getElementById('sympCardiacOther')?.checked) cardiac.other = true;
+      if (Object.keys(cardiac).length > 0) symptomVector['cardiac'] = cardiac;
+
+      // Domain 4: Neurological
+      const neuro = {};
+      if (document.getElementById('sympFacialDroop')?.checked) neuro.fast_facial_droop = true;
+      if (document.getElementById('sympArmDrift')?.checked) neuro.fast_arm_drift = true;
+      if (document.getElementById('sympSpeechDiff')?.checked) neuro.fast_speech_difficulty = true;
+      if (document.getElementById('sympSeizures')?.checked) neuro.seizures = true;
+      if (document.getElementById('sympSyncope')?.checked) { neuro.dizziness_syncope = true; symptomVector['syncope'] = true; }
+      if (document.getElementById('sympThunderclapHeadache')?.checked) neuro.severe_thunderclap_headache = true;
+      if (document.getElementById('sympNumbnessWeakness')?.checked) neuro.numbness_weakness = true;
+      if (document.getElementById('sympConfusionDelirium')?.checked) neuro.confusion_delirium = true;
+      if (document.getElementById('sympNeurologicalOther')?.checked) neuro.other = true;
+      if (Object.keys(neuro).length > 0) symptomVector['neurological'] = neuro;
+
+      // Domain 5: Blood Pressure Associated Symptoms
+      const bpSymp = {};
+      if (document.getElementById('sympBpHeadache')?.checked) bpSymp.severe_headache = true;
+      if (document.getElementById('sympBpVision')?.checked) bpSymp.blurred_vision = true;
+      if (document.getElementById('sympEpistaxis')?.checked) bpSymp.epistaxis = true;
+      if (document.getElementById('sympPosturalDizziness')?.checked) bpSymp.dizziness_standing = true;
+      if (document.getElementById('sympBpChestPain')?.checked) bpSymp.chest_pain = true;
+      if (document.getElementById('sympBpOther')?.checked) bpSymp.other = true;
+      if (Object.keys(bpSymp).length > 0) symptomVector['blood_pressure'] = bpSymp;
+
+      // Domain 6: Diabetes & Metabolic
+      const diab = {};
+      if (document.getElementById('sympKussmaul')?.checked) diab.kussmaul_breathing = true;
+      if (document.getElementById('sympFruityBreath')?.checked) diab.fruity_breath = true;
+      if (document.getElementById('sympPolydipsia')?.checked) diab.polydipsia_polyuria = true;
+      if (document.getElementById('sympHypoglycemia')?.checked) diab.hypoglycemia_symptoms = true;
+      if (document.getElementById('sympExtremeLethargy')?.checked) diab.extreme_fatigue = true;
+      if (document.getElementById('sympDkaNausea')?.checked) diab.nausea_vomiting_dka = true;
+      if (document.getElementById('sympDiabeticOther')?.checked) diab.other = true;
+      if (Object.keys(diab).length > 0) symptomVector['diabetes'] = diab;
+
+      // Domain 7: Gastrointestinal
+      const gi = {};
+      if (document.getElementById('sympAbdominalPain')?.checked) gi.severe_abdominal_pain = true;
+      if (document.getElementById('sympReboundTenderness')?.checked) gi.rebound_tenderness = true;
+      if (document.getElementById('sympNausea')?.checked) { gi.nausea_vomiting = true; symptomVector['nausea_vomiting'] = true; }
+      if (document.getElementById('sympHematemesis')?.checked) gi.hematemesis = true;
+      if (document.getElementById('sympGiBleed')?.checked) gi.rectal_bleeding_melena = true;
+      if (document.getElementById('sympProfuseDiarrhea')?.checked) gi.severe_diarrhea = true;
+      if (document.getElementById('sympAbdominalDistension')?.checked) gi.abdominal_distension = true;
+      if (document.getElementById('sympGiOther')?.checked) gi.other = true;
+      if (Object.keys(gi).length > 0) symptomVector['gastrointestinal'] = gi;
+
+      // Domain 8: Injury & Trauma
+      const trauma = {};
+      if (document.getElementById('sympDeformity')?.checked) trauma.deformity = true;
+      if (document.getElementById('sympHeadTraumaLoc')?.checked) trauma.blunt_head_trauma = true;
+      if (document.getElementById('sympRapidBleeding')?.checked) trauma.bleeding_rate = 'rapid';
+      if (document.getElementById('sympAirwayCompromise')?.checked) trauma.airway_patency = 'compromised';
+      if (document.getElementById('sympFractureDislocation')?.checked) trauma.fracture_dislocation = true;
+      if (document.getElementById('sympBurnTrauma')?.checked) trauma.burn_injury = true;
+      if (document.getElementById('sympSpineTenderness')?.checked) trauma.spinal_tenderness = true;
+      if (document.getElementById('sympBluntTrauma')?.checked) trauma.blunt_impact = true;
+      if (document.getElementById('sympTraumaOther')?.checked) trauma.other = true;
+      if (Object.keys(trauma).length > 0) symptomVector['injury_trauma'] = trauma;
+
+      // Domain 9: Pregnancy & Obstetric
+      const preg = {};
+      if (document.getElementById('sympPelvicPain')?.checked) preg.pelvic_pain = true;
+      if (document.getElementById('sympVaginalBleed')?.checked) preg.vaginal_bleeding = true;
+      if (document.getElementById('sympPreeclampsiaHeadache')?.checked) preg.severe_headache = true;
+      if (document.getElementById('sympFluidLeakage')?.checked) preg.fluid_leakage = true;
+      if (document.getElementById('sympDecreasedFetalMovements')?.checked) preg.reduced_fetal_movement = true;
+      if (document.getElementById('sympPregnancyEdema')?.checked) preg.facial_edema = true;
+      if (document.getElementById('sympPregnancyOther')?.checked) preg.other = true;
+      if (Object.keys(preg).length > 0) symptomVector['pregnancy'] = preg;
+
+      // Domain 10: Allergic & Anaphylaxis
+      const allergic = {};
+      if (document.getElementById('sympMucosalSwelling')?.checked) allergic.mucosal_swelling = true;
+      if (document.getElementById('sympVoiceChange')?.checked) allergic.voice_change = true;
+      if (document.getElementById('sympThroatTightness')?.checked) allergic.throat_tightness = true;
+      if (document.getElementById('sympUrticaria')?.checked) allergic.urticaria = true;
+      if (document.getElementById('sympAllergicWheeze')?.checked) allergic.wheeze = true;
+      if (document.getElementById('sympFacialAngioedema')?.checked) allergic.facial_swelling = true;
+      if (document.getElementById('sympGeneralizedPruritus')?.checked) allergic.generalized_pruritus = true;
+      if (document.getElementById('sympAllergenExposure')?.checked) allergic.anaphylaxis_history = true;
+      if (document.getElementById('sympAllergicOther')?.checked) allergic.other = true;
+      if (Object.keys(allergic).length > 0) symptomVector['allergic'] = allergic;
+
+      // Domain 11: Hydration Status
+      const hydr = {};
+      if (document.getElementById('sympOliguria')?.checked) hydr.urine_output = 'none';
+      if (document.getElementById('sympExtremeThirst')?.checked) hydr.extreme_thirst = true;
+      if (document.getElementById('sympSunkenEyes')?.checked) hydr.sunken_eyes = true;
+      if (document.getElementById('sympPoorTurgor')?.checked) hydr.skin_turgor = 'reduced';
+      if (document.getElementById('sympDryMucous')?.checked) hydr.mucous_membranes = 'dry';
+      if (document.getElementById('sympOrthostaticFaint')?.checked) hydr.postural_dizziness = true;
+      if (document.getElementById('sympHydrationOther')?.checked) hydr.other = true;
+      if (Object.keys(hydr).length > 0) symptomVector['dehydration'] = hydr;
+
+      // Domain 12: Multi-system & Toxic Exposure
+      const toxic = {};
+      if (document.getElementById('sympBiteSting')?.checked) toxic.puncture_marks = true;
+      if (document.getElementById('sympSnakeAnimalBite')?.checked) toxic.snake_animal_bite = true;
+      if (document.getElementById('sympToxicIngestion')?.checked) toxic.chemical_poisoning = true;
+      if (document.getElementById('sympSmokeGasInhalation')?.checked) toxic.smoke_inhalation = true;
+      if (document.getElementById('sympToxinLossOfConsciousness')?.checked) toxic.loss_of_consciousness_toxin = true;
+      if (document.getElementById('sympSludge')?.checked) toxic.salivation = 'excessive';
+      if (document.getElementById('sympToxicOther')?.checked) toxic.other = true;
+      if (Object.keys(toxic).length > 0) symptomVector['toxic_exposure'] = toxic;
 
       const dob = document.getElementById('ptDob').value;
       const age = MediAPI.clinical.calculateAge(dob);
@@ -1086,6 +2038,7 @@
       handleDobChange();
       updateSymptomUI('fever');
       updateSymptomUI('bodyPain');
+      updateLiveSymptomCount();
     });
   </script>
 </body>
