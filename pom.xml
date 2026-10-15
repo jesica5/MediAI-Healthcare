@@ -51,11 +51,10 @@
             <scope>runtime</scope>
         </dependency>
 
-        <!-- H2 Database for seamless unit & integration testing -->
+        <!-- H2 Database for cloud deployment and testing -->
         <dependency>
             <groupId>com.h2database</groupId>
             <artifactId>h2</artifactId>
-            <scope>test</scope>
         </dependency>
 
         <!-- JWT for Stateless Clinical Staff API Authentication -->
