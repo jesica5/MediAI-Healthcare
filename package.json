@@ -3,9 +3,9 @@
   "version": "2.0.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
+    "dev": "next dev -p 8080",
     "build": "next build",
-    "start": "next start",
+    "start": "next start -p 8080",
     "lint": "next lint",
     "type-check": "tsc --noEmit",
     "test": "node --import tsx --test tests/unit/*.test.ts tests/integration/*.test.ts",

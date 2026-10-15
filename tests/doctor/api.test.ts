@@ -15,7 +15,7 @@ import { GET as getAnalyticsHandler } from '@/app/api/v1/doctor/analytics/route'
 describe('Doctor API Route Handlers Integration & RBAC Tests', () => {
   describe('GET /api/v1/doctor/queue', () => {
     it('should return 200 and standard success envelope for authorized Doctor', async () => {
-      const req = new NextRequest('http://localhost:3000/api/v1/doctor/queue?status=PENDING_REVIEW', {
+      const req = new NextRequest('http://localhost:8080/api/v1/doctor/queue?status=PENDING_REVIEW', {
         headers: { 'x-user-role': 'Doctor' },
       });
       const res = await getQueueHandler(req);
@@ -29,7 +29,7 @@ describe('Doctor API Route Handlers Integration & RBAC Tests', () => {
     });
 
     it('should reject unauthorized role with 403 Forbidden', async () => {
-      const req = new NextRequest('http://localhost:3000/api/v1/doctor/queue', {
+      const req = new NextRequest('http://localhost:8080/api/v1/doctor/queue', {
         headers: { 'x-user-role': 'Anonymous Patient' },
       });
       const res = await getQueueHandler(req);
@@ -41,7 +41,7 @@ describe('Doctor API Route Handlers Integration & RBAC Tests', () => {
     });
 
     it('should sanitize patient display name for System Administrator (Zero PHI Mandate)', async () => {
-      const req = new NextRequest('http://localhost:3000/api/v1/doctor/queue', {
+      const req = new NextRequest('http://localhost:8080/api/v1/doctor/queue', {
         headers: { 'x-user-role': 'System Administrator' },
       });
       const res = await getQueueHandler(req);
@@ -57,7 +57,7 @@ describe('Doctor API Route Handlers Integration & RBAC Tests', () => {
 
   describe('POST /api/v1/doctor/override', () => {
     it('should enforce Attending Doctor only guard (403 for Nurse)', async () => {
-      const req = new NextRequest('http://localhost:3000/api/v1/doctor/override', {
+      const req = new NextRequest('http://localhost:8080/api/v1/doctor/override', {
         method: 'POST',
         headers: { 'x-user-role': 'Triage Nurse', 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -73,7 +73,7 @@ describe('Doctor API Route Handlers Integration & RBAC Tests', () => {
     });
 
     it('should reject missing mandatory rationale when changing category (400)', async () => {
-      const req = new NextRequest('http://localhost:3000/api/v1/doctor/override', {
+      const req = new NextRequest('http://localhost:8080/api/v1/doctor/override', {
         method: 'POST',
         headers: { 'x-user-role': 'Doctor', 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -90,7 +90,7 @@ describe('Doctor API Route Handlers Integration & RBAC Tests', () => {
     });
 
     it('should reject downgrading Tier-1 Hard Red Flag Critical assessment with insufficient rationale (422)', async () => {
-      const req = new NextRequest('http://localhost:3000/api/v1/doctor/override', {
+      const req = new NextRequest('http://localhost:8080/api/v1/doctor/override', {
         method: 'POST',
         headers: { 'x-user-role': 'Doctor', 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -107,7 +107,7 @@ describe('Doctor API Route Handlers Integration & RBAC Tests', () => {
     });
 
     it('should successfully record override with 200 when proper rationale is provided', async () => {
-      const req = new NextRequest('http://localhost:3000/api/v1/doctor/override', {
+      const req = new NextRequest('http://localhost:8080/api/v1/doctor/override', {
         method: 'POST',
         headers: { 'x-user-role': 'Doctor', 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -129,7 +129,7 @@ describe('Doctor API Route Handlers Integration & RBAC Tests', () => {
 
   describe('GET /api/v1/doctor/patient/[id]', () => {
     it('should return patient clinical review data for valid ID', async () => {
-      const req = new NextRequest('http://localhost:3000/api/v1/doctor/patient/ast-101', {
+      const req = new NextRequest('http://localhost:8080/api/v1/doctor/patient/ast-101', {
         headers: { 'x-user-role': 'Doctor' },
       });
       const res = await getPatientHandler(req, { params: { id: 'ast-101' } });
@@ -141,7 +141,7 @@ describe('Doctor API Route Handlers Integration & RBAC Tests', () => {
     });
 
     it('should return 404 for non-existent assessment', async () => {
-      const req = new NextRequest('http://localhost:3000/api/v1/doctor/patient/non-existent-id', {
+      const req = new NextRequest('http://localhost:8080/api/v1/doctor/patient/non-existent-id', {
         headers: { 'x-user-role': 'Doctor' },
       });
       const res = await getPatientHandler(req, { params: { id: 'non-existent-id' } });
@@ -152,7 +152,7 @@ describe('Doctor API Route Handlers Integration & RBAC Tests', () => {
     });
 
     it('should reject unauthorized request with 403', async () => {
-      const req = new NextRequest('http://localhost:3000/api/v1/doctor/patient/ast-101', {
+      const req = new NextRequest('http://localhost:8080/api/v1/doctor/patient/ast-101', {
         headers: { 'x-user-role': 'Anonymous Patient' },
       });
       const res = await getPatientHandler(req, { params: { id: 'ast-101' } });
@@ -162,7 +162,7 @@ describe('Doctor API Route Handlers Integration & RBAC Tests', () => {
 
   describe('GET /api/v1/doctor/medications', () => {
     it('should return medication records for patient', async () => {
-      const req = new NextRequest('http://localhost:3000/api/v1/doctor/medications?patientId=p-101', {
+      const req = new NextRequest('http://localhost:8080/api/v1/doctor/medications?patientId=p-101', {
         headers: { 'x-user-role': 'Doctor' },
       });
       const res = await getMedicationsHandler(req);
@@ -175,7 +175,7 @@ describe('Doctor API Route Handlers Integration & RBAC Tests', () => {
     });
 
     it('should reject unauthorized role with 403', async () => {
-      const req = new NextRequest('http://localhost:3000/api/v1/doctor/medications', {
+      const req = new NextRequest('http://localhost:8080/api/v1/doctor/medications', {
         headers: { 'x-user-role': 'Unauthorized' },
       });
       const res = await getMedicationsHandler(req);
@@ -185,7 +185,7 @@ describe('Doctor API Route Handlers Integration & RBAC Tests', () => {
 
   describe('GET /api/v1/doctor/analytics', () => {
     it('should return aggregate analytics data without exposing raw PHI', async () => {
-      const req = new NextRequest('http://localhost:3000/api/v1/doctor/analytics', {
+      const req = new NextRequest('http://localhost:8080/api/v1/doctor/analytics', {
         headers: { 'x-user-role': 'Doctor' },
       });
       const res = await getAnalyticsHandler(req);
@@ -198,7 +198,7 @@ describe('Doctor API Route Handlers Integration & RBAC Tests', () => {
     });
 
     it('should reject unauthorized role with 403', async () => {
-      const req = new NextRequest('http://localhost:3000/api/v1/doctor/analytics', {
+      const req = new NextRequest('http://localhost:8080/api/v1/doctor/analytics', {
         headers: { 'x-user-role': 'Guest' },
       });
       const res = await getAnalyticsHandler(req);

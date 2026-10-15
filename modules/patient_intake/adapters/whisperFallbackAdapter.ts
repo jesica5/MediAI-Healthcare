@@ -24,7 +24,7 @@ export class WhisperFallbackAdapter implements SpeechRecognitionAdapter {
       customEndpoint ||
       process.env.NEXT_PUBLIC_SPEECH_FALLBACK_URL ||
       process.env.SPEECH_FALLBACK_URL ||
-      'http://localhost:3000/api/v1/speech/transcribe';
+      'http://localhost:8080/api/v1/speech/transcribe';
   }
 
   private setState(state: SpeechState) {

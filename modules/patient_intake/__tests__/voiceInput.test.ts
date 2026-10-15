@@ -277,7 +277,7 @@ describe('Voice Symptom Input Tests', () => {
     expect(typeof webSpeech.start).toBe('function');
     expect(typeof webSpeech.stop).toBe('function');
 
-    const whisper = new WhisperFallbackAdapter('http://localhost:3000/api/v1/speech/transcribe');
+    const whisper = new WhisperFallbackAdapter('http://localhost:8080/api/v1/speech/transcribe');
     expect(typeof whisper.isSupported).toBe('function');
     expect(typeof whisper.start).toBe('function');
     expect(typeof whisper.stop).toBe('function');
